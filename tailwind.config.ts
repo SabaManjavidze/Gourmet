@@ -25,6 +25,8 @@ const config = {
         "140": "140%",
       },
       backgroundImage: {
+        "menu-banner":
+          "url('https://s3-alpha-sig.figma.com/img/0e7e/a00a/4fd2d735595166e735f5f15a02272dd3?Expires=1715558400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=a7RUPneEs1fa0Jp~VUSY6IT23Kg2P2PLuw-x6eEl-1-pxSDvZ7unotWzdSsFBT3LQZRAAyzHD7ozKnG~cTzdGq43s3-YLpBRsrf6fEbZRb9bnYJLP7LpAKdBBrFpPwd0BYSDuVC2me~sd3r0HV2v5qOAYfgjyDZxb1yJ1Fwl4hruc8Y46FAmK4QR6rFSluHkaFMq5feS1YYAB7V1VrqFexeGJ-n9liwv7mtO1HiTM4T00ctNYYz50P~4XkBfXWhLZUfYyDa7lgx8oqfI6XUz5PFJqNH4s-NpknmWOmFEyxRZVkyRQYSwgwSIkryjA1Il2bIGaTmsmNQSDF4b4WOAmQ__')",
         "footer-banner":
           "url('https://s3-alpha-sig.figma.com/img/5c8a/3840/f212b3b84f86c8903786ecc0ec46f75b?Expires=1715558400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=hZf1NJfW3vnk-KY9ynzwgvP6L0yKEJrr1QfM0Gai5XBaPKV7a2i4sfOSJm~tNLllR9KfbO2GRbVp~ZKQFv5Cn9apwjf1l1ZpVUz1MPmUN4bv5v9NlAeHxABUhFXZFCiRuD6PhqS3YU6o6z6iDwBDP7FKv5dBBfEGxyzIq6~zHIAQKReNjt68o5oEr~T0fxuE19MXmaCCUyOa-rjMq6UIRWoO5QJP-TOKIBErUwyn8jtyCvWRgwzG9CwCul9CV7zB5w3yZG8nVKeGmpmxyQ9tgJl8D5TcNoPdeHaGZxUmQ71XPTewvU9z1~zoUY~bOVQ2YPACUVuAstOCKiERnVLdZw__')",
         "contact-us-banner":
@@ -39,7 +41,7 @@ const config = {
         "lucida-bold": ["Lucida Handwriting Std", "sans"],
         "lucida-light": ["Lucida Handwriting Std Light", "sans"],
         "lucida-rg": ["Lucida Handwriting Std Rg", "sans"],
-        sans: ["Poppins", ...fontFamily.sans],
+        sans: ["Poppins", "sans-serif", ...fontFamily.sans],
       },
       colors: {
         border: "hsl(var(--border))",

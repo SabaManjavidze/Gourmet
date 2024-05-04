@@ -19,17 +19,24 @@ export function LanguageDropdown() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="min-w-28">
-        <Button variant="outline" className="flex justify-between px-2">
+        <Button variant="outline" className="group flex justify-between px-2">
           <p>{Capitalize(lang)}</p>
-          <ChevronDown className="ml-2" />
+          <ChevronDown className="ml-2 duration-150 group-hover:text-accent" />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
         <DropdownMenuLabel>Select Language</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={lang} onValueChange={setLang as any}>
+        <DropdownMenuRadioGroup
+          value={lang}
+          onValueChange={(val) => {
+            if (!(val in languages)) return;
+
+            setLang(val as (typeof languages)[number]);
+          }}
+        >
           {languages.map((lang) => (
-            <DropdownMenuRadioItem value={lang}>
+            <DropdownMenuRadioItem key={lang} value={lang}>
               {Capitalize(lang)}
             </DropdownMenuRadioItem>
           ))}

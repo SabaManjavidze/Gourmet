@@ -27,14 +27,23 @@ export function Navbar() {
     },
   ];
   return (
-    <nav className="relative flex h-16 items-center justify-between px-10">
-      <div className="bg-nav-logo bg-140 absolute right-1/2 top-1/4 h-[141px] w-[185px] translate-x-1/2 border-[3px] border-white bg-center bg-no-repeat"></div>
+    <nav className="relative mb-44 flex h-16 items-center justify-between border-b px-10">
+      <div className="absolute right-1/2 top-1/4 h-[141px] w-[185px] translate-x-1/2 border-[3px] border-white bg-nav-logo bg-140 bg-center bg-no-repeat">
+        <h3 className="logo-text absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full text-3xl font-bold uppercase">
+          Gourmet
+        </h3>
+      </div>
 
       <div>
         <ul className="flex gap-x-10 font-medium">
           {routes.map(({ route, title }, idx) => (
             <li key={idx}>
-              <Link href={route}>{title}</Link>
+              <Link
+                className="duration-150 ease-in-out hover:text-accent-foreground"
+                href={route}
+              >
+                {title}
+              </Link>
             </li>
           ))}
         </ul>

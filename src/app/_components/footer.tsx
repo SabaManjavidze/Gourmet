@@ -26,9 +26,9 @@ export function Footer() {
     },
   ];
   return (
-    <footer className="bg-footer-banner relative mt-64 flex flex-col items-center bg-cover bg-center py-52">
-      <div className="bg-nav-logo bg-140 absolute right-1/2 top-0 h-[141px] w-[185px] -translate-y-1/2 translate-x-1/2 border-[3px] border-white bg-center bg-no-repeat">
-        <h3 className="font-georgia absolute bottom-0 right-1/2 translate-x-1/2 translate-y-[130%] text-5xl italic text-white">
+    <footer className="relative mt-64 flex flex-col items-center bg-footer-banner bg-cover bg-center py-52">
+      <div className="absolute right-1/2 top-0 h-[141px] w-[185px] -translate-y-1/2 translate-x-1/2 border-[3px] border-white bg-nav-logo bg-140 bg-center bg-no-repeat">
+        <h3 className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-[130%] font-georgia text-5xl italic text-white">
           Gourmet
         </h3>
       </div>

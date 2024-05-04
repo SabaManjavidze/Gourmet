@@ -85,8 +85,14 @@
     src: url("../../assets/fonts/lucida-handwriting/LucidaHandwritingStdBold.TTF");
   }
   @font-face {
-    font-family: Poppins;
-    src: url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+    font-family: "Poppins";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url(https://fonts.gstatic.com/s/poppins/v21/pxiEyp8kv8JHgFVrJJnecmNE.woff2)
+      format("woff2");
+    unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF,
+      U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
   }
   * {
     @apply border-border;
@@ -94,9 +100,29 @@
   body {
     @apply bg-background text-foreground;
   }
+  .dotted {
+    background-image: linear-gradient(
+      to right,
+      hsl(22 81% 68%) 33%,
+      rgba(255, 255, 255, 0) 0%
+    );
+    background-position: bottom;
+    background-size: 20px;
+    background-repeat: repeat-x;
+  }
+  .logo-text {
+    -webkit-background-clip: text !important;
+    background-clip: border-box;
+    -webkit-text-fill-color: transparent;
+    background: url("https://s3-alpha-sig.figma.com/img/5c8a/3840/f212b3b84f86c8903786ecc0ec46f75b?Expires=1715558400&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=hZf1NJfW3vnk-KY9ynzwgvP6L0yKEJrr1QfM0Gai5XBaPKV7a2i4sfOSJm~tNLllR9KfbO2GRbVp~ZKQFv5Cn9apwjf1l1ZpVUz1MPmUN4bv5v9NlAeHxABUhFXZFCiRuD6PhqS3YU6o6z6iDwBDP7FKv5dBBfEGxyzIq6~zHIAQKReNjt68o5oEr~T0fxuE19MXmaCCUyOa-rjMq6UIRWoO5QJP-TOKIBErUwyn8jtyCvWRgwzG9CwCul9CV7zB5w3yZG8nVKeGmpmxyQ9tgJl8D5TcNoPdeHaGZxUmQ71XPTewvU9z1~zoUY~bOVQ2YPACUVuAstOCKiERnVLdZw__");
+    background-position: center;
+    background-size: 100%;
+    background-repeat: no-repeat;
+  }
   .text-shadow {
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
   }
+
   .yellow-gradient {
     border-style: solid;
     box-sizing: content-box;
