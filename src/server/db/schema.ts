@@ -24,7 +24,7 @@ export const categories = createTable("category", {
   name: varchar("name", { length: 256 }),
 });
 
-export const dishes = createTable("dish", {
+export const products = createTable("product", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }),
   price: integer("price"),

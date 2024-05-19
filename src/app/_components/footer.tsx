@@ -27,14 +27,14 @@ export function Footer() {
   ];
   return (
     <footer className="relative mt-64 flex flex-col items-center bg-footer-banner bg-cover bg-center py-52">
-      <div className="absolute right-1/2 top-0 h-[141px] w-[185px] -translate-y-1/2 translate-x-1/2 border-[3px] border-white bg-nav-logo bg-140 bg-center bg-no-repeat">
-        <h3 className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-[130%] font-georgia text-5xl italic text-white">
+      <div className="bg-160 absolute right-1/2 top-0 h-[141px] w-[185px] -translate-y-1/2 translate-x-1/2 border-[3px] border-white bg-nav-logo bg-top bg-no-repeat">
+        {/* <h3 className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-[130%] font-georgia text-5xl italic text-white">
           Gourmet
-        </h3>
+        </h3> */}
       </div>
 
-      <div className="flex min-h-64 w-1/2 justify-between bg-black/25 p-8 text-white">
-        <div className="flex flex-col items-start justify-between">
+      <div className="flex min-h-64 w-3/5 justify-between bg-black/25 p-8 text-white max-xl:w-3/4 max-lg:items-center max-lg:text-sm max-md:flex-col">
+        <div className="flex flex-col items-start justify-between max-lg:w-full max-lg:items-center">
           <h4 className="text-xl font-semibold">CONTACT US</h4>
           <span className="flex">
             <PhoneCall className="mr-2" />
@@ -50,7 +50,7 @@ export function Footer() {
           </span>
         </div>
 
-        <div className="flex flex-col items-start justify-between">
+        <div className="flex flex-col items-start justify-between max-lg:mt-5 max-lg:w-full max-lg:items-center max-lg:text-center">
           <h4 className="text-xl font-semibold">USEFUL LINKS</h4>
           {routes.map(({ route, title }, idx) => (
             <Link key={idx} href={route}>
@@ -58,9 +58,9 @@ export function Footer() {
             </Link>
           ))}
         </div>
-        <div className="flex flex-col items-start justify-between">
-          <h4 className="text-xl font-semibold">ADDRESS</h4>
-          <p className="max-w-40">
+        <div className="flex flex-col items-start justify-between max-lg:w-full max-lg:items-center max-lg:text-center">
+          <h4 className="text-xl font-semibold max-lg:mt-5 ">ADDRESS</h4>
+          <p className="max-w-40 max-lg:w-full">
             Yorem ipsum dolor sit amet, consectetur adipiscing elit.
           </p>
 

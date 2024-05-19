@@ -1,4 +1,6 @@
-export const menu = {
+import { MenuProduct } from "@/app/menu/_components/menu-product";
+
+export const Menu = {
   "Main Course": [
     { name: "khachapuri", price: 3.0 },
     { name: "megruli khachapuri", price: 3.0 },
@@ -114,7 +116,7 @@ export const menu = {
     { name: "services", price: 150.0 },
   ],
 
-  "Coffee shop": [
+  "Coffee Break": [
     { name: "Croissant", price: 2.2 },
     { name: "Croissant chocolate", price: 2.5 },
     { name: "Croissant with vanilla", price: 2.5 },
@@ -164,14 +166,28 @@ export const menu = {
     { name: "cocktail table", price: 50.0 },
   ],
 };
-export const menuKeys = Object.keys(menu) as unknown as Array<
-  keyof typeof menu
+const sampleMenus = ["Coffee Break", "Canape/Salads", "Main Course"];
+export const menuKeys = Object.keys(Menu) as unknown as Array<
+  keyof typeof Menu
 >;
-export type MenuType = {
-  [key in keyof typeof menuKeys]: MenuDish[];
+export type Menu = {
+  [key in keyof typeof Menu]?: MenuProduct[];
+};
+export type MenuState = {
+  [key in keyof typeof Menu]?: productState[];
+};
+export type menuKey = keyof typeof Menu;
+
+export type productState = MenuProduct & {
+  id: string;
+  totalPrice: number;
+  quantity: number;
 };
 
-export type MenuDish = {
+export interface productsState {
+  [productId: string]: MenuProduct & { totalPrice: number; quantity: number };
+}
+export type MenuProduct = {
   name: string;
-  price: string;
+  price: number;
 };

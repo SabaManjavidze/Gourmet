@@ -5,7 +5,7 @@
 @layer base {
   :root {
     --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --foreground: 240, 12%, 26%, 1;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -23,7 +23,7 @@
     --secondary-foreground: 32 29% 42%;
     --muted: 210 40% 96.1%;
     --muted-foreground: 0 0% 68%;
-
+    --muted-sm: 240 2% 26%;
     --brown: 42 21% 53%;
 
     --destructive: 0 84.2% 60.2%;
@@ -70,19 +70,19 @@
 @layer base {
   @font-face {
     font-family: Georgia;
-    src: url("../../assets/fonts/georgia.ttf");
+    src: url("../../public/fonts/georgia.ttf");
   }
   @font-face {
     font-family: Lucida Handwriting Std Rg;
-    src: url("../../assets/fonts/lucida-handwriting/LucidaHandwritingStdRg.TTF");
+    src: url("../../public/fonts/lucida-handwriting/LucidaHandwritingStdRg.TTF");
   }
   @font-face {
     font-family: Lucida Handwriting Std Light;
-    src: url("../../assets/fonts/lucida-handwriting/LucidaHandwritingStdLight.TTF");
+    src: url("../../public/fonts/lucida-handwriting/LucidaHandwritingStdLight.TTF");
   }
   @font-face {
     font-family: Lucida Handwriting Std;
-    src: url("../../assets/fonts/lucida-handwriting/LucidaHandwritingStdBold.TTF");
+    src: url("../../public/fonts/lucida-handwriting/LucidaHandwritingStdBold.TTF");
   }
   @font-face {
     font-family: "Poppins";
@@ -119,8 +119,14 @@
     background-size: 100%;
     background-repeat: no-repeat;
   }
+  .text-shadow-lg {
+    text-shadow: 0px 0px 12px black;
+  }
   .text-shadow {
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
+  }
+  .-text-shadow {
+    text-shadow: none;
   }
 
   .yellow-gradient {
@@ -128,5 +134,18 @@
     box-sizing: content-box;
     border-image-slice: 1;
     border-image-source: linear-gradient(180deg, #fed775 0%, #988146 100%);
+  }
+  .table-title-gradient {
+    background: linear-gradient(
+      180deg,
+      rgba(254, 215, 117, 0.225) 15.58%,
+      rgba(248, 160, 110, 0.225) 100%
+    );
+  }
+  .menu-title-gradient {
+    background: linear-gradient(180deg, #f8a06e 28.79%, #753340 92.42%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 }

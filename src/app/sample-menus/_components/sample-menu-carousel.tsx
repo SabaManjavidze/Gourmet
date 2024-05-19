@@ -1,16 +1,16 @@
 "use client";
-import * as React from "react";
+
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
   CarouselPrevious,
+  CarouselNext,
 } from "@/components/ui/carousel";
 import Image from "next/image";
 
-export function CuisineCarousel() {
+export function SampleMenuCarousel() {
   const cuisines = [
     {
       title: "coffee with chocolate pie",

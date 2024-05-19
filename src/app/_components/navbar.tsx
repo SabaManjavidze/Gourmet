@@ -1,8 +1,13 @@
+"use client";
 import { LanguageDropdown } from "@/components/language-dropdown";
+import { Button } from "@/components/ui/button";
+import { MenuIcon } from "lucide-react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
+import { NavDrawer } from "./nav-drawer";
 
 export function Navbar() {
+  const [open, setOpen] = useState(false);
   const routes = [
     {
       title: "Home",
@@ -26,20 +31,38 @@ export function Navbar() {
       route: "/our-cuisine",
     },
   ];
+  const closeDrawer = () => {
+    setOpen(false);
+  };
+  const mobileRoutes = ["Home", "About Us", "Menu"];
   return (
-    <nav className="relative mb-44 flex h-16 items-center justify-between border-b px-10">
-      <div className="absolute right-1/2 top-1/4 h-[141px] w-[185px] translate-x-1/2 border-[3px] border-white bg-nav-logo bg-140 bg-center bg-no-repeat">
-        <h3 className="logo-text absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full text-3xl font-bold uppercase">
+    <nav className="relative mb-44 flex h-16 items-center justify-between border-b px-10 max-lg:justify-center">
+      <NavDrawer open={open} closeDrawer={closeDrawer} />
+      <div className="bg-160 absolute right-1/2 top-1/4 h-[141px] w-[185px] translate-x-1/2 border-[3px] border-white bg-nav-logo bg-top bg-no-repeat max-xl:hidden">
+        {/* <h3 className="logo-text absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full text-3xl font-bold uppercase ">
           Gourmet
-        </h3>
+        </h3> */}
       </div>
-
+      <div className="absolute left-5 top-1/2 -translate-y-1/2 lg:hidden">
+        <Button
+          variant={"outline"}
+          className="border-2 p-2 duration-150 hover:text-accent-foreground"
+          onClick={() => setOpen(true)}
+        >
+          <MenuIcon />
+        </Button>
+      </div>
       <div>
         <ul className="flex gap-x-10 font-medium">
           {routes.map(({ route, title }, idx) => (
-            <li key={idx}>
+            <li
+              key={idx}
+              className={`${mobileRoutes.includes(title) ? "block" : "max-xl:!hidden"}`}
+            >
               <Link
-                className="duration-150 ease-in-out hover:text-accent-foreground"
+                className={
+                  "duration-150 ease-in-out hover:text-accent-foreground"
+                }
                 href={route}
               >
                 {title}
@@ -48,7 +71,10 @@ export function Navbar() {
           ))}
         </ul>
       </div>
-      <div className="flex items-center gap-x-10">
+      <h3 className="absolute right-5 max-md:text-sm max-sm:hidden lg:hidden">
+        +995 597 555 266
+      </h3>
+      <div className="flex items-center gap-x-10 max-lg:hidden ">
         <h3>+995 597 555 266</h3>
         <LanguageDropdown />
         <div className="text-blue-gray-900 flex gap-2 sm:justify-center">

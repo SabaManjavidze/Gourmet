@@ -50,9 +50,9 @@ export function CateringCarousel() {
     >
       <CarouselContent>
         {cuisines.map(({ title, src, price }, index) => (
-          <CarouselItem key={index} className="md:basis-1/3 lg:basis-1/4">
+          <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/4">
             <div className="p-1">
-              <Card className="border-brown border-4">
+              <Card className="border-4 border-brown">
                 <CardContent className="relative flex aspect-square items-center justify-center p-6 ">
                   <Image src={src} alt="" fill className="object-cover" />
                   <span className="absolute bottom-0 z-10 w-full bg-yellow-50/60 py-4 text-center text-3xl font-normal uppercase text-white">

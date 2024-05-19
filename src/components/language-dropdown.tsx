@@ -30,7 +30,7 @@ export function LanguageDropdown() {
         <DropdownMenuRadioGroup
           value={lang}
           onValueChange={(val) => {
-            if (!(val in languages)) return;
+            if (!languages.includes(val as any)) return;
 
             setLang(val as (typeof languages)[number]);
           }}
