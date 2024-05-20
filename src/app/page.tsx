@@ -9,10 +9,10 @@ export default async function Home() {
   return (
     <main className="">
       <section className="flex h-screen flex-col items-center justify-center gap-y-3 bg-welcome-banner bg-cover bg-center bg-no-repeat text-center max-md:bg-[10%]">
-        <h1 className="text-shadow font-lucida-rg text-6xl italic text-white max-md:text-5xl max-sm:text-3xl">
+        <h1 className="text-shadow font-lucida-bold text-7xl italic text-white max-md:text-5xl max-sm:text-3xl">
           Welcome to Gourmet
         </h1>
-        <h2 className="text-shadow text-4xl text-white max-md:text-xl max-sm:w-4/5 max-sm:text-base">
+        <h2 className="text-shadow text-4xl text-gray-50 max-md:text-xl max-sm:w-4/5 max-sm:text-base">
           Where Culinary Excellence Meets Unparalleled Hospitality
         </h2>
       </section>

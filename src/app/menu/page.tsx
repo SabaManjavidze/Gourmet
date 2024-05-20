@@ -5,15 +5,18 @@ import { MenuProvider } from "@/hooks/useMenu";
 
 export default function MenuPage() {
   return (
-    <main>
-      <div className="flex h-[500px] items-center justify-center bg-menu-banner bg-cover bg-center bg-no-repeat">
-        <h1 className="text-shadow font-lucida-bold text-8xl">Menu</h1>
+    <main className="mt-8">
+      <div className="flex h-[620px] flex-col items-center justify-center bg-menu-banner bg-cover bg-center bg-no-repeat">
+        <h1 className="text-shadow-sm font-lucida-bold text-8xl">Menu</h1>
+        <p className="mt-2 text-xl font-normal text-muted-foreground">
+          Explore, Customize, and Order Your Perfect Meal!
+        </p>
       </div>
-      <div className="mx-44 mt-24 p-12 pb-20">
-        <div className="mt-12">
+      <div className="mx-44 p-12 pb-20 pt-0">
+        <div>
           <MenuProvider dbMenu={Menu}>
-            {menuKeys.map((item) => (
-              <MenuTemplate key={nanoid()} name={item} />
+            {menuKeys.map((item, idx) => (
+              <MenuTemplate showzqt={idx == 0} key={nanoid()} name={item} />
             ))}
           </MenuProvider>
         </div>

@@ -13,11 +13,11 @@ export function MenuProduct({
   menuSample: menuKey;
   product: productState;
 }) {
-  const { handleChangeQuantity } = useMenu();
+  const { handleChangeQuantity, hideZeroQt } = useMenu();
   return (
     <li
-      key={nanoid()}
-      className="text-muted-sm flex w-full justify-between text-center text-lg font-medium "
+      // hidden={product.quantity == 0}
+      className={`text-muted-sm ${hideZeroQt && product.quantity == 0 ? "hidden" : "flex"} w-full justify-between text-center text-lg font-medium`}
     >
       <div className="w-2/3">
         <p className={twMerge(cls, "text-start", "border-l")}>{product.name}</p>

@@ -68,6 +68,28 @@
 }
 
 @layer base {
+  /* width */
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 6px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: transparent;
+    border-radius: 5px;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 5px;
+  }
+
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
   @font-face {
     font-family: Georgia;
     src: url("../../public/fonts/georgia.ttf");
@@ -86,13 +108,7 @@
   }
   @font-face {
     font-family: "Poppins";
-    font-style: normal;
-    font-weight: 400;
-    font-display: swap;
-    src: url(https://fonts.gstatic.com/s/poppins/v21/pxiEyp8kv8JHgFVrJJnecmNE.woff2)
-      format("woff2");
-    unicode-range: U+0100-02AF, U+0304, U+0308, U+0329, U+1E00-1E9F, U+1EF2-1EFF,
-      U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    src: url(https://fonts.gstatic.com/s/poppins/v21/pxiEyp8kv8JHgFVrJJnecmNE.woff2);
   }
   * {
     @apply border-border;
@@ -122,6 +138,9 @@
   .text-shadow-lg {
     text-shadow: 0px 0px 12px black;
   }
+  .text-shadow-sm {
+    text-shadow: 0px 6px 4px rgba(0, 0, 0, 0.15);
+  }
   .text-shadow {
     text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.6);
   }
@@ -135,12 +154,22 @@
     border-image-slice: 1;
     border-image-source: linear-gradient(180deg, #fed775 0%, #988146 100%);
   }
+  .border-brown-gradient {
+    border-style: solid;
+    box-sizing: content-box;
+    border-image-slice: 1;
+    border-image-source: linear-gradient(180deg, #ef9b6a 0%, #fed775 100%);
+  }
   .table-title-gradient {
     background: linear-gradient(
       180deg,
       rgba(254, 215, 117, 0.225) 15.58%,
       rgba(248, 160, 110, 0.225) 100%
     );
+  }
+  .logo {
+    background-position-y: -15px;
+    background-position-x: center;
   }
   .menu-title-gradient {
     background: linear-gradient(180deg, #f8a06e 28.79%, #753340 92.42%);

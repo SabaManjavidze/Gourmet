@@ -1,8 +1,18 @@
 "use client";
 import { MenuToState } from "@/lib/utils";
-import { Menu, MenuProduct, MenuState, menuKey, productsState } from "menu";
 import {
+  Menu,
+  MenuProduct,
+  MenuState,
+  menuKey,
+  menuKeys,
+  productsState,
+} from "menu";
+import { nanoid } from "nanoid";
+import {
+  Dispatch,
   ReactNode,
+  SetStateAction,
   createContext,
   useContext,
   useEffect,
@@ -11,6 +21,9 @@ import {
 
 type MenuContextProps = {
   menu: MenuState;
+  hideZeroQt: boolean;
+  setHideZeroQt: Dispatch<SetStateAction<boolean>>;
+  handleAddProduct: (menuSample: menuKey, product: MenuProduct[]) => void;
   handleChangeQuantity: (
     menuSample: menuKey,
     productId: string,
@@ -19,7 +32,10 @@ type MenuContextProps = {
 };
 export const MenuContext = createContext<MenuContextProps>({
   menu: {},
+  hideZeroQt: false,
+  setHideZeroQt: () => false,
   handleChangeQuantity: () => null,
+  handleAddProduct: () => null,
 });
 export const useMenu = () => useContext(MenuContext);
 
@@ -31,11 +47,12 @@ export const MenuProvider = ({
   children: ReactNode;
 }) => {
   const [menu, setMenu] = useState<MenuState>({});
+  const [hideZeroQt, setHideZeroQt] = useState(false);
 
   useEffect(() => {
-    const products = MenuToState(dbMenu);
-    setMenu(products);
-  }, []);
+    const state = MenuToState(dbMenu);
+    setMenu(state);
+  }, [dbMenu]);
   const handleChangeQuantity = (
     menuSample: menuKey,
     productId: string,
@@ -53,11 +70,28 @@ export const MenuProvider = ({
     });
     setMenu((prev) => ({ ...prev, [menuSample]: newMenuSample }));
   };
+  const handleAddProduct = (menuName: menuKey, products: MenuProduct[]) => {
+    if (!menu?.[menuName]) return null;
+    const newMenu = [
+      ...(menu[menuName] as any),
+      ...products.map(({ name, price }) => {
+        return { id: nanoid(), name, price, quantity: 1, totalPrice: price };
+      }),
+    ];
+    console.log(newMenu);
+    setMenu((prev) => ({
+      ...prev,
+      [menuName]: newMenu,
+    }));
+  };
   return (
     <MenuContext.Provider
       value={{
         menu,
         handleChangeQuantity,
+        handleAddProduct,
+        hideZeroQt,
+        setHideZeroQt,
       }}
     >
       {children}

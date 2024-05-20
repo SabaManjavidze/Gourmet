@@ -36,9 +36,9 @@ export function Navbar() {
   };
   const mobileRoutes = ["Home", "About Us", "Menu"];
   return (
-    <nav className="relative mb-44 flex h-16 items-center justify-between border-b px-10 max-lg:justify-center">
+    <nav className="relative flex h-16 items-center justify-between border-b px-10 max-lg:justify-center">
       <NavDrawer open={open} closeDrawer={closeDrawer} />
-      <div className="bg-160 absolute right-1/2 top-1/4 h-[141px] w-[185px] translate-x-1/2 border-[3px] border-white bg-nav-logo bg-top bg-no-repeat max-xl:hidden">
+      <div className="logo absolute right-1/2 top-0 h-[180px] w-[195px] translate-x-1/2 border-[3px] border-white bg-nav-logo bg-cover bg-center bg-no-repeat max-xl:hidden">
         {/* <h3 className="logo-text absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full text-3xl font-bold uppercase ">
           Gourmet
         </h3> */}

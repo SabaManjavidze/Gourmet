@@ -31,6 +31,7 @@ const config = {
       },
       backgroundImage: {
         "menu-banner": "url('/imgs/menu.png')",
+        "sample-menus": "url('/imgs/sample-menus.png')",
         "footer-banner": "url(/imgs/footer.png)",
         "contact-us-banner": "url(/imgs/contact-us.jpg)",
         "nav-logo": "url(/imgs/logo.png)",

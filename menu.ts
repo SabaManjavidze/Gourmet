@@ -17,7 +17,7 @@ export const Menu = {
     { name: "Mushroom Pie", price: 3.0 },
   ],
 
-  "Canape/Salads1": [
+  "Corporate Catering": [
     { name: "canapé chicken", price: 3.0 },
     { name: "canapé Ibiza", price: 3.0 },
     { name: "canapé New (with beef)", price: 3.5 },
@@ -166,7 +166,20 @@ export const Menu = {
     { name: "cocktail table", price: 50.0 },
   ],
 };
-const sampleMenus = ["Coffee Break", "Canape/Salads", "Main Course"];
+export const sampleMenus = [
+  {
+    name: "Coffee Break",
+    src: "https://s3-alpha-sig.figma.com/img/132f/65ae/d57a8081d7483ae394ad56d1faaecd77?Expires=1717372800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=q7HdvIQHDs6yAcsCxbpMVPSkeVRDz-8UCC6xa52SDnlDfw~FIQbTOVaq-iSY0ObO5DuLlIzAV74LuTgCcEIMhA2GAPs7jfyx6AVMmc7Q-vZEZioLEK-I6~foevOVnZrCL1ZsQ8dn9kPz2hRky~R~Y8q-dtpInZVufpMDJqd-ILinLrAiPYfPqQGZAW13HOIbP1lA5DTfHAvAKG5ASgenVvo3qtuGg5iF~PUlXNDbAuzkp7SLncp40N0BXcOxgBlJEA0Rax6KMtbQjJHj0FshJblVKUg0S9lyyoP4ogHRoQEGUZt3wvLjRzRFWLp5A~ZPri~AuOlLdTCf8YaOD-0xqQ__",
+  },
+  {
+    name: "Drinks",
+    src: "https://s3-alpha-sig.figma.com/img/2c2e/07f9/670b35f36b8c3e905ed2a4993248dc4a?Expires=1717372800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=aF8enz-Eh7GUTP3fHd5OSTMw0DbhmnXNv4m~tx9LOOOwUi7m1E-luFuuVQWHkjOf3aKQ9zUM-mre7jZUYnOIQevtYO68nKLzlG9c3dTa56STxdbB0K2cmddRz-5luHuby5rnG6GNXmRZ5R0Fwc6cLKoPlCpNOaNNo02jN9Dvv22kP3T8V42zs-X7DU-P34jt6O8TviFEHL4bXJdE2g4lEy1GdViI5Hy9exlHv9xpqO4UCuHInP9kaewfPlLovLO4vrZZMSR0FqQh6Zp0CyCU95nS8KGfj0e2JlWuhkPULIMy5wBJhWBgQWZXIPUZba5ldao69L2ptON55zvdmYIgiA__",
+  },
+  {
+    name: "Corporate Catering",
+    src: "https://s3-alpha-sig.figma.com/img/f443/582a/4cb674594d2712ffd913465e3ccb4135?Expires=1717372800&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=VsLB~DDD9hbd7a4faa5vgaDM~1jOVLzAZMKGhN-HtCl2NAcs6yPFiXd6aUiw0mZEnwEmmPL7VQDBasszuspL1ZfZ3Ww0k0vGupW2jqPWmPneZV97oLhwPGEnBlgbg7VXk7xyEjDspc-mr7xl6vShg0w0viwJz74IqyCBlGbHkXRpCzM0FvEDkyIWWOdx2bVY5LjLbIIer9G1sJIA77MR3RGGSTSNWzOXvKBG4JwV1jN53VQe0d1aSVvhMpryPCWXg-Zn~X~~-v3mtG~h8oBph6wgtFwuRItN1d58DErZSl60JMc7m383-qoWaJboQwtjvsOHJ1IU7rAcAwIkxZbMkw__",
+  },
+] as const;
 export const menuKeys = Object.keys(Menu) as unknown as Array<
   keyof typeof Menu
 >;
