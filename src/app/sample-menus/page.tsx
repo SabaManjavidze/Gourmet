@@ -6,8 +6,12 @@ import { useMemo, useState } from "react";
 import { SampleMenuCarousel } from "./_components/sample-menu-carousel";
 import { MenuProvider } from "@/hooks/useMenu";
 import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import { PlusCircle, XCircleIcon, XIcon } from "lucide-react";
 import { AddProductModal } from "./_components/add-product-modal";
+import { Input } from "@/components/ui/input";
+import { HideZeroCheckbox } from "../menu/_components/hidezero-checkbox";
+import { SumSection } from "../menu/_components/sum-section";
+import { ClearButton } from "../menu/_components/clear-button";
 
 export default function SampleMenus() {
   const [currMenu, setCurrMenu] = useState<menuKey>("Drinks");
@@ -18,7 +22,7 @@ export default function SampleMenus() {
   const closeModal = () => {
     setOpen(false);
   };
-  const handleAddProductsClick = () => {
+  const addProductsClick = () => {
     setOpen(true);
   };
   const dbMenu = useMemo(() => {
@@ -26,14 +30,6 @@ export default function SampleMenus() {
   }, [currMenu]);
   return (
     <main className="min-h-[140vh]">
-      <div className="bg-sample-menus flex h-[500px] flex-col items-center justify-center bg-cover bg-center bg-no-repeat">
-        <h1 className="text-shadow-lg font-lucida-bold text-7xl text-white">
-          Create Your Perfect Menu
-        </h1>
-        <h3 className="text-shadow-lg text-2xl text-gray-50">
-          Select, Customize, and Order Delicious Catering for Any Occasion
-        </h3>
-      </div>
       <div className="mt-44 flex w-full justify-center">
         <SampleMenuCarousel currMenu={currMenu} onItemClick={handleItemClick} />
       </div>
@@ -45,7 +41,29 @@ export default function SampleMenus() {
               open={open}
               closeModal={closeModal}
             />
-            <MenuTemplate key={nanoid()} name={currMenu} />
+            <MenuTemplate
+              key={nanoid()}
+              name={currMenu}
+              header={
+                <div className="mt-20">
+                  <div className="flex items-center justify-center">
+                    <h3 className="text-2xl font-semibold text-gray-500">
+                      Please Enter Number of Guests and Get Perfect Menu For You
+                    </h3>
+                    <Input
+                      placeholder="0"
+                      type="number"
+                      className="text-muted-sm ml-4 w-16 rounded-xl text-center text-lg"
+                    />
+                  </div>
+
+                  <div className="mt-20 flex items-center justify-between px-3">
+                    <HideZeroCheckbox iconSide="left" />
+                    <ClearButton />
+                  </div>
+                </div>
+              }
+            />
             <div
               key="234234"
               className="text-muted-sm flex w-full justify-between text-center text-lg font-medium"
@@ -55,7 +73,7 @@ export default function SampleMenus() {
                 <Button
                   variant={"ghost"}
                   className="group h-4/5 text-xl text-accent-foreground"
-                  onClick={handleAddProductsClick}
+                  onClick={addProductsClick}
                 >
                   <PlusCircle className="mr-2" />
                   Add more Products
@@ -66,6 +84,9 @@ export default function SampleMenus() {
                 <p className="border border-l-0  border-t-0 p-5">-</p>
                 <p className="border border-l-0  border-t-0 p-5">-</p>
               </div>
+            </div>
+            <div className="mt-8">
+              <SumSection />
             </div>
           </MenuProvider>
         </div>

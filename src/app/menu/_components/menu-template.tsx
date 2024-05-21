@@ -5,13 +5,17 @@ import { MenuProduct } from "./menu-product";
 import { useMenu } from "@/hooks/useMenu";
 import { nanoid } from "nanoid";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
+import { ReactNode } from "react";
 
 export function MenuTemplate({
   name,
-  showzqt = true,
+  header,
+  footer,
 }: {
-  showzqt?: boolean;
   name: menuKey;
+  header?: ReactNode;
+  footer?: ReactNode;
 }) {
   const { menu, setHideZeroQt } = useMenu();
   return (
@@ -21,29 +25,13 @@ export function MenuTemplate({
           {name}
         </h3>
       </div>
-      <div className="mt-12 flex items-center justify-end space-x-2">
-        {showzqt ? (
-          <>
-            <label
-              htmlFor="terms"
-              className="text-lg font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Hide the products with zero quantity
-            </label>
-            <Checkbox
-              size="sm"
-              className="border-2"
-              onCheckedChange={(checked) => setHideZeroQt(Boolean(checked))}
-            />
-          </>
-        ) : null}
-      </div>
+      {header ?? <div className="mt-16"></div>}
       <ul className="mt-5 flex w-full flex-col">
         {menu[name]?.map((product, idx) => {
           return idx == 0 ? (
             <li
               key="234234"
-              className="table-title-gradient text-muted-sm flex w-full justify-between text-center text-xl font-medium "
+              className="table-title-gradient flex w-full justify-between text-center text-xl font-medium text-muted-sm "
             >
               <div className="w-2/3">
                 <p className="border p-5 text-start text-xl font-bold">Items</p>
@@ -59,6 +47,7 @@ export function MenuTemplate({
           );
         })}
       </ul>
+      {footer}
     </div>
   );
 }

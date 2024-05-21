@@ -13,7 +13,7 @@ export function MenuProduct({
   menuSample: menuKey;
   product: productState;
 }) {
-  const { handleChangeQuantity, hideZeroQt } = useMenu();
+  const { changeQuantity, hideZeroQt } = useMenu();
   return (
     <li
       // hidden={product.quantity == 0}
@@ -28,14 +28,17 @@ export function MenuProduct({
           type="number"
           min={0}
           onChange={(e) =>
-            handleChangeQuantity(
+            changeQuantity(
               menuSample,
               product.id,
               Number(e.currentTarget.value),
             )
           }
           value={product.quantity}
-          className={twMerge(cls, "h-full text-center text-lg font-medium")}
+          className={twMerge(
+            cls,
+            "h-full text-center text-lg font-medium focus-within:z-10",
+          )}
         />
         <p className={cls}>{product.totalPrice}</p>
       </div>

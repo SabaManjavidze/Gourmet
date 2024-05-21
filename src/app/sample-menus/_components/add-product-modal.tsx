@@ -22,7 +22,7 @@ export function AddProductModal({
   const handleFilterClick = (name: menuKey) => {
     setFilter(name);
   };
-  const { handleAddProduct } = useMenu();
+  const { addProduct } = useMenu();
   const [selected, setSelected] = useState<string[]>([]);
   const handleProductClick = (productId: string) => {
     if (selected.includes(productId)) {
@@ -38,7 +38,7 @@ export function AddProductModal({
         price: 3,
       };
     });
-    handleAddProduct(menuSample, newProds);
+    addProduct(menuSample, newProds);
     closeModal();
     setSelected([]);
   };

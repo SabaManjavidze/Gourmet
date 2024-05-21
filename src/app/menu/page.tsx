@@ -2,6 +2,11 @@ import { Menu, menuKeys } from "menu";
 import { MenuTemplate } from "./_components/menu-template";
 import { nanoid } from "nanoid";
 import { MenuProvider } from "@/hooks/useMenu";
+import { Checkbox } from "@/components/ui/checkbox";
+import { HideZeroCheckbox } from "./_components/hidezero-checkbox";
+import { Input } from "@/components/ui/input";
+import { SumSection } from "./_components/sum-section";
+import { XIcon } from "lucide-react";
 
 export default function MenuPage() {
   return (
@@ -16,7 +21,37 @@ export default function MenuPage() {
         <div>
           <MenuProvider dbMenu={Menu}>
             {menuKeys.map((item, idx) => (
-              <MenuTemplate showzqt={idx == 0} key={nanoid()} name={item} />
+              <MenuTemplate
+                key={nanoid()}
+                name={item}
+                header={
+                  idx == 0 && (
+                    <div className="mt-20">
+                      <div className="flex items-center justify-center">
+                        <h3 className="text-2xl font-semibold text-gray-500">
+                          Please Enter Number of Guests and Get Perfect Menu For
+                          You
+                        </h3>
+                        <Input
+                          placeholder="0"
+                          type="number"
+                          className="text-muted-sm ml-4 w-16 rounded-xl text-center text-lg"
+                        />
+                      </div>
+                      <div className="mt-20 flex items-center justify-end">
+                        <HideZeroCheckbox />
+                      </div>
+                    </div>
+                  )
+                }
+                footer={
+                  idx == menuKeys.length - 1 && (
+                    <div className="mt-8">
+                      <SumSection />
+                    </div>
+                  )
+                }
+              />
             ))}
           </MenuProvider>
         </div>

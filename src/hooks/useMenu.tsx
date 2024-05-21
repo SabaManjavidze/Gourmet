@@ -16,15 +16,18 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
 } from "react";
 
 type MenuContextProps = {
   menu: MenuState;
+  totalSum: number;
   hideZeroQt: boolean;
   setHideZeroQt: Dispatch<SetStateAction<boolean>>;
-  handleAddProduct: (menuSample: menuKey, product: MenuProduct[]) => void;
-  handleChangeQuantity: (
+  clearQuantities: () => void;
+  addProduct: (menuSample: menuKey, product: MenuProduct[]) => void;
+  changeQuantity: (
     menuSample: menuKey,
     productId: string,
     quantity: number,
@@ -32,10 +35,12 @@ type MenuContextProps = {
 };
 export const MenuContext = createContext<MenuContextProps>({
   menu: {},
+  totalSum: 0,
   hideZeroQt: false,
   setHideZeroQt: () => false,
-  handleChangeQuantity: () => null,
-  handleAddProduct: () => null,
+  clearQuantities: () => null,
+  changeQuantity: () => null,
+  addProduct: () => null,
 });
 export const useMenu = () => useContext(MenuContext);
 
@@ -53,7 +58,21 @@ export const MenuProvider = ({
     const state = MenuToState(dbMenu);
     setMenu(state);
   }, [dbMenu]);
-  const handleChangeQuantity = (
+  const totalSum = useMemo(() => {
+    if (!menu) return 0;
+    return (Object.keys(menu) as menuKey[]).reduce((prev, curr) => {
+      if (!menu?.[curr]) return prev;
+      return (
+        prev +
+          Number(
+            menu[curr]?.reduce((prev1, curr1) => {
+              return prev1 + curr1.price * curr1.quantity;
+            }, 0),
+          ) || 0
+      );
+    }, 0);
+  }, [menu]);
+  const changeQuantity = (
     menuSample: menuKey,
     productId: string,
     quantity: number,
@@ -70,7 +89,16 @@ export const MenuProvider = ({
     });
     setMenu((prev) => ({ ...prev, [menuSample]: newMenuSample }));
   };
-  const handleAddProduct = (menuName: menuKey, products: MenuProduct[]) => {
+  const clearQuantities = () => {
+    const newMenu: MenuState = {};
+    (Object.keys(menu) as menuKey[]).forEach((key) => {
+      newMenu[key] = menu[key]?.map((prod) => {
+        return { ...prod, quantity: 0, totalPrice: 0 };
+      });
+    });
+    setMenu(newMenu);
+  };
+  const addProduct = (menuName: menuKey, products: MenuProduct[]) => {
     if (!menu?.[menuName]) return null;
     const newMenu = [
       ...(menu[menuName] as any),
@@ -78,7 +106,6 @@ export const MenuProvider = ({
         return { id: nanoid(), name, price, quantity: 1, totalPrice: price };
       }),
     ];
-    console.log(newMenu);
     setMenu((prev) => ({
       ...prev,
       [menuName]: newMenu,
@@ -88,8 +115,10 @@ export const MenuProvider = ({
     <MenuContext.Provider
       value={{
         menu,
-        handleChangeQuantity,
-        handleAddProduct,
+        totalSum,
+        changeQuantity,
+        clearQuantities,
+        addProduct,
         hideZeroQt,
         setHideZeroQt,
       }}

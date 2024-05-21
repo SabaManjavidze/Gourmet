@@ -23,12 +23,12 @@ export function Navbar() {
     },
 
     {
-      title: "Contact Us",
-      route: "/contact-us",
+      title: "Sample Menus",
+      route: "/sample-menus",
     },
     {
-      title: "Our Cuisine",
-      route: "/our-cuisine",
+      title: "Contact Us",
+      route: "/contact-us",
     },
   ];
   const closeDrawer = () => {
