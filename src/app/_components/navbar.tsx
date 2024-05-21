@@ -5,9 +5,12 @@ import { MenuIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { NavDrawer } from "./nav-drawer";
+import { usePathname } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 export function Navbar() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
   const routes = [
     {
       title: "Home",
@@ -60,11 +63,17 @@ export function Navbar() {
               className={`${mobileRoutes.includes(title) ? "block" : "max-xl:!hidden"}`}
             >
               <Link
-                className={
-                  "duration-150 ease-in-out hover:text-accent-foreground"
-                }
+                className={twMerge(
+                  "relative duration-150 ease-in-out hover:text-accent-foreground",
+                  pathname == route
+                    ? "text-xl text-accent-foreground hover:text-orange-400"
+                    : "",
+                )}
                 href={route}
               >
+                {route == pathname ? (
+                  <div className="right-left absolute bottom-0 h-1 w-3/5 translate-y-1 rounded-xl bg-accent"></div>
+                ) : null}
                 {title}
               </Link>
             </li>
