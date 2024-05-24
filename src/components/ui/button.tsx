@@ -14,6 +14,8 @@ const buttonVariants = cva(
         accent: "bg-accent text-primary-foreground hover:bg-accent/90",
         destructive:
           "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        "outline-accent":
+          "border border-accent text-accent bg-background scale-100 duration-150 hover:bg-orange-100 focus:border-accent active:bg-accent/30",
         outline:
           "border border-primary bg-background scale-100 duration-150 hover:bg-accent/15 hover:border-accent focus:border-accent active:bg-accent/30",
         "outline-white":
@@ -26,6 +28,7 @@ const buttonVariants = cva(
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
+        xl: "h-12 rounded-md px-16",
         icon: "h-10 w-10",
       },
     },

@@ -64,9 +64,9 @@ export function Navbar() {
             >
               <Link
                 className={twMerge(
-                  "relative duration-150 ease-in-out hover:text-accent-foreground",
+                  "relative text-sm duration-150 ease-in-out hover:text-accent-foreground",
                   pathname == route
-                    ? "text-xl text-accent-foreground hover:text-orange-400"
+                    ? "text-base text-accent-foreground hover:text-orange-400"
                     : "",
                 )}
                 href={route}

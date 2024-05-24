@@ -12,9 +12,11 @@ import { Input } from "@/components/ui/input";
 import { HideZeroCheckbox } from "../menu/_components/hidezero-checkbox";
 import { SumSection } from "../menu/_components/sum-section";
 import { ClearButton } from "../menu/_components/clear-button";
+import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 
 export default function SampleMenus() {
   const [currMenu, setCurrMenu] = useState<menuKey>("Drinks");
+  const [orderOpen, setOrderOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const handleItemClick = (name: menuKey) => {
     setCurrMenu(name);
@@ -25,6 +27,13 @@ export default function SampleMenus() {
   const addProductsClick = () => {
     setOpen(true);
   };
+  const handleOrderNowClick = () => {
+    setOrderOpen(true);
+  };
+  const closeOrderModal = () => {
+    setOrderOpen(false);
+  };
+  const handleSaveClick = () => {};
   const dbMenu = useMemo(() => {
     return { [currMenu]: Menu[currMenu] };
   }, [currMenu]);
@@ -36,6 +45,11 @@ export default function SampleMenus() {
       <div className="mx-44 rounded-xl p-12 pb-20">
         <div className="mt-36">
           <MenuProvider dbMenu={dbMenu}>
+            <OrderNowModal
+              menuSample={currMenu}
+              open={orderOpen}
+              closeModal={closeOrderModal}
+            />
             <AddProductModal
               menuSample={currMenu}
               open={open}
@@ -53,7 +67,7 @@ export default function SampleMenus() {
                     <Input
                       placeholder="0"
                       type="number"
-                      className="text-muted-sm ml-4 w-16 rounded-xl text-center text-lg"
+                      className="ml-4 w-16 rounded-xl text-center text-lg text-muted-sm"
                     />
                   </div>
 
@@ -66,7 +80,7 @@ export default function SampleMenus() {
             />
             <div
               key="234234"
-              className="text-muted-sm flex w-full justify-between text-center text-lg font-medium"
+              className="flex w-full justify-between text-center text-lg font-medium text-muted-sm"
             >
               <div className="flex w-2/3 items-center border border-t-0 max-lg:justify-center">
                 <div className="w-1/4 max-lg:absolute"></div>
@@ -87,6 +101,27 @@ export default function SampleMenus() {
             </div>
             <div className="mt-8">
               <SumSection />
+            </div>
+            {/* if user is editing the menu make the buttons sticky else keep it normal. 
+            reset buttons to normal if currMenu is changed */}
+            <div className={`sticky bottom-8 mt-8 flex w-full justify-center`}>
+              <div className="*:spacing flex w-[500px] justify-between *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
+                <Button
+                  variant={"outline-accent"}
+                  onClick={handleSaveClick}
+                  size={"lg"}
+                >
+                  Save For Later
+                </Button>
+                <Button
+                  variant={"accent"}
+                  onClick={handleOrderNowClick}
+                  size={"lg"}
+                  className={"border-accent"}
+                >
+                  Order Now
+                </Button>
+              </div>
             </div>
           </MenuProvider>
         </div>

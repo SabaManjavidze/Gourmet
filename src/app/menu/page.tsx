@@ -11,7 +11,7 @@ import { XIcon } from "lucide-react";
 export default function MenuPage() {
   return (
     <main className="mt-8">
-      <div className="flex h-[620px] flex-col items-center justify-center bg-menu-banner bg-cover bg-center bg-no-repeat">
+      <div className="flex h-[500px] flex-col items-center justify-center bg-menu-banner bg-cover bg-center bg-no-repeat">
         <h1 className="text-shadow-sm font-lucida-bold text-8xl">Menu</h1>
         <p className="mt-2 text-xl font-normal text-muted-foreground">
           Explore, Customize, and Order Your Perfect Meal!
@@ -35,10 +35,10 @@ export default function MenuPage() {
                         <Input
                           placeholder="0"
                           type="number"
-                          className="text-muted-sm ml-4 w-16 rounded-xl text-center text-lg"
+                          className="ml-4 w-16 rounded-xl text-center text-lg text-muted-sm"
                         />
                       </div>
-                      <div className="mt-20 flex items-center justify-end">
+                      <div className="mt-12 flex items-center justify-end">
                         <HideZeroCheckbox />
                       </div>
                     </div>
