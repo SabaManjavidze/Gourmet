@@ -33,23 +33,30 @@ export default function SampleMenus() {
   const closeOrderModal = () => {
     setOrderOpen(false);
   };
-  const handleSaveClick = () => {};
+  const handleSaveClick = () => {
+    console.log("saved");
+  };
   const dbMenu = useMemo(() => {
     return { [currMenu]: Menu[currMenu] };
   }, [currMenu]);
   return (
     <main className="min-h-[140vh]">
+      <div className="relative flex h-[500px] flex-col items-center justify-center bg-sample-menus bg-cover bg-center bg-no-repeat">
+        <div className="absolute right-1/2 top-1/2 h-[200px] w-[500px] -translate-y-1/2 translate-x-1/2 rounded-2xl bg-black/25 blur-2xl"></div>
+        <h1 className="text-shadow-sm z-10 font-lucida-bold text-6xl text-primary-foreground">
+          Create Your Perfect Menu
+        </h1>
+        <p className="text-shadow-sm z-10 mt-2 text-xl font-normal text-gray-50">
+          Select, Customize, and Order Delicious Catering for Any Occasion
+        </p>
+      </div>
       <div className="mt-44 flex w-full justify-center">
         <SampleMenuCarousel currMenu={currMenu} onItemClick={handleItemClick} />
       </div>
       <div className="mx-44 rounded-xl p-12 pb-20">
         <div className="mt-36">
           <MenuProvider dbMenu={dbMenu}>
-            <OrderNowModal
-              menuSample={currMenu}
-              open={orderOpen}
-              closeModal={closeOrderModal}
-            />
+            <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
             <AddProductModal
               menuSample={currMenu}
               open={open}

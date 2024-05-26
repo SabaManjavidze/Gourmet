@@ -1,3 +1,4 @@
+"use client";
 import type { Dispatch } from "react";
 import React, { useState } from "react";
 import { nanoid } from "nanoid";
@@ -19,17 +20,8 @@ import {
 import { Capitalize, cn } from "@/lib/utils";
 import { useRouter } from "next/router";
 import { Modal } from "@/components/ui/modal";
-import { menuKey } from "menu";
 import { NameInputs } from "./name-inputs";
 import { OrderFormType, orderNowSchema } from "./utils";
-import { DatePicker } from "../ui/date-picker";
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-} from "@radix-ui/react-popover";
-import { format } from "date-fns";
-import { CalendarIcon, Calendar } from "lucide-react";
 import { DatePickerForm } from "./date-picker-form";
 import { useMenu } from "@/hooks/useMenu";
 import { TimePickerForm } from "../ui/time-picker/form";
@@ -37,11 +29,9 @@ import { TimePickerForm } from "../ui/time-picker/form";
 export function OrderNowModal({
   open,
   closeModal,
-  menuSample,
 }: {
   open: boolean;
   closeModal: () => void;
-  menuSample: menuKey;
 }) {
   //   const trpc = api.useContext();
   //   const { mutateAsync: addShippingAddress, isLoading } =
@@ -76,13 +66,17 @@ export function OrderNowModal({
           <div className="flex w-full items-center justify-between gap-x-12">
             <div className="flex h-full flex-col items-center justify-start gap-y-24">
               <div className="flex flex-col gap-y-7">
-                <h3 className="text-lg text-accent-foreground">
+                <h3 className="text-lg font-bold text-accent-foreground">
                   Primary Contact Information
                 </h3>
                 {InputSchema["Primary Contact Information"].map((item) => {
                   if (!item?.name) {
                     return (
-                      <NameInputs title={item.title} control={form.control} />
+                      <NameInputs
+                        key={nanoid()}
+                        title={item.title}
+                        control={form.control}
+                      />
                     );
                   }
                   return (
@@ -112,13 +106,17 @@ export function OrderNowModal({
                 })}
               </div>
               <div className="flex w-full flex-col gap-y-7">
-                <h3 className="text-lg text-accent-foreground">
+                <h3 className="text-lg font-bold text-accent-foreground">
                   Delivery Information
                 </h3>
                 {InputSchema["Delivery Information"].map((item) => {
                   if (!item?.name) {
                     return (
-                      <DateInputs control={form.control} title={item.title} />
+                      <DateInputs
+                        key={nanoid()}
+                        control={form.control}
+                        title={item.title}
+                      />
                     );
                   }
                   return (
@@ -150,19 +148,23 @@ export function OrderNowModal({
             </div>
             <div className="flex h-full flex-col items-center justify-start gap-y-24">
               <div className="flex flex-col gap-y-7">
-                <h3 className="text-lg text-accent-foreground">
+                <h3 className="text-lg font-bold text-accent-foreground">
                   Secondary Contact Information (Optional)
                 </h3>
                 {InputSchema["Secondary Contact Information (Optional)"].map(
                   (item) => {
                     if (!item?.name) {
                       return (
-                        <NameInputs title={item.title} control={form.control} />
+                        <NameInputs
+                          key={nanoid()}
+                          title={item.title}
+                          control={form.control}
+                        />
                       );
                     }
                     return (
                       <FormField
-                        key={item.title}
+                        key={nanoid()}
                         control={form.control}
                         name={item.name}
                         render={({ field }) => (
@@ -188,7 +190,7 @@ export function OrderNowModal({
                 )}
               </div>
               <div className="flex w-full flex-col gap-y-7">
-                <h3 className="text-lg text-accent-foreground">
+                <h3 className="text-lg font-bold text-accent-foreground">
                   Company Information (Optional)
                 </h3>
                 {InputSchema["Company Information (Optional)"].map((item) => {
@@ -220,13 +222,13 @@ export function OrderNowModal({
               </div>
             </div>
           </div>
-          <div className="mt-10 flex flex-col items-center justify-center gap-y-3">
+          <div className="mt-10 flex flex-col items-center justify-center gap-y-1">
             <h2 className="text-lg font-bold">Total Price</h2>
             <h3 className="text-lg font-bold text-muted-foreground">
               ${totalSum}
             </h3>
           </div>
-          <div className="mt-10 flex justify-center">
+          <div className="mt-5 flex justify-center">
             <Button
               type="submit"
               variant={"accent"}

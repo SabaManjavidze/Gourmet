@@ -7,7 +7,10 @@ await import("./src/env.js");
 /** @type {import("next").NextConfig} */
 const config = {
   images: {
-    remotePatterns: [{ hostname: "s3-alpha-sig.figma.com" }],
+    remotePatterns: [
+      { hostname: "s3-alpha-sig.figma.com" },
+      { hostname: "w7.pngwing.com" },
+    ],
   },
 };
 

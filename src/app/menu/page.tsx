@@ -1,3 +1,4 @@
+"use client";
 import { Menu, menuKeys } from "menu";
 import { MenuTemplate } from "./_components/menu-template";
 import { nanoid } from "nanoid";
@@ -7,8 +8,22 @@ import { HideZeroCheckbox } from "./_components/hidezero-checkbox";
 import { Input } from "@/components/ui/input";
 import { SumSection } from "./_components/sum-section";
 import { XIcon } from "lucide-react";
+import { ClearButton } from "./_components/clear-button";
+import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 
 export default function MenuPage() {
+  const [orderOpen, setOrderOpen] = useState(false);
+  const handleSaveClick = () => {
+    console.log("saved");
+  };
+  const handleOrderNowClick = () => {
+    setOrderOpen(true);
+  };
+  const closeOrderModal = () => {
+    setOrderOpen(false);
+  };
   return (
     <main className="mt-8">
       <div className="flex h-[500px] flex-col items-center justify-center bg-menu-banner bg-cover bg-center bg-no-repeat">
@@ -20,6 +35,7 @@ export default function MenuPage() {
       <div className="mx-44 p-12 pb-20 pt-0">
         <div>
           <MenuProvider dbMenu={Menu}>
+            <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
             {menuKeys.map((item, idx) => (
               <MenuTemplate
                 key={nanoid()}
@@ -38,8 +54,10 @@ export default function MenuPage() {
                           className="ml-4 w-16 rounded-xl text-center text-lg text-muted-sm"
                         />
                       </div>
-                      <div className="mt-12 flex items-center justify-end">
-                        <HideZeroCheckbox />
+
+                      <div className="mt-20 flex items-center justify-between px-3">
+                        <HideZeroCheckbox iconSide="left" />
+                        <ClearButton />
                       </div>
                     </div>
                   )
@@ -53,6 +71,25 @@ export default function MenuPage() {
                 }
               />
             ))}
+            <div className={`sticky bottom-8 mt-8 flex w-full justify-center`}>
+              <div className="*:spacing flex w-[500px] justify-between *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
+                <Button
+                  variant={"outline-accent"}
+                  onClick={handleSaveClick}
+                  size={"lg"}
+                >
+                  Save For Later
+                </Button>
+                <Button
+                  variant={"accent"}
+                  onClick={handleOrderNowClick}
+                  size={"lg"}
+                  className={"border-accent"}
+                >
+                  Order Now
+                </Button>
+              </div>
+            </div>
           </MenuProvider>
         </div>
       </div>

@@ -1,39 +1,40 @@
 "use client";
 import { LanguageDropdown } from "@/components/language-dropdown";
 import { Button } from "@/components/ui/button";
-import { MenuIcon } from "lucide-react";
+import { MenuIcon, UserCircle } from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { NavDrawer } from "./nav-drawer";
 import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 
+const PROFILE_ROUTE = "/user/profile";
+const routes = [
+  {
+    title: "Home",
+    route: "/",
+  },
+  {
+    title: "About Us",
+    route: "/about-us",
+  },
+  {
+    title: "Menu",
+    route: "/menu",
+  },
+
+  {
+    title: "Sample Menus",
+    route: "/sample-menus",
+  },
+  {
+    title: "Contact Us",
+    route: "/contact-us",
+  },
+];
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
-  const routes = [
-    {
-      title: "Home",
-      route: "/",
-    },
-    {
-      title: "About Us",
-      route: "/about-us",
-    },
-    {
-      title: "Menu",
-      route: "/menu",
-    },
-
-    {
-      title: "Sample Menus",
-      route: "/sample-menus",
-    },
-    {
-      title: "Contact Us",
-      route: "/contact-us",
-    },
-  ];
   const closeDrawer = () => {
     setOpen(false);
   };
@@ -41,7 +42,7 @@ export function Navbar() {
   return (
     <nav className="relative flex h-16 items-center justify-between border-b px-10 max-lg:justify-center">
       <NavDrawer open={open} closeDrawer={closeDrawer} />
-      <div className="logo absolute right-1/2 top-0 h-[180px] w-[195px] translate-x-1/2 border-[3px] border-white bg-nav-logo bg-cover bg-center bg-no-repeat max-xl:hidden">
+      <div className="logo absolute right-1/2 top-0 z-20 h-[120px] w-[145px] translate-x-1/2 border-[3px] border-t-0 border-white bg-nav-logo bg-cover bg-center bg-no-repeat max-xl:hidden">
         {/* <h3 className="logo-text absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full text-3xl font-bold uppercase ">
           Gourmet
         </h3> */}
@@ -89,7 +90,7 @@ export function Navbar() {
         <div className="text-blue-gray-900 flex gap-2 sm:justify-center">
           <Link
             href="#"
-            className="opacity-80 transition-opacity hover:opacity-100"
+            className="opacity-80 duration-150 hover:text-accent hover:opacity-100"
           >
             <svg
               className="h-8 w-8"
@@ -106,7 +107,7 @@ export function Navbar() {
           </Link>
           <Link
             href="#"
-            className="opacity-80 transition-opacity hover:opacity-100"
+            className="opacity-80 duration-150 hover:text-accent hover:opacity-100"
           >
             <svg
               className="h-8 w-8"
@@ -122,17 +123,11 @@ export function Navbar() {
             </svg>
           </Link>
           <Link
-            href="#"
-            className="opacity-80 transition-opacity hover:opacity-100"
+            href="/user/profile"
+            className={`opacity-80 duration-150 hover:text-accent hover:opacity-100
+            ${pathname == PROFILE_ROUTE ? "scale-110 text-accent" : ""}`}
           >
-            <svg
-              className="h-8 w-8"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-            </svg>
+            <UserCircle size={31} />
           </Link>
         </div>
       </div>

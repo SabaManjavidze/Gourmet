@@ -7,13 +7,16 @@ import { nanoid } from "nanoid";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { ReactNode } from "react";
+import { twMerge } from "tailwind-merge";
 
 export function MenuTemplate({
   name,
   header,
   footer,
+  className = "",
 }: {
   name: menuKey;
+  className?: string;
   header?: ReactNode;
   footer?: ReactNode;
 }) {
@@ -31,10 +34,16 @@ export function MenuTemplate({
           return idx == 0 ? (
             <li
               key="234234"
-              className="table-title-gradient flex w-full justify-between text-center text-xl font-medium text-muted-sm "
+              className={twMerge(
+                `table-title-gradient flex w-full justify-between 
+              text-center text-sm font-medium text-muted-sm`,
+                className,
+              )}
             >
-              <div className="w-2/3">
-                <p className="border p-5 text-start text-xl font-bold">Items</p>
+              <div className="h-full w-2/3">
+                <p className="border border-b-0 p-5 text-start text-xl font-bold">
+                  Items
+                </p>
               </div>
               <div className="flex w-1/3 justify-between font-bold *:w-full">
                 <p className="border border-l-0 p-5">Price</p>
