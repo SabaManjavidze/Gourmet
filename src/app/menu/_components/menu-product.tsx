@@ -17,12 +17,21 @@ export function MenuProduct({
   return (
     <li
       // hidden={product.quantity == 0}
-      className={`text-muted-sm ${hideZeroQt && product.quantity == 0 ? "hidden" : "flex"} w-full justify-between text-center text-lg font-medium`}
+      className={`text-muted-sm ${hideZeroQt && product.quantity == 0 ? "hidden" : "flex"} 
+      w-full justify-between text-center text-lg font-medium 
+      max-lg:text-base max-md:text-sm`}
     >
-      <div className="w-2/3">
-        <p className={twMerge(cls, "text-start", "border-l")}>{product.name}</p>
+      <div className="max-xs:w-1/4 w-1/2 max-sm:w-2/5">
+        <p
+          className={twMerge(
+            cls,
+            "h-full overflow-hidden whitespace-nowrap border-l text-start",
+          )}
+        >
+          {product.name}
+        </p>
       </div>
-      <div className="flex w-1/3 justify-between">
+      <div className="max-xs:w-3/4 flex w-1/2 justify-between max-sm:w-3/5">
         <p className={cls}>{product.price}</p>
         <Input
           type="number"
@@ -37,7 +46,7 @@ export function MenuProduct({
           value={product.quantity}
           className={twMerge(
             cls,
-            "h-full text-center text-lg font-medium focus-within:z-10",
+            "h-full text-center font-medium focus-within:z-10",
           )}
         />
         <p className={cls}>{product.totalPrice}</p>

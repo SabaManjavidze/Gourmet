@@ -172,13 +172,13 @@ const drafts = [
     ],
   },
 ];
+const tabs = ["My Drafts", "Order History"] as const;
+type tabKey = (typeof tabs)[number];
 export default function ProfilePage() {
   const [open, setOpen] = useState<string | null>(null);
   const [addressOpen, setAddressOpen] = useState(false);
 
-  const [activeTab, setActiveTab] = useState<
-    string | "My Drafts" | "Order History"
-  >("My Drafts");
+  const [activeTab, setActiveTab] = useState<tabKey>("My Drafts");
 
   const fetchNextPage = () => {
     console.log("next page");
@@ -189,7 +189,7 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container flex min-h-screen w-full flex-col items-center bg-background px-3 pt-32 md:flex-row md:items-start lg:px-5">
+    <div className="container flex min-h-screen w-full flex-col items-center bg-background px-3 pt-32 max-md:px-0 md:flex-row md:items-start lg:px-5">
       {/* <EditDetailsModal isOpen={detailsOpen} setIsOpen={setDetailsOpen} />
       <AddAddressModal isOpen={addressOpen} setIsOpen={setAddressOpen} /> */}
 
@@ -197,9 +197,7 @@ export default function ProfilePage() {
       <div className="flex w-full flex-col items-center md:w-1/4 md:items-start">
         <div className="flex h-auto w-4/5 flex-col items-center justify-start">
           <Image
-            src={
-              "https://w7.pngwing.com/pngs/340/946/png-transparent-avatar-user-computer-icons-software-developer-avatar-child-face-heroes.png"
-            }
+            src={"/imgs/saba.jpg"}
             width={130}
             height={130}
             quality={100}
@@ -207,39 +205,21 @@ export default function ProfilePage() {
             alt="User Profile Picture"
           />
           <h2 className="pt-3 text-2xl font-semibold">Saba Manjavidze</h2>
-          <div className="flex items-center">
-            {/* <people size={20} /> */}
-
-            <h2 className="ml-2 text-center font-medium text-primary-foreground">
-              {/* {personalDetails.friendCount} */}
-            </h2>
-            <h2 className="ml-2">
-              {/* {personalDetails.friendCount <= 1 ? "Friend" : "Friends"} */}
-            </h2>
-          </div>
-          {/* <Button variant={"accent"} className="mt-6 w-full" size="lg">
-            Add new entity
-          </Button>
-          <Button className="mt-2 w-full" size="lg">
-            Add friends
-          </Button> */}
         </div>
-        {/* <div className="mt-6 w-4/5 md:w-full">
-          <h3 className="text-md font-medium">Friend requests</h3>
-          {friendRequests?.map((req) => (
-            <FriendReqCard req={req} key={req.id} />
-          ))}
-        </div> */}
       </div>
       <div className="mt-6 w-full md:mt-0 md:w-3/4">
         <div className="flex w-full text-lg">
           <Tabs
             className="flex w-full flex-col items-center rounded-lg"
-            onValueChange={setActiveTab}
+            onValueChange={(value) => {
+              if (tabs.includes(value as tabKey)) {
+                setActiveTab(value as tabKey);
+              }
+            }}
             defaultValue="My Drafts"
             value={activeTab}
           >
-            <TabsList className="flex w-full justify-start rounded-lg bg-muted p-2 py-0 pl-0">
+            <TabsList className="table-title-gradient flex w-full justify-start rounded-lg bg-muted p-2 py-0 md:pl-0">
               <TabsTrigger
                 key={nanoid()}
                 value={"My Drafts"}
@@ -260,7 +240,7 @@ export default function ProfilePage() {
                 fetchNextPage={fetchNextPage as any}
                 pagesData={[]}
               >
-                <div className="mt-5 grid grid-cols-4 gap-6">
+                <div className="mt-5 grid grid-cols-4 gap-6 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:px-8 max-sm:grid-cols-1">
                   {drafts.map(({ details, title }) => (
                     <MenuCard
                       key={nanoid()}

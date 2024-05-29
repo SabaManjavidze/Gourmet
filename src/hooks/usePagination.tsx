@@ -16,7 +16,7 @@ export const PaginationProvider = ({
   fetchNextPage,
 }: {
   children: ReactNode;
-  pagesData: (any & { nextCursor: string })[];
+  pagesData: { nextCursor: string }[];
   fetchNextPage: () => Promise<any>;
 }) => {
   const [page, setPage] = useState(0);

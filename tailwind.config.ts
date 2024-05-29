@@ -19,8 +19,13 @@ const config = {
       },
     },
     extend: {
+      fontSize: {
+        xxxs: "8px",
+        xxs: "10px",
+      },
       screens: {
         "2lg": "1150px",
+        xs: "500px",
       },
       backgroundSize: {
         "90": "90%",

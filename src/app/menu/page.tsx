@@ -32,7 +32,7 @@ export default function MenuPage() {
           Explore, Customize, and Order Your Perfect Meal!
         </p>
       </div>
-      <div className="mx-44 p-12 pb-20 pt-0">
+      <div className="mx-44 p-12 pb-20 pt-0 max-xl:mx-16 max-lg:mx-5 max-sm:mx-0">
         <div>
           <MenuProvider dbMenu={Menu}>
             <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />

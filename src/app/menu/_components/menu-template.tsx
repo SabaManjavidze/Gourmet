@@ -24,7 +24,10 @@ export function MenuTemplate({
   return (
     <div className="mt-16">
       <div className="flex w-full justify-center">
-        <h3 className="menu-title-gradient w-min whitespace-nowrap border-b border-b-accent font-lucida-bold text-5xl">
+        <h3
+          className="menu-title-gradient w-min whitespace-nowrap border-b 
+        border-b-accent font-lucida-bold text-5xl"
+        >
           {name}
         </h3>
       </div>
@@ -35,17 +38,18 @@ export function MenuTemplate({
             <li
               key="234234"
               className={twMerge(
-                `table-title-gradient flex w-full justify-between 
-              text-center text-sm font-medium text-muted-sm`,
+                `table-title-gradient max-sm:text-xxs max-h-18 flex h-full 
+              w-full justify-between text-center text-sm font-medium text-muted-sm max-md:text-xs`,
                 className,
               )}
             >
-              <div className="h-full w-2/3">
-                <p className="border border-b-0 p-5 text-start text-xl font-bold">
-                  Items
-                </p>
-              </div>
-              <div className="flex w-1/3 justify-between font-bold *:w-full">
+              <p className="max-xs:w-1/4 w-1/2 border p-5 text-start font-bold max-sm:w-2/5">
+                Items
+              </p>
+              <div
+                className="max-xs:w-3/4 flex w-1/2 justify-between whitespace-nowrap 
+              font-bold *:h-full *:w-full max-sm:w-3/5 max-sm:whitespace-pre-line"
+              >
                 <p className="border border-l-0 p-5">Price</p>
                 <p className="border border-l-0 p-5">Quantity</p>
                 <p className="border border-l-0 p-5">Total Price</p>
