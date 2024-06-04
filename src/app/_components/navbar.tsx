@@ -24,8 +24,8 @@ const routes = [
   },
 
   {
-    title: "Sample Menus",
-    route: "/sample-menus",
+    title: "Catering",
+    route: "/catering",
   },
   {
     title: "Contact Us",
@@ -88,7 +88,7 @@ export function Navbar() {
         <h3>+995 597 555 266</h3>
         <LanguageDropdown />
         <div className="text-blue-gray-900 flex gap-2 sm:justify-center">
-          <Link
+          {/* <Link
             href="#"
             className="opacity-80 duration-150 hover:text-accent hover:opacity-100"
           >
@@ -121,7 +121,7 @@ export function Navbar() {
                 clipRule="evenodd"
               />
             </svg>
-          </Link>
+          </Link> */}
           <Link
             href="/user/profile"
             className={`opacity-80 duration-150 hover:text-accent hover:opacity-100

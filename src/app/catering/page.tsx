@@ -1,8 +1,8 @@
 "use client";
 import { nanoid } from "nanoid";
 import { MenuTemplate } from "../menu/_components/menu-template";
-import { Menu, menuKey } from "menu";
-import { useMemo, useState } from "react";
+import { Menu, menuKey, menuKeys } from "menu";
+import { useEffect, useMemo, useState } from "react";
 import { SampleMenuCarousel } from "./_components/sample-menu-carousel";
 import { MenuProvider } from "@/hooks/useMenu";
 import { Button } from "@/components/ui/button";
@@ -13,13 +13,25 @@ import { HideZeroCheckbox } from "../menu/_components/hidezero-checkbox";
 import { SumSection } from "../menu/_components/sum-section";
 import { ClearButton } from "../menu/_components/clear-button";
 import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 
-export default function SampleMenus() {
+export default function Catering() {
   const [currMenu, setCurrMenu] = useState<menuKey>("Drinks");
   const [orderOpen, setOrderOpen] = useState(false);
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    const menuArg = searchParams.get("menu");
+    if (typeof menuArg == "string" && menuKeys.includes(menuArg as menuKey)) {
+      setCurrMenu(menuArg as menuKey);
+    }
+  }, [router]);
+
   const handleItemClick = (name: menuKey) => {
     setCurrMenu(name);
+    router.replace(pathname + `?menu=${name}`, { scroll: false });
   };
   const closeModal = () => {
     setOpen(false);
@@ -89,8 +101,7 @@ export default function SampleMenus() {
               key="234234"
               className="flex w-full justify-between text-center text-lg font-medium text-muted-sm"
             >
-              <div className="flex w-2/3 items-center border border-t-0 max-lg:justify-center">
-                <div className="w-1/4 max-lg:absolute"></div>
+              <div className="flex w-1/2 items-center justify-center border border-t-0 max-sm:w-2/5 max-xs:w-1/4">
                 <Button
                   variant={"ghost"}
                   className="group h-4/5 text-xl text-accent-foreground"
@@ -100,7 +111,7 @@ export default function SampleMenus() {
                   Add more Products
                 </Button>
               </div>
-              <div className="flex w-1/3 justify-between text-2xl font-bold *:w-full">
+              <div className="flex w-1/2 justify-between text-2xl font-bold *:w-full max-sm:w-3/5 max-xs:w-3/4">
                 <p className="border border-l-0 border-t-0 p-5">-</p>
                 <p className="border border-l-0  border-t-0 p-5">-</p>
                 <p className="border border-l-0  border-t-0 p-5">-</p>

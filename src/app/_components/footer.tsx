@@ -21,12 +21,12 @@ export function Footer() {
       route: "/contact-us",
     },
     {
-      title: "Our Cuisine",
-      route: "/our-cuisine",
+      title: "Catering",
+      route: "/catering",
     },
   ];
   return (
-    <footer className="relative mt-64 flex flex-col items-center bg-footer-banner bg-cover bg-center py-52">
+    <footer className="relative mt-56 flex flex-col items-center bg-footer-banner bg-cover bg-center py-52">
       <div className="absolute right-1/2 top-0 h-[180px] w-[195px] -translate-y-1/2 translate-x-1/2 border-[3px] border-white bg-nav-logo bg-cover bg-center bg-no-repeat">
         {/* <h3 className="absolute bottom-0 right-1/2 translate-x-1/2 translate-y-[130%] font-georgia text-5xl italic text-white">
           Gourmet
