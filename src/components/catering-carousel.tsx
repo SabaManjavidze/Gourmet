@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/carousel";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { CardBody, CardContainer } from "./3d-card";
 
 export function CateringCarousel() {
   const router = useRouter();
@@ -28,17 +29,20 @@ export function CateringCarousel() {
       <CarouselContent>
         {sampleMenus.map(({ name, src }, index) => (
           <CarouselItem key={index} className="px-6 md:basis-1/2 lg:basis-1/3">
-            <Card
-              onClick={() => handleItemClick(name)}
-              className="cursor-pointer border-4 border-white"
-            >
-              <CardContent className="relative flex aspect-square items-center justify-center p-6 ">
-                <Image src={src} alt="" fill className="object-cover" />
+            <CardContainer className="cursor-pointer border-4 border-white">
+              <CardBody className="relative flex aspect-square items-center justify-center p-6 duration-200 hover:z-20 hover:scale-125 ">
+                <Image
+                  src={src}
+                  alt=""
+                  onClick={() => handleItemClick(name)}
+                  fill
+                  className="object-cover"
+                />
                 <span className="absolute bottom-0 z-10 w-full bg-black/20 py-4 text-center text-3xl font-normal uppercase text-white max-md:text-xl max-sm:text-base">
                   {name}
                 </span>
-              </CardContent>
-            </Card>
+              </CardBody>
+            </CardContainer>
           </CarouselItem>
         ))}
       </CarouselContent>

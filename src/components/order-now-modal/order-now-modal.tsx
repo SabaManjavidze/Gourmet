@@ -61,7 +61,7 @@ export function OrderNowModal({
           onSubmit={form.handleSubmit(onSubmit, (err) => {
             console.log(err);
           })}
-          className="flex flex-col items-center justify-center px-14 py-4"
+          className="relative flex flex-col items-center justify-center px-14 py-4"
         >
           <div className="flex w-full items-center justify-between gap-x-12">
             <div className="flex h-full flex-col items-center justify-start gap-y-24">
