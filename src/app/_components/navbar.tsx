@@ -99,7 +99,7 @@ export function Navbar() {
           ) : session?.user ? (
             <ProfileButton
               userPicture={session.user.image as string}
-              username={session.user?.name as string}
+              username={session.user.name as string}
             />
           ) : (
             <Button
