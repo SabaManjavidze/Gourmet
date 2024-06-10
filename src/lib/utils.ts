@@ -21,3 +21,5 @@ export const MenuToState = (menu: Menu) => {
   });
   return state;
 };
+
+export const PROFILE_ROUTE = "/user/profile";

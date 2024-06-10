@@ -13,6 +13,7 @@ const config = {
     remotePatterns: [
       { hostname: "s3-alpha-sig.figma.com" },
       { hostname: "w7.pngwing.com" },
+      { hostname: "lh3.googleusercontent.com" },
     ],
   },
 };

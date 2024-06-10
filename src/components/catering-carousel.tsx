@@ -28,9 +28,12 @@ export function CateringCarousel() {
     >
       <CarouselContent>
         {sampleMenus.map(({ name, src }, index) => (
-          <CarouselItem key={index} className="px-6 md:basis-1/2 lg:basis-1/3">
-            <CardContainer className="cursor-pointer border-4 border-white">
-              <CardBody className="relative flex aspect-square items-center justify-center p-6 duration-200 hover:z-20 hover:scale-125 ">
+          <CarouselItem
+            key={index}
+            className="px-6 hover:z-20 md:basis-1/2 lg:basis-1/3 "
+          >
+            <CardContainer className="cursor-pointer border-4 border-white hover:z-20 ">
+              <CardBody className="relative flex aspect-square items-center justify-center p-6 duration-200 hover:scale-125 ">
                 <Image
                   src={src}
                   alt=""

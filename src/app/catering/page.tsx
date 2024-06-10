@@ -65,7 +65,7 @@ export default function Catering() {
       <div className="mt-44 flex w-full justify-center">
         <SampleMenuCarousel currMenu={currMenu} onItemClick={handleItemClick} />
       </div>
-      <div className="mx-44 rounded-xl p-12 pb-20">
+      <div className="mx-44 rounded-xl p-12 px-36 pb-20">
         <div className="mt-36">
           <MenuProvider dbMenu={dbMenu}>
             <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />

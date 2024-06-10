@@ -195,16 +195,16 @@ export default function ProfilePage() {
 
       <MenuCardModal open={!!open} closeModal={closeModal} />
       <div className="flex w-full flex-col items-center md:w-1/4 md:items-start">
-        <div className="flex h-auto w-4/5 flex-col items-center justify-start">
+        <div className="flex h-auto w-full flex-col items-center justify-start">
           <Image
             src={"/imgs/saba.jpg"}
-            width={130}
-            height={130}
+            width={180}
+            height={180}
             quality={100}
-            className="h-[130px] rounded-full border-2 border-primary/70 object-cover"
+            className="h-[180px] rounded-full border-2 border-primary/70 object-cover"
             alt="User Profile Picture"
           />
-          <h2 className="pt-3 text-2xl font-semibold">Saba Manjavidze</h2>
+          <h2 className="pt-3 text-3xl font-semibold">Saba Manjavidze</h2>
         </div>
       </div>
       <div className="mt-6 w-full md:mt-0 md:w-3/4">

@@ -35,14 +35,7 @@ export function MenuCardModal({
         <MenuTemplate className="text-sm" name="Canape/Salads" />
 
         <div className={`sticky bottom-0 mt-8 flex w-full justify-center`}>
-          <div className="*:spacing flex w-[501px] justify-between *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
-            <Button
-              variant={"outline-accent"}
-              // onClick={handleSaveClick}
-              size={"lg"}
-            >
-              Save For Later
-            </Button>
+          <div className="*:spacing flex w-[501px] justify-center *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
             <Button
               variant={"accent"}
               onClick={() => setOrderNow(true)}

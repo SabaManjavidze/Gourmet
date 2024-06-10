@@ -8,31 +8,123 @@ import {
   text,
   timestamp,
   varchar,
+  decimal,
+  date,
+  pgEnum,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
-/**
- * This is an example of how to use the multi-project schema feature of Drizzle ORM. Use the same
- * database instance for multiple projects.
- *
- * @see https://orm.drizzle.team/docs/goodies#multi-project-schema
- */
 export const createTable = pgTableCreator((name) => `gourmet_${name}`);
 
 export const categories = createTable("category", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 256 }),
 });
+export const categoriesRelationships = relations(categories, ({ many }) => ({
+  products: many(products),
+}));
 
-export const products = createTable("product", {
-  id: serial("id").primaryKey(),
-  name: varchar("name", { length: 256 }),
-  price: integer("price"),
+export const products = createTable(
+  "product",
+  {
+    id: serial("id").primaryKey().notNull(),
+    name: varchar("name", { length: 256 }),
+    price: integer("price"),
+    categoryId: serial("category_id").references(() => categories.id),
+  },
+  (product) => ({
+    categoryIdIdx: index("product_categoryId_idx").on(product.categoryId),
+  }),
+);
+
+export const productsRelations = relations(products, ({ one, many }) => ({
+  samples: many(productsToSamples),
+  category: one(categories, {
+    fields: [products.id],
+    references: [categories.id],
+  }),
+  orders: many(productstoOrders),
+}));
+
+export const productsToSamples = createTable(
+  "products_to_samples",
+  {
+    productId: serial("product_id")
+      .notNull()
+      .references(() => products.id),
+    sampleId: integer("sample_id")
+      .notNull()
+      .references(() => menuSamples.id),
+  },
+  (t) => ({
+    compoundKey: primaryKey({ columns: [t.productId, t.sampleId] }),
+  }),
+);
+export const productsToSamplesRelations = relations(
+  productsToSamples,
+  ({ one }) => ({
+    product: one(products, {
+      fields: [productsToSamples.productId],
+      references: [products.id],
+    }),
+    sample: one(menuSamples, {
+      fields: [productsToSamples.sampleId],
+      references: [menuSamples.id],
+    }),
+  }),
+);
+
+export const menuSamples = createTable("menu_samples", {
+  id: serial("id").primaryKey().notNull(),
+  name: varchar("name", { length: 50 }),
 });
-
+export const menuSamplesRelations = relations(menuSamples, ({ many }) => ({
+  products: many(productsToSamples),
+}));
+export const statusEnum = pgEnum("status", ["draft", "on hold", "completed"]);
+export const orders = createTable(
+  "order",
+  {
+    id: serial("id").primaryKey().notNull(),
+    name: varchar("name"),
+    totalPrice: decimal("totalPrice"),
+    status: statusEnum("status"),
+    createdAt: timestamp("created_at").notNull().defaultNow(),
+    userId: varchar("userId")
+      .references(() => users.id)
+      .notNull(),
+  },
+  (order) => ({
+    userIdIdx: index("order_userId_idx").on(order.userId),
+  }),
+);
+export const ordersRelationships = relations(orders, ({ one, many }) => ({
+  user: one(users, { fields: [orders.userId], references: [users.id] }),
+  products: many(productstoOrders),
+}));
+export const productstoOrders = createTable(
+  "order_product",
+  {
+    productId: serial("product_id")
+      .notNull()
+      .references(() => products.id),
+    orderId: serial("order_id")
+      .notNull()
+      .references(() => orders.id),
+    quantity: integer("quantity"),
+    totalPrice: integer("totalPrice"),
+  },
+  (pto) => ({
+    compoundKey: primaryKey({
+      columns: [pto.productId, pto.orderId],
+    }),
+  }),
+);
+export const roleEnum = pgEnum("role", ["user", "admin"]);
 export const users = createTable("user", {
   id: varchar("id", { length: 255 }).notNull().primaryKey(),
   name: varchar("name", { length: 255 }),
+  role: roleEnum("role").default("user"),
   email: varchar("email", { length: 255 }).notNull(),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
@@ -42,6 +134,7 @@ export const users = createTable("user", {
 
 export const usersRelations = relations(users, ({ many }) => ({
   accounts: many(accounts),
+  orders: many(orders),
 }));
 
 export const accounts = createTable(

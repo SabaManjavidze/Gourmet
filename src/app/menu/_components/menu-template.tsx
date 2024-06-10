@@ -32,23 +32,23 @@ export function MenuTemplate({
         </h3>
       </div>
       {header ?? <div className="mt-16"></div>}
-      <ul className="mt-5 flex w-full flex-col">
+      <ul className="mt-16 flex w-full flex-col">
         {menu[name]?.map((product, idx) => {
           return idx == 0 ? (
             <li
               key="234234"
               className={twMerge(
-                `table-title-gradient max-sm:text-xxs max-h-18 flex h-full 
-              w-full justify-between text-center text-sm font-medium text-muted-sm max-md:text-xs`,
+                `table-title-gradient max-h-18 flex h-full w-full 
+              justify-between text-center text-sm font-medium text-muted-sm max-md:text-xs max-sm:text-xxs`,
                 className,
               )}
             >
-              <p className="max-xs:w-1/4 w-1/2 border p-5 text-start font-bold max-sm:w-2/5">
+              <p className="w-1/2 border p-5 text-start font-bold max-sm:w-2/5 max-xs:w-1/4">
                 Items
               </p>
               <div
-                className="max-xs:w-3/4 flex w-1/2 justify-between whitespace-nowrap 
-              font-bold *:h-full *:w-full max-sm:w-3/5 max-sm:whitespace-pre-line"
+                className="flex w-1/2 justify-between whitespace-nowrap font-bold 
+              *:h-full *:w-full max-sm:w-3/5 max-sm:whitespace-pre-line max-xs:w-3/4"
               >
                 <p className="border border-l-0 p-5">Price</p>
                 <p className="border border-l-0 p-5">Quantity</p>

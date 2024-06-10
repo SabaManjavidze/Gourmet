@@ -4,6 +4,7 @@ import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
+import { Loader2 } from "lucide-react";
 
 const buttonVariants = cva(
   "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
@@ -44,17 +45,47 @@ export interface ButtonProps
     VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   active?: boolean;
+  isLoading?: boolean;
+  contentPos?: "start" | "center" | "end";
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, variant, size, asChild = false, ...props }, ref) => {
+  (
+    {
+      children,
+      isLoading = false,
+      contentPos = "center",
+      className,
+      variant,
+      size,
+      asChild = false,
+      ...props
+    },
+    ref,
+  ) => {
     const Comp = asChild ? Slot : "button";
     return (
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
         {...props}
-      />
+      >
+        <div className="inline-flex w-full items-center justify-center">
+          <div
+            className={`${
+              isLoading ? "opacity-0" : "opacity-100"
+            } flex w-full items-center justify-${contentPos}`}
+          >
+            {children}
+          </div>
+          <div
+            className="absolute right-1/2 top-1/2 -translate-y-1/2 translate-x-1/2"
+            hidden={!isLoading}
+          >
+            <Loader2 size={20} />
+          </div>
+        </div>
+      </Comp>
     );
   },
 );

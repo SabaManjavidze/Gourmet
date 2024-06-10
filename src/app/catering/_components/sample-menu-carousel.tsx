@@ -30,7 +30,7 @@ export function SampleMenuCarousel({
         {sampleMenus.map(({ name, src }, index) => (
           <CarouselItem
             key={name}
-            className={`${currMenu == name ? "scale-100" : "scale-90"} w-[95%] duration-300 max-sm:w-full md:basis-1/2 lg:basis-1/3`}
+            className={`${currMenu == name ? "scale-100" : "scale-90"} w-[95%] duration-300 hover:scale-100 max-sm:w-full md:basis-1/2 lg:basis-1/3`}
           >
             <Card
               onClick={() => onItemClick?.(name)}

@@ -25,7 +25,7 @@ export function Modal({
         if (!open) closeModal();
       }}
     >
-      <DialogContent className={twMerge("", className)}>
+      <DialogContent className={twMerge("w-auto", className)}>
         {title != undefined ? (
           typeof title == typeof className ? (
             <DialogHeader className="relative flex w-full justify-center">

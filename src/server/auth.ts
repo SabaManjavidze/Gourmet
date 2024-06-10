@@ -5,8 +5,11 @@ import {
   type NextAuthOptions,
 } from "next-auth";
 import { type Adapter } from "next-auth/adapters";
-import DiscordProvider from "next-auth/providers/discord";
-
+import GoogleProvider from "next-auth/providers/google";
+import FacebookProvider from "next-auth/providers/facebook";
+import type { FacebookProfile } from "next-auth/providers/facebook";
+import type { GoogleProfile } from "next-auth/providers/google";
+import axios from "axios";
 import { env } from "@/env";
 import { db } from "@/server/db";
 import { createTable } from "@/server/db/schema";
@@ -49,19 +52,61 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: DrizzleAdapter(db, createTable) as Adapter,
   providers: [
-    // DiscordProvider({
-    //   clientId: env.DISCORD_CLIENT_ID,
-    //   clientSecret: env.DISCORD_CLIENT_SECRET,
-    // }),
-    /**
-     * ...add more providers here.
-     *
-     * Most other providers require a bit more work than the Discord provider. For example, the
-     * GitHub provider requires you to add the `refresh_token_expires_in` field to the Account
-     * model. Refer to the NextAuth.js docs for the provider you want to use. Example:
-     *
-     * @see https://next-auth.js.org/providers/github
-     */
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID?.toString() as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET?.toString() as string,
+      allowDangerousEmailAccountLinking: true,
+      async profile(prof: GoogleProfile, tokens) {
+        let birthday: undefined | Date;
+        try {
+          const baseUrl = "https://people.googleapis.com/v1/people";
+          const { data } = await axios.get(
+            `${baseUrl}/${prof.sub}?personFields=birthdays&key=${
+              process.env.GOOGLE_API_KEY as string
+            }&access_token=${tokens.access_token}`,
+          );
+          const bd = data.birthdays[0].date;
+          birthday = new Date(bd.year, bd.month - 1, bd.day);
+        } catch (e) {
+          console.log("birthday error", JSON.stringify(e));
+        }
+        return {
+          firstName: prof.given_name,
+          lastName: prof.family_name,
+          email: prof.email,
+          id: prof.sub,
+          image: prof.picture,
+          name: prof.name,
+          birthday,
+          emailVerified: new Date(),
+        };
+      },
+    }),
+    FacebookProvider({
+      clientId: process.env.FACEBOOK_CLIENT_ID?.toString() as string,
+      clientSecret: process.env.FACEBOOK_CLIENT_SECRET?.toString() as string,
+      allowDangerousEmailAccountLinking: true,
+      authorization:
+        "https://www.facebook.com/v11.0/dialog/oauth?scope=email,public_profile,user_birggthday",
+      userinfo: {
+        url: "https://graph.facebook.com/me",
+        params: {
+          fields: "first_name,last_name,id,name,email,picture,birthday",
+        },
+      },
+      profile(profile: FacebookProfile) {
+        return {
+          id: profile.id,
+          firstName: profile.first_name,
+          lastName: profile.last_name,
+          email: profile.email,
+          name: profile.name,
+          image: profile.picture.data.url,
+          birthday: new Date(profile.birthday),
+          emailVerified: new Date(),
+        };
+      },
+    }),
   ],
 };
 
