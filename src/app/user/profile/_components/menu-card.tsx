@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import { useState } from "react";
 import { MenuCardModal } from "./menu-card-modal";
 
@@ -27,7 +27,7 @@ export function MenuCard({
       <ul className="group max-h-72 overflow-hidden px-4 py-2 pr-[21px] hover:overflow-auto hover:pr-4">
         {details.map(({ price, totalPrice, product, quantity }) => (
           <li
-            key={nanoid()}
+            key={uuid()}
             className="mt-2 flex w-full max-w-full flex-col items-center text-muted-foreground first-of-type:mt-0"
           >
             <div className="flex w-full">

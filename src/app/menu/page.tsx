@@ -1,7 +1,7 @@
 "use client";
 import { Menu, menuKeys } from "menu";
 import { MenuTemplate } from "./_components/menu-template";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import { MenuProvider } from "@/hooks/useMenu";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HideZeroCheckbox } from "./_components/hidezero-checkbox";
@@ -38,7 +38,7 @@ export default function MenuPage() {
             <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
             {menuKeys.map((item, idx) => (
               <MenuTemplate
-                key={nanoid()}
+                key={uuid()}
                 name={item}
                 header={
                   idx == 0 ? (

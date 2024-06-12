@@ -4,20 +4,21 @@ import {
   integer,
   pgTableCreator,
   primaryKey,
-  serial,
-  text,
   timestamp,
   varchar,
   decimal,
   date,
   pgEnum,
+  text,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
+
+const idtype = (name: string) => varchar(name, { length: 36 });
 
 export const createTable = pgTableCreator((name) => `gourmet_${name}`);
 
 export const categories = createTable("category", {
-  id: serial("id").primaryKey(),
+  id: idtype("id").primaryKey(),
   name: varchar("name", { length: 256 }),
 });
 export const categoriesRelationships = relations(categories, ({ many }) => ({
@@ -27,10 +28,10 @@ export const categoriesRelationships = relations(categories, ({ many }) => ({
 export const products = createTable(
   "product",
   {
-    id: serial("id").primaryKey().notNull(),
-    name: varchar("name", { length: 256 }),
-    price: integer("price"),
-    categoryId: serial("category_id").references(() => categories.id),
+    id: idtype("id").primaryKey().notNull(),
+    name: varchar("name", { length: 256 }).unique(),
+    price: decimal("price"),
+    categoryId: idtype("category_id").references(() => categories.id),
   },
   (product) => ({
     categoryIdIdx: index("product_categoryId_idx").on(product.categoryId),
@@ -49,12 +50,13 @@ export const productsRelations = relations(products, ({ one, many }) => ({
 export const productsToSamples = createTable(
   "products_to_samples",
   {
-    productId: serial("product_id")
+    productId: idtype("product_id")
       .notNull()
       .references(() => products.id),
-    sampleId: integer("sample_id")
+    sampleId: idtype("sample_id")
       .notNull()
       .references(() => menuSamples.id),
+    quantity: integer("quantity").notNull(),
   },
   (t) => ({
     compoundKey: primaryKey({ columns: [t.productId, t.sampleId] }),
@@ -75,8 +77,9 @@ export const productsToSamplesRelations = relations(
 );
 
 export const menuSamples = createTable("menu_samples", {
-  id: serial("id").primaryKey().notNull(),
-  name: varchar("name", { length: 50 }),
+  id: idtype("id").primaryKey().notNull(),
+  name: varchar("name", { length: 50 }).unique(),
+  picture: varchar("picture", { length: 255 }),
 });
 export const menuSamplesRelations = relations(menuSamples, ({ many }) => ({
   products: many(productsToSamples),
@@ -85,9 +88,9 @@ export const statusEnum = pgEnum("status", ["draft", "on hold", "completed"]);
 export const orders = createTable(
   "order",
   {
-    id: serial("id").primaryKey().notNull(),
+    id: idtype("id").primaryKey().notNull(),
     name: varchar("name"),
-    totalPrice: decimal("totalPrice"),
+    totalPrice: decimal("total_price"),
     status: statusEnum("status"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     userId: varchar("userId")
@@ -105,14 +108,14 @@ export const ordersRelationships = relations(orders, ({ one, many }) => ({
 export const productstoOrders = createTable(
   "order_product",
   {
-    productId: serial("product_id")
+    productId: idtype("product_id")
       .notNull()
       .references(() => products.id),
-    orderId: serial("order_id")
+    orderId: idtype("order_id")
       .notNull()
       .references(() => orders.id),
     quantity: integer("quantity"),
-    totalPrice: integer("totalPrice"),
+    totalPrice: decimal("total_price"),
   },
   (pto) => ({
     compoundKey: primaryKey({

@@ -13,7 +13,7 @@ import Autoplay from "embla-carousel-autoplay";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { CardBody, CardContainer } from "./3d-card";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 
 export function CateringCarousel() {
   const router = useRouter();
@@ -36,7 +36,7 @@ export function CateringCarousel() {
       <CarouselContent>
         {sampleMenus.concat(sampleMenus).map(({ name, src }, index) => (
           <CarouselItem
-            key={nanoid()}
+            key={uuid()}
             className="hover:z-20 md:basis-1/2 lg:basis-1/3"
           >
             <CardContainer className="cursor-pointer border-4 border-white hover:z-20 ">

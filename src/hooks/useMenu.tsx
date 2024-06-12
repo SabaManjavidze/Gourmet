@@ -8,7 +8,7 @@ import {
   menuKeys,
   productsState,
 } from "menu";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import {
   Dispatch,
   ReactNode,
@@ -103,7 +103,7 @@ export const MenuProvider = ({
     const newMenu = [
       ...(menu[menuName] as any),
       ...products.map(({ name, price }) => {
-        return { id: nanoid(), name, price, quantity: 1, totalPrice: price };
+        return { id: uuid(), name, price, quantity: 1, totalPrice: price };
       }),
     ];
     setMenu((prev) => ({

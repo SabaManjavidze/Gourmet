@@ -1,5 +1,5 @@
 "use client";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import { MenuTemplate } from "../menu/_components/menu-template";
 import { Menu, menuKey, menuKeys } from "menu";
 import { useEffect, useMemo, useState } from "react";
@@ -80,7 +80,7 @@ export default function Catering() {
             closeModal={closeModal}
           />
           <MenuTemplate
-            key={nanoid()}
+            key={uuid()}
             name={currMenu}
             id="menu"
             header={

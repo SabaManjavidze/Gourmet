@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Modal } from "@/components/ui/modal";
 import { useMenu } from "@/hooks/useMenu";
 import { Menu, menuKey, menuKeys } from "menu";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
 
@@ -92,7 +92,7 @@ export function AddProductModal({
             {menuKeys.map((key) => (
               <Button
                 variant="outline"
-                key={nanoid()}
+                key={uuid()}
                 onClick={() => {
                   handleFilterClick(key);
                 }}
@@ -107,7 +107,7 @@ export function AddProductModal({
         <div className="mt-16 flex flex-col items-center overflow-y-auto">
           {Menu["Canape/Salads"].map((product) => (
             <button
-              key={nanoid()}
+              key={uuid()}
               className={`flex w-[90%] justify-between border border-t-transparent px-8 py-5 
             text-xl font-semibold duration-150 first:border-t-border hover:border-t 
             hover:!border-accent/50 hover:bg-accent/15 

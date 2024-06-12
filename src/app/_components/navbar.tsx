@@ -38,7 +38,7 @@ const routes = [
   },
   {
     title: "Contact Us",
-    route: "/#footer",
+    route: "",
   },
 ];
 export function Navbar() {
@@ -52,10 +52,10 @@ export function Navbar() {
   const mobileRoutes = ["Home", "About Us", "Menu"];
   const handleCloseAuthModal = () => setAuthOpen(false);
   return (
-    <nav className="bg-accent-light sticky top-0 z-40 flex h-16 items-center justify-between border-b px-10 max-lg:justify-center">
+    <nav className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-accent-light px-10 max-lg:justify-center">
       <NavDrawer open={open} closeDrawer={closeDrawer} />
       <AuthModal modalOpen={authOpen} closeModal={handleCloseAuthModal} />
-      <div className="logo border-accent-light absolute right-1/2 top-0 z-20 h-[120px] w-[145px] translate-x-1/2 border-[3px] border-t-0 bg-nav-logo bg-cover bg-center bg-no-repeat max-xl:hidden">
+      <div className="logo absolute right-1/2 top-0 z-20 h-[120px] w-[145px] translate-x-1/2 border-[3px] border-t-0 border-accent-light bg-nav-logo bg-cover bg-center bg-no-repeat max-xl:hidden">
         {/* <h3 className="logo-text absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full text-3xl font-bold uppercase ">
           Gourmet
         </h3> */}
@@ -83,6 +83,13 @@ export function Navbar() {
                     ? "text-base text-accent-foreground hover:text-orange-400"
                     : "",
                 )}
+                onClick={() => {
+                  if (title == "Contact Us") {
+                    document
+                      .getElementById("footer")
+                      ?.scrollIntoView({ behavior: "smooth" });
+                  }
+                }}
                 href={route}
               >
                 {route == pathname ? (

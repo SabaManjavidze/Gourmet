@@ -1,7 +1,7 @@
 "use client";
 import type { Dispatch } from "react";
 import React, { useState } from "react";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -73,7 +73,7 @@ export function OrderNowModal({
                   if (!item?.name) {
                     return (
                       <NameInputs
-                        key={nanoid()}
+                        key={uuid()}
                         title={item.title}
                         control={form.control}
                       />
@@ -113,7 +113,7 @@ export function OrderNowModal({
                   if (!item?.name) {
                     return (
                       <DateInputs
-                        key={nanoid()}
+                        key={uuid()}
                         control={form.control}
                         title={item.title}
                       />
@@ -156,7 +156,7 @@ export function OrderNowModal({
                     if (!item?.name) {
                       return (
                         <NameInputs
-                          key={nanoid()}
+                          key={uuid()}
                           title={item.title}
                           control={form.control}
                         />
@@ -164,7 +164,7 @@ export function OrderNowModal({
                     }
                     return (
                       <FormField
-                        key={nanoid()}
+                        key={uuid()}
                         control={form.control}
                         name={item.name}
                         render={({ field }) => (

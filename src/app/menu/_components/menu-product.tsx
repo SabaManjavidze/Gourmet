@@ -2,7 +2,7 @@ import { Input } from "@/components/ui/input";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { useMenu } from "@/hooks/useMenu";
 import type { MenuProduct, menuKey, productState } from "menu";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import { twMerge } from "tailwind-merge";
 
 const cls = "border border-t-0 border-l-0 w-full p-5";

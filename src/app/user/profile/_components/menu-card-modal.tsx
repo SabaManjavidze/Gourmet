@@ -1,7 +1,7 @@
 "use client";
 import type { Dispatch } from "react";
 import React, { useState } from "react";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";

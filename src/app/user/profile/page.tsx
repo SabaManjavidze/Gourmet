@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
-import { nanoid } from "nanoid";
+import { v4 as uuid } from "uuid";
 import error from "next/error";
 import { Button } from "@/components/ui/button";
 import { Tabs } from "@/components/ui/tabs";
@@ -199,7 +199,7 @@ export default function ProfilePage() {
           <div className="relative grid w-full grid-cols-3 gap-6 bg-white max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:px-8 max-sm:grid-cols-1">
             {drafts.map(({ details, title }) => (
               <MenuCard
-                key={nanoid()}
+                key={uuid()}
                 title={title}
                 onClick={() => setOpen(title)}
                 details={details}
@@ -217,7 +217,7 @@ export default function ProfilePage() {
           <div className="relative grid w-full grid-cols-3 gap-6 bg-white max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:px-8 max-sm:grid-cols-1">
             {drafts.concat(drafts).map(({ details, title }) => (
               <MenuCard
-                key={nanoid()}
+                key={uuid()}
                 title={title}
                 onClick={() => setOpen(title)}
                 details={details}
