@@ -1,7 +1,14 @@
 "use client";
 import { LanguageDropdown } from "@/components/language-dropdown";
 import { Button } from "@/components/ui/button";
-import { Loader2, LogIn, MenuIcon, UserCircle } from "lucide-react";
+import {
+  Loader2,
+  LogIn,
+  MenuIcon,
+  Phone,
+  PhoneCall,
+  UserCircle,
+} from "lucide-react";
 import Link from "next/link";
 import React, { useState } from "react";
 import { NavDrawer } from "./nav-drawer";
@@ -31,7 +38,7 @@ const routes = [
   },
   {
     title: "Contact Us",
-    route: "/contact-us",
+    route: "/#footer",
   },
 ];
 export function Navbar() {
@@ -45,10 +52,10 @@ export function Navbar() {
   const mobileRoutes = ["Home", "About Us", "Menu"];
   const handleCloseAuthModal = () => setAuthOpen(false);
   return (
-    <nav className="relative flex h-16 items-center justify-between border-b px-10 max-lg:justify-center">
+    <nav className="bg-accent-light sticky top-0 z-40 flex h-16 items-center justify-between border-b px-10 max-lg:justify-center">
       <NavDrawer open={open} closeDrawer={closeDrawer} />
       <AuthModal modalOpen={authOpen} closeModal={handleCloseAuthModal} />
-      <div className="logo absolute right-1/2 top-0 z-20 h-[120px] w-[145px] translate-x-1/2 border-[3px] border-t-0 border-white bg-nav-logo bg-cover bg-center bg-no-repeat max-xl:hidden">
+      <div className="logo border-accent-light absolute right-1/2 top-0 z-20 h-[120px] w-[145px] translate-x-1/2 border-[3px] border-t-0 bg-nav-logo bg-cover bg-center bg-no-repeat max-xl:hidden">
         {/* <h3 className="logo-text absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full text-3xl font-bold uppercase ">
           Gourmet
         </h3> */}
@@ -90,8 +97,11 @@ export function Navbar() {
       <h3 className="absolute right-5 max-md:text-sm max-sm:hidden lg:hidden">
         +995 597 555 266
       </h3>
-      <div className="flex items-center gap-x-10 max-lg:hidden ">
-        <h3>+995 597 555 266</h3>
+      <div className="flex items-center gap-x-10 *:!text-sm max-lg:hidden ">
+        <span className="flex items-center">
+          <PhoneCall className="mr-2" size={20} />
+          <h3 className="font-semibold tracking-tight">+995 597 555 266</h3>
+        </span>
         <LanguageDropdown />
         <div className="text-blue-gray-900 flex gap-2 sm:justify-center">
           {status === "loading" ? (

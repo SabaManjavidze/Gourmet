@@ -27,7 +27,7 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession(authOptions);
   return (
-    <html lang="en">
+    <html lang="en" style={{ scrollBehavior: "smooth" }}>
       <body className={`font-sans ${inter.variable}`}>
         <SessionProvider session={session}>
           <Navbar />

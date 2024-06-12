@@ -8,6 +8,7 @@ import React, {
   useContext,
   useRef,
   useEffect,
+  useMemo,
 } from "react";
 
 const MouseEnterContext = createContext<
@@ -25,14 +26,21 @@ export const CardContainer = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
+  const img = useMemo(() => {
+    if (containerRef.current) {
+      return containerRef.current.querySelector("img");
+    }
+  }, [containerRef.current]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
-    const { left, top, width, height } =
+    const { left, top, width, height, right } =
       containerRef.current.getBoundingClientRect();
     const x = (e.clientX - left - width / 2) / 15;
     const y = (e.clientY - top - height / 2) / 15;
     containerRef.current.style.transform = `rotateY(${x}deg) rotateX(${-y}deg)`;
+    if (!img) return;
+    img.style.objectPosition = `${x + 45}% ${y}%`;
   };
 
   const handleMouseEnter = (e: React.MouseEvent<HTMLDivElement>) => {

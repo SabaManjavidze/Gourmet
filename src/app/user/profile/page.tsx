@@ -4,10 +4,11 @@ import Image from "next/image";
 import { nanoid } from "nanoid";
 import error from "next/error";
 import { Button } from "@/components/ui/button";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { Tabs } from "@/components/ui/tabs";
 import { PaginationProvider } from "@/hooks/usePagination";
 import { MenuCard } from "./_components/menu-card";
 import { MenuCardModal } from "./_components/menu-card-modal";
+import { useSession } from "next-auth/react";
 
 const ICON_SIZE = 22;
 const drafts = [
@@ -172,13 +173,14 @@ const drafts = [
     ],
   },
 ];
-const tabs = ["My Drafts", "Order History"] as const;
-type tabKey = (typeof tabs)[number];
+// const tabs = ["My Drafts", "Order History"] as const;
+// type tabKey = (typeof tabs)[number];
 export default function ProfilePage() {
   const [open, setOpen] = useState<string | null>(null);
   const [addressOpen, setAddressOpen] = useState(false);
+  const { data: session } = useSession();
 
-  const [activeTab, setActiveTab] = useState<tabKey>("My Drafts");
+  // const [activeTab, setActiveTab] = useState<tabKey>("My Drafts");
 
   const fetchNextPage = () => {
     console.log("next page");
@@ -188,81 +190,65 @@ export default function ProfilePage() {
     setOpen(null);
   };
 
+  const tabs = [
+    {
+      title: "My Drafts",
+      value: "My Drafts",
+      content: (
+        <PaginationProvider fetchNextPage={fetchNextPage as any} pagesData={[]}>
+          <div className="relative grid w-full grid-cols-3 gap-6 bg-white max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:px-8 max-sm:grid-cols-1">
+            {drafts.map(({ details, title }) => (
+              <MenuCard
+                key={nanoid()}
+                title={title}
+                onClick={() => setOpen(title)}
+                details={details}
+              />
+            ))}
+          </div>
+        </PaginationProvider>
+      ),
+    },
+    {
+      title: "Order History",
+      value: "Order History",
+      content: (
+        <PaginationProvider fetchNextPage={fetchNextPage as any} pagesData={[]}>
+          <div className="relative grid w-full grid-cols-3 gap-6 bg-white max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:px-8 max-sm:grid-cols-1">
+            {drafts.concat(drafts).map(({ details, title }) => (
+              <MenuCard
+                key={nanoid()}
+                title={title}
+                onClick={() => setOpen(title)}
+                details={details}
+              />
+            ))}
+          </div>
+        </PaginationProvider>
+      ),
+    },
+  ];
+
   return (
     <div className="container flex min-h-screen w-full flex-col items-center bg-background px-3 pt-32 max-md:px-0 md:flex-row md:items-start lg:px-5">
-      {/* <EditDetailsModal isOpen={detailsOpen} setIsOpen={setDetailsOpen} />
-      <AddAddressModal isOpen={addressOpen} setIsOpen={setAddressOpen} /> */}
-
       <MenuCardModal open={!!open} closeModal={closeModal} />
       <div className="flex w-full flex-col items-center md:w-1/4 md:items-start">
         <div className="flex h-auto w-full flex-col items-center justify-start">
           <Image
-            src={"/imgs/saba.jpg"}
+            src={session?.user.image ?? "/imgs/saba.jpg"}
             width={180}
             height={180}
             quality={100}
-            className="h-[180px] rounded-full border-2 border-primary/70 object-cover"
+            className="h-[180px] rounded-full border-4 border-accent object-cover"
             alt="User Profile Picture"
           />
-          <h2 className="pt-3 text-3xl font-semibold">Saba Manjavidze</h2>
+          <h2 className="pt-3 text-3xl font-semibold">
+            {session?.user.name ?? "Saba Manjavidze"}
+          </h2>
         </div>
       </div>
-      <div className="mt-6 w-full md:mt-0 md:w-3/4">
-        <div className="flex w-full text-lg">
-          <Tabs
-            className="flex w-full flex-col items-center rounded-lg"
-            onValueChange={(value) => {
-              if (tabs.includes(value as tabKey)) {
-                setActiveTab(value as tabKey);
-              }
-            }}
-            defaultValue="My Drafts"
-            value={activeTab}
-          >
-            <TabsList className="table-title-gradient flex w-full justify-start rounded-lg bg-muted p-2 py-0 md:pl-0">
-              <TabsTrigger
-                key={nanoid()}
-                value={"My Drafts"}
-                className="sm:text-md rounded-l-lg border-primary-foreground/30 text-sm md:text-lg xl:text-xl"
-              >
-                My Drafts
-              </TabsTrigger>
-              <TabsTrigger
-                key={nanoid()}
-                value={"Order History"}
-                className="sm:text-md rounded-none border-primary-foreground/30 text-sm md:text-lg"
-              >
-                Order History
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="My Drafts" className="w-full pb-4">
-              <PaginationProvider
-                fetchNextPage={fetchNextPage as any}
-                pagesData={[]}
-              >
-                <div className="mt-5 grid grid-cols-4 gap-6 max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:px-8 max-sm:grid-cols-1">
-                  {drafts.map(({ details, title }) => (
-                    <MenuCard
-                      key={nanoid()}
-                      title={title}
-                      onClick={() => setOpen(title)}
-                      details={details}
-                    />
-                  ))}
-                </div>
-              </PaginationProvider>
-            </TabsContent>
-            <TabsContent value="Order History" className="w-full pb-4">
-              <div className="flex flex-col">
-                <div className="p-10">
-                  <div className="flex w-full items-center justify-between md:w-1/2">
-                    <h2 className="text-2xl font-medium">Order History</h2>
-                  </div>
-                </div>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+      <div className="relative flex w-full max-w-5xl flex-col items-start justify-start [perspective:1000px]">
+        <Tabs tabs={tabs} />
       </div>
     </div>
   );

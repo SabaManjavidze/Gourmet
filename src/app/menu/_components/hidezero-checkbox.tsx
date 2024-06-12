@@ -20,7 +20,7 @@ export function HideZeroCheckbox({
           />
           <label
             htmlFor="terms"
-            className="text-lg font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             Hide the products with zero quantity
           </label>
@@ -29,7 +29,7 @@ export function HideZeroCheckbox({
         <>
           <label
             htmlFor="terms"
-            className="text-lg font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             Hide the products with zero quantity
           </label>

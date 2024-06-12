@@ -16,12 +16,16 @@ import { ChevronDown } from "lucide-react";
 export function LanguageDropdown() {
   const languages = ["english", "georgian"] as const;
   const [lang, setLang] = useState<(typeof languages)[number]>("english");
+  const [open, setOpen] = useState(false);
   return (
-    <DropdownMenu>
+    <DropdownMenu open={open} onOpenChange={(o) => setOpen(o)}>
       <DropdownMenuTrigger asChild className="min-w-28">
-        <Button variant="outline" className="group flex justify-between px-2">
+        <Button
+          variant="ghost"
+          className={`hover:!bg-transparent hover:text-accent focus-visible:ring-0 focus-visible:ring-offset-0 ${open ? "text-accent" : ""} flex justify-between px-2`}
+        >
           <p>{Capitalize(lang)}</p>
-          <ChevronDown className="ml-2 duration-150 group-hover:text-accent" />
+          <ChevronDown className={"ml-2 duration-150 "} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56">
@@ -35,9 +39,13 @@ export function LanguageDropdown() {
             setLang(val as (typeof languages)[number]);
           }}
         >
-          {languages.map((lang) => (
-            <DropdownMenuRadioItem key={lang} value={lang}>
-              {Capitalize(lang)}
+          {languages.map((l) => (
+            <DropdownMenuRadioItem
+              className={`${l == lang ? "text-accent" : ""}`}
+              key={l}
+              value={l}
+            >
+              {Capitalize(l)}
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>

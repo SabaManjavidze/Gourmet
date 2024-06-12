@@ -28,7 +28,7 @@ export default function MenuPage() {
     <main className="mt-8">
       <div className="flex h-[500px] flex-col items-center justify-center bg-menu-banner bg-cover bg-center bg-no-repeat">
         <h1 className="text-shadow-sm font-lucida-bold text-8xl">Menu</h1>
-        <p className="mt-2 text-xl font-normal text-muted-foreground">
+        <p className="mt-2 text-xl font-normal text-blue-950/80">
           Explore, Customize, and Order Your Perfect Meal!
         </p>
       </div>
@@ -41,10 +41,10 @@ export default function MenuPage() {
                 key={nanoid()}
                 name={item}
                 header={
-                  idx == 0 && (
-                    <div className="mt-20">
+                  idx == 0 ? (
+                    <div className="mt-8">
                       <div className="flex items-center justify-center">
-                        <h3 className="text-2xl font-semibold text-gray-500">
+                        <h3 className="text-xl font-semibold text-gray-500">
                           Please Enter Number of Guests and Get Perfect Menu For
                           You
                         </h3>
@@ -55,12 +55,12 @@ export default function MenuPage() {
                         />
                       </div>
 
-                      <div className="mt-20 flex items-center justify-between px-3">
+                      <div className="mt-8 flex items-center justify-between px-3">
                         <HideZeroCheckbox iconSide="left" />
                         <ClearButton />
                       </div>
                     </div>
-                  )
+                  ) : undefined
                 }
                 footer={
                   idx == menuKeys.length - 1 && (

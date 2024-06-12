@@ -36,7 +36,10 @@ const config = {
       },
       backgroundImage: {
         "menu-banner": "url('/imgs/menu.png')",
+        rectangle: "url('/imgs/rectangle.png')",
         "sample-menus": "url('/imgs/sample-menus.png')",
+        vignete:
+          "radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0.3) 95%, rgba(0,212,255,0) 100%);",
         "footer-banner": "url(/imgs/footer.png)",
         "contact-us-banner": "url(/imgs/contact-us.jpg)",
         "nav-logo": "url(/imgs/logo.png)",
@@ -76,6 +79,7 @@ const config = {
         accent: {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
+          light: "hsl(var(--accent-light))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",

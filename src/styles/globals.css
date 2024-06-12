@@ -16,8 +16,9 @@
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
 
-    --accent: 22 81% 68%;
+    --accent: 21 81% 68%;
     --accent-foreground: 22 81% 68%;
+    --accent-light: 21 28% 95%;
 
     --secondary: 43 99% 73%;
     --secondary-foreground: 32 29% 42%;
@@ -68,6 +69,10 @@
 }
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   /* width */
   ::-webkit-scrollbar {
     width: 5px;

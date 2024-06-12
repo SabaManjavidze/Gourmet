@@ -35,10 +35,8 @@ const ProfileButton = ({
               src={userPicture}
               width={35}
               height={35}
-              className={`rounded-full border-2 object-cover ${
-                pathname == PROFILE_ROUTE
-                  ? "border-yellow-300"
-                  : "border-primary"
+              className={`rounded-full border-[3px] object-cover ${
+                pathname == PROFILE_ROUTE ? "border-accent" : "border-primary"
               }`}
               alt="user profile image"
             />

@@ -14,9 +14,11 @@ export function MenuTemplate({
   header,
   footer,
   className = "",
+  id = "",
 }: {
   name: menuKey;
   className?: string;
+  id?: string;
   header?: ReactNode;
   footer?: ReactNode;
 }) {
@@ -31,8 +33,8 @@ export function MenuTemplate({
           {name}
         </h3>
       </div>
-      {header ?? <div className="mt-16"></div>}
-      <ul className="mt-16 flex w-full flex-col">
+      {header ?? <div className="mt-10"></div>}
+      <ul id={id} className="flex w-full flex-col pt-8">
         {menu[name]?.map((product, idx) => {
           return idx == 0 ? (
             <li

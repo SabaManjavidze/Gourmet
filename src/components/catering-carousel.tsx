@@ -24,7 +24,7 @@ export function CateringCarousel() {
         align: "start",
         loop: true,
       }}
-      className="w-[90%] px-24 max-sm:w-full"
+      className="max-h-[515px] w-[90%] px-24 max-sm:w-full"
     >
       <CarouselContent>
         {sampleMenus.map(({ name, src }, index) => (
@@ -33,7 +33,7 @@ export function CateringCarousel() {
             className="px-6 hover:z-20 md:basis-1/2 lg:basis-1/3 "
           >
             <CardContainer className="cursor-pointer border-4 border-white hover:z-20 ">
-              <CardBody className="relative flex aspect-square items-center justify-center p-6 duration-200 hover:scale-125 ">
+              <CardBody className="relative flex aspect-square items-center justify-center p-6 duration-200 hover:scale-[1.120] ">
                 <Image
                   src={src}
                   alt=""
