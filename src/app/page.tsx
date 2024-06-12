@@ -3,10 +3,11 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { NavDrawer } from "./_components/nav-drawer";
+import UserReviewsMarquee from "@/components/user-reviews/user-reviews-marquee";
 
 export default async function Home() {
   return (
-    <main className="*:mt-16">
+    <main className="*:mt-20">
       <section className="relative !mt-0 flex h-[70vh] flex-col items-center justify-center gap-y-3 bg-welcome-banner bg-cover bg-center bg-no-repeat text-center max-md:bg-[10%]">
         <div className="absolute inset-0 bg-black/10" />
         <div
@@ -65,6 +66,9 @@ export default async function Home() {
             Contact Now
           </Button>
         </div>
+      </section>
+      <section>
+        <UserReviewsMarquee />
       </section>
     </main>
   );

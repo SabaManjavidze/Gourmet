@@ -6,8 +6,9 @@ import { Modal } from "@/components/ui/modal";
 import { useMenu } from "@/hooks/useMenu";
 import { Menu, menuKey, menuKeys } from "menu";
 import { v4 as uuid } from "uuid";
-import { useState } from "react";
-import { twMerge } from "tailwind-merge";
+import { KeyboardEvent, KeyboardEventHandler, useState } from "react";
+import { appRouter } from "@/server/api/root";
+import { api } from "@/trpc/react";
 
 export function AddProductModal({
   open,
@@ -18,6 +19,7 @@ export function AddProductModal({
   menuSample: menuKey;
   closeModal: () => void;
 }) {
+  const { mutateAsync: search } = api.product.search.useMutation();
   const [filter, setFilter] = useState<menuKey | "">("");
   const handleFilterClick = (name: menuKey) => {
     setFilter(name);
@@ -48,6 +50,14 @@ export function AddProductModal({
   };
   const cls =
     "fixed bottom-8 right-1/2 flex w-1/2 translate-x-1/2 justify-between bg-transparent";
+  const handleKeyDown = async (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key == "Enter") {
+      const results = await search({
+        query: e.currentTarget.value,
+      });
+      console.log(results);
+    }
+  };
   return (
     <Modal
       isOpen={open}
@@ -87,6 +97,7 @@ export function AddProductModal({
           <Input
             placeholder="Search Products..."
             className="w-full border-black/20 py-6 text-xl"
+            onKeyDown={handleKeyDown}
           />
           <div className="mt-2 flex max-w-[890px] justify-around gap-x-2 overflow-x-auto">
             {menuKeys.map((key) => (

@@ -5,15 +5,19 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
+import { products } from "@/server/db/schema";
+import { db } from "@/server/db";
+import { eq, like } from "drizzle-orm";
 
-export const postRouter = createTRPCRouter({
-  // hello: publicProcedure
-  //   .input(z.object({ text: z.string() }))
-  //   .query(({ input }) => {
-  //     return {
-  //       greeting: `Hello ${input.text}`,
-  //     };
-  //   }),
+export const productRouter = createTRPCRouter({
+  search: publicProcedure
+    .input(z.object({ query: z.string().min(2) }))
+    .mutation(async ({ input: { query } }) => {
+      return await db
+        .select()
+        .from(products)
+        .where(like(products.name, `%${query}%`));
+    }),
   // create: protectedProcedure
   //   .input(z.object({ name: z.string().min(1) }))
   //   .mutation(async ({ ctx, input }) => {

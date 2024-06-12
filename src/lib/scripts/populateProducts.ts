@@ -29,8 +29,7 @@ const pds = {
 };
 async function main() {
   const entries = Object.entries(pds);
-  for (let i = 0; i < entries.length; i++) {
-    const [name, price] = entries[i] as [string, number];
+  for (const [name, price] of entries) {
     await db.insert(products).values({
       name,
       price: price.toString(),
