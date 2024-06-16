@@ -18,7 +18,7 @@ import { useSession } from "next-auth/react";
 import AuthModal from "./auth-modal";
 import ProfileButton from "./profile-button";
 
-const routes = [
+export const navRoutes = [
   {
     title: "Home",
     route: "/",
@@ -40,38 +40,43 @@ const routes = [
     title: "Contact Us",
     route: "",
   },
-];
+] as const;
+export const mobileRoutes = [
+  "Home",
+  "Catering",
+  "Menu",
+] as (typeof navRoutes)[number]["title"][];
 export function Navbar() {
   const [open, setOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const pathname = usePathname();
   const { data: session, status } = useSession();
-  const closeDrawer = () => {
-    setOpen(false);
-  };
-  const mobileRoutes = ["Home", "About Us", "Menu"];
   const handleCloseAuthModal = () => setAuthOpen(false);
   return (
     <nav className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-accent-light px-10 max-lg:justify-center">
-      <NavDrawer open={open} closeDrawer={closeDrawer} />
+      <div className="absolute left-5 lg:hidden">
+        <NavDrawer
+          triggerButton={
+            <Button
+              variant={"outline"}
+              className="rounded-xl border-2 border-border p-2 duration-150"
+              onClick={() => setOpen(true)}
+            >
+              <MenuIcon />
+            </Button>
+          }
+        />
+      </div>
       <AuthModal modalOpen={authOpen} closeModal={handleCloseAuthModal} />
       <div className="logo absolute right-1/2 top-0 z-20 h-[120px] w-[145px] translate-x-1/2 border-[3px] border-t-0 border-accent-light bg-nav-logo bg-cover bg-center bg-no-repeat max-xl:hidden">
         {/* <h3 className="logo-text absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full text-3xl font-bold uppercase ">
           Gourmet
         </h3> */}
       </div>
-      <div className="absolute left-5 top-1/2 -translate-y-1/2 lg:hidden">
-        <Button
-          variant={"outline"}
-          className="border-2 p-2 duration-150 hover:text-accent-foreground"
-          onClick={() => setOpen(true)}
-        >
-          <MenuIcon />
-        </Button>
-      </div>
+      <div className="absolute left-5 top-1/2 -translate-y-1/2 lg:hidden"></div>
       <div>
         <ul className="flex gap-x-10 font-medium">
-          {routes.map(({ route, title }, idx) => (
+          {navRoutes.map(({ route, title }, idx) => (
             <li
               key={idx}
               className={`${mobileRoutes.includes(title) ? "block" : "max-xl:!hidden"}`}

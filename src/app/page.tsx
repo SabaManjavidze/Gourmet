@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
 import { NavDrawer } from "./_components/nav-drawer";
-import UserReviewsMarquee from "@/components/user-reviews/user-reviews-marquee";
+import UserReviewsCarousel from "@/components/user-reviews/user-reviews-carousel";
 
 export default async function Home() {
   return (
@@ -11,8 +11,8 @@ export default async function Home() {
       <section className="relative !mt-0 flex h-[70vh] flex-col items-center justify-center gap-y-3 bg-welcome-banner bg-cover bg-center bg-no-repeat text-center max-md:bg-[10%]">
         <div className="absolute inset-0 bg-black/10" />
         <div
-          className="bg-vignete absolute right-1/2
-         top-1/2 h-[300px] w-[1050px] -translate-y-1/2 translate-x-1/2  rounded-[70px] opacity-50 blur-3xl"
+          className="absolute right-1/2 top-1/2
+         h-[300px] w-[1050px]  -translate-y-1/2 translate-x-1/2 rounded-[70px] bg-vignete  opacity-50 blur-3xl max-lg:w-[600px] max-md:w-[400px]"
         ></div>
         <h1 className="z-10 font-lucida-bold text-7xl italic text-white max-md:text-5xl max-sm:text-3xl">
           Welcome to Gourmet
@@ -27,7 +27,7 @@ export default async function Home() {
         <p className="mt-2 text-secondary-foreground max-sm:px-6 max-sm:text-center">
           indulge in a symphony of flavors, where every dish is a masterpiece
         </p>
-        <div className="flex w-full justify-center max-lg:px-20">
+        <div className="flex w-full justify-center max-lg:px-20 max-sm:px-16">
           <CateringCarousel />
         </div>
       </section>
@@ -67,8 +67,11 @@ export default async function Home() {
           </Button>
         </div>
       </section>
-      <section>
-        <UserReviewsMarquee />
+      <section className="flex flex-col items-center justify-center">
+        <h2 className="text-4xl font-semibold uppercase">User Reviews</h2>
+        <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
+          <UserReviewsCarousel />
+        </div>
       </section>
     </main>
   );

@@ -1,7 +1,17 @@
 import { cn } from "@/lib/utils";
 import Marquee from "@/components/magicui/marquee";
 import { Star } from "lucide-react";
-import { v4 } from "uuid";
+import { v4 as uuid } from "uuid";
+import { sampleMenus } from "menu";
+import { CardContainer, CardBody } from "../3d-card";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselPrevious,
+  CarouselNext,
+} from "@/components/ui/carousel";
+import Image from "next/image";
 
 const reviews = [
   {
@@ -58,7 +68,7 @@ const ReviewCard = ({
   return (
     <figure
       className={cn(
-        "relative w-64 cursor-pointer overflow-hidden rounded-xl border p-4 duration-150 hover:scale-105",
+        "relative h-52 max-h-56 w-64 cursor-pointer overflow-hidden rounded-xl border p-4 duration-150 hover:scale-105",
         // light styles
         "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
         // dark styles
@@ -81,7 +91,7 @@ const ReviewCard = ({
             <span className="flex font-medium dark:text-white/40">
               {[...Array(5)].map((val) => (
                 <Star
-                  key={v4()}
+                  key={uuid()}
                   size={12}
                   className="fill-yellow-400 text-yellow-400"
                 />
@@ -120,22 +130,44 @@ const ReviewCard = ({
       <blockquote className="mt-4 overflow-hidden text-ellipsis [-webkit-box-orient:vertical] [-webkit-line-clamp:4] [display:-webkit-box] hover:flex hover:max-h-[90px] hover:overflow-y-auto">
         {body}
       </blockquote>
+      <p className="absolute bottom-2 text-sm text-muted-foreground">
+        12/02/2024
+      </p>
     </figure>
   );
 };
 
-const UserReviewsMarquee = () => {
+const UserReviewsCarousel = () => {
   return (
-    <div className="relative flex h-full w-full flex-col items-center justify-center overflow-hidden rounded-lg border bg-background py-4 md:shadow-xl">
-      <Marquee className="[--duration:30s]">
-        {firstRow.map((review) => (
-          <ReviewCard key={review.username} {...review} />
+    <Carousel
+      opts={{
+        align: "center",
+        loop: true,
+      }}
+      className="max-w-[75%] px-5 max-md:px-0 max-sm:w-full"
+    >
+      <CarouselContent className="flex h-56 items-center">
+        {reviews.concat(reviews).map(({ body, img, username, name }, index) => (
+          <CarouselItem
+            key={uuid()}
+            className="flex justify-center hover:z-20 max-md:basis-full md:basis-1/2 lg:basis-1/3 2xl:basis-1/5"
+          >
+            <ReviewCard body={body} img={img} name={name} username={username} />
+          </CarouselItem>
         ))}
-      </Marquee>
-      <div className="pointer-events-none absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-white dark:from-background"></div>
-      <div className="pointer-events-none absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-white dark:from-background"></div>
-    </div>
+      </CarouselContent>
+      <CarouselPrevious
+        variant={"outline-white"}
+        className="h-12 w-12 max-md:h-8 max-md:w-8"
+        iconStyle="h-6 w-6"
+      />
+      <CarouselNext
+        variant={"outline-white"}
+        className="h-12 w-12 max-md:h-8 max-md:w-8"
+        iconStyle="h-6 w-6"
+      />
+    </Carousel>
   );
 };
 
-export default UserReviewsMarquee;
+export default UserReviewsCarousel;

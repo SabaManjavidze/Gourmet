@@ -24,9 +24,11 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-primary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-black/5 hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        text: "p-0 hover:text-accent-foreground",
       },
       size: {
         default: "h-10 px-4 py-2",
+        auto: "h-auto w-auto",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         xl: "h-12 rounded-md px-16",
@@ -70,7 +72,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        <div className="inline-flex w-full items-center justify-center">
+        <div className="inline-flex w-fit items-center justify-center">
           <div
             className={`${
               isLoading ? "opacity-0" : "opacity-100"

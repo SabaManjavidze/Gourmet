@@ -25,22 +25,25 @@ export function CateringCarousel() {
   }, []);
   return (
     <Carousel
-      plugins={[autoplay as any]}
+      // plugins={[autoplay as any]}
       opts={{
         align: "center",
         loop: true,
         active: true,
       }}
-      className="w-[90%] px-12 max-sm:w-full"
+      className="w-[90%] px-12 max-md:w-full max-md:px-0"
     >
       <CarouselContent>
         {sampleMenus.concat(sampleMenus).map(({ name, src }, index) => (
           <CarouselItem
             key={uuid()}
-            className="hover:z-20 md:basis-1/2 lg:basis-1/3"
+            className="hover:z-20 max-lg:basis-full lg:basis-1/2 2xl:basis-1/3"
           >
-            <CardContainer className="cursor-pointer border-4 border-white hover:z-20 ">
-              <CardBody className="relative flex aspect-square items-center justify-center p-6 duration-200 hover:scale-[1.120] ">
+            <CardContainer className="cursor-pointer border-4 border-white hover:z-20">
+              <CardBody
+                className="relative flex aspect-square items-center justify-center 
+              p-6 duration-200 hover:scale-[1.120] max-md:h-64 max-md:w-64 max-sm:h-60 max-sm:w-60"
+              >
                 <Image
                   src={src}
                   alt=""
@@ -68,12 +71,12 @@ export function CateringCarousel() {
       </CarouselContent>
       <CarouselPrevious
         variant={"outline-white"}
-        className="h-12 w-12"
+        className="h-12 w-12 max-md:h-8 max-md:w-8"
         iconStyle="h-6 w-6"
       />
       <CarouselNext
         variant={"outline-white"}
-        className="h-12 w-12"
+        className="h-12 w-12 max-md:h-8 max-md:w-8"
         iconStyle="h-6 w-6"
       />
     </Carousel>

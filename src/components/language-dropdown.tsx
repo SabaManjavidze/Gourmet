@@ -12,8 +12,9 @@ import {
 } from "./ui/dropdown-menu";
 import { Capitalize } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
+import { twMerge } from "tailwind-merge";
 
-export function LanguageDropdown() {
+export function LanguageDropdown({ className = "" }: { className?: string }) {
   const languages = ["english", "georgian"] as const;
   const [lang, setLang] = useState<(typeof languages)[number]>("english");
   const [open, setOpen] = useState(false);
@@ -21,8 +22,12 @@ export function LanguageDropdown() {
     <DropdownMenu open={open} onOpenChange={(o) => setOpen(o)}>
       <DropdownMenuTrigger asChild className="min-w-28">
         <Button
-          variant="ghost"
-          className={`hover:!bg-transparent hover:text-accent focus-visible:ring-0 focus-visible:ring-offset-0 ${open ? "text-accent" : ""} flex justify-between px-2`}
+          variant="text"
+          size={"auto"}
+          className={twMerge(
+            `hover:!bg-transparent hover:text-accent focus-visible:ring-0 focus-visible:ring-offset-0 ${open ? "text-accent" : ""} flex justify-between px-2`,
+            className,
+          )}
         >
           <p>{Capitalize(lang)}</p>
           <ChevronDown className={"ml-2 duration-150 "} />

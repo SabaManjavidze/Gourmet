@@ -21,7 +21,7 @@ export default function AuthModal({
   };
   return (
     <Modal isOpen={modalOpen} title="Sign In" closeModal={closeModal}>
-      <div className="flex flex-col items-center justify-center p-24 py-16">
+      <div className="flex flex-col items-center justify-center md:p-24 md:py-16">
         <Button
           onClick={() => logIn("google")}
           //   isLoading={loading == "google"}
