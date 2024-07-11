@@ -4,16 +4,18 @@ import { useMenu } from "@/hooks/useMenu";
 import type { MenuProduct, menuKey, productState } from "menu";
 import { v4 as uuid } from "uuid";
 import { twMerge } from "tailwind-merge";
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
 
 const cls = "border border-t-0 border-l-0 w-full p-5";
 export function MenuProduct({
   product,
   menuSample,
 }: {
-  menuSample: menuKey;
+  menuSample: string;
   product: productState;
 }) {
-  const { changeQuantity, hideZeroQt } = useMenu();
+  const { changeQuantity, hideZeroQt, changeVariant } = useMenu();
   return (
     <li
       // hidden={product.quantity == 0}
@@ -21,28 +23,62 @@ export function MenuProduct({
       w-full justify-between text-center text-lg font-medium 
       max-lg:text-base max-md:text-sm`}
     >
-      <div className="w-1/2 max-sm:w-2/5 max-xs:w-1/4">
+      <div className="w-1/2 flex-col max-sm:w-2/5 max-xs:w-1/4">
         <p
           className={twMerge(
             cls,
-            "h-full overflow-hidden whitespace-nowrap border-l text-start",
+            `${product.variants?.length ? "border-b-0 pb-2" : ""} overflow-hidden whitespace-nowrap border-l text-start`,
           )}
         >
-          {product.name}
+          {product.active == product.id
+            ? product.name
+            : product?.variants?.find((v) => v.id == product.active)?.name ??
+              "No variant"}
         </p>
+        {product?.variants?.length ? (
+          <ul className="flex gap-x-3 overflow-x-auto border border-t-0 px-4 pb-2">
+            <li key={product.id}>
+              <Button
+                variant={"outline-accent"}
+                onClick={() =>
+                  changeVariant(menuSample, product.id, product.id)
+                }
+                className={`h-8 rounded-xl text-xs text-foreground ${product.active == product.id ? "bg-accent/30" : ""}`}
+              >
+                {product.name}
+              </Button>
+            </li>
+            {product.variants?.map((variant) => (
+              <li key={variant.id}>
+                <Button
+                  variant={"outline-accent"}
+                  onClick={() =>
+                    changeVariant(menuSample, product.id, variant.id)
+                  }
+                  className={`${product.active == variant.id ? "bg-accent/30" : ""} h-8 rounded-xl text-xs text-foreground`}
+                >
+                  {variant.name}
+                </Button>
+              </li>
+            ))}
+          </ul>
+        ) : null}
       </div>
       <div className="flex w-1/2 justify-between max-sm:w-3/5 max-xs:w-3/4">
-        <p className={cls}>{product.price}</p>
+        <p className={twMerge(cls, "flex items-center justify-center")}>
+          {product.price}
+        </p>
         <Input
           type="number"
           min={0}
-          onChange={(e) =>
+          onChange={(e) => {
             changeQuantity(
               menuSample,
               product.id,
               Number(e.currentTarget.value),
-            )
-          }
+            );
+            console.log(Number(e.currentTarget.value));
+          }}
           value={product.quantity}
           className={twMerge(
             cls,

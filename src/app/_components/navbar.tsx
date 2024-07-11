@@ -114,7 +114,9 @@ export function Navbar() {
           <PhoneCall className="mr-2" size={20} />
           <h3 className="font-semibold tracking-tight">+995 597 555 266</h3>
         </span>
-        <LanguageDropdown />
+        <div className="flex justify-center">
+          <LanguageDropdown />
+        </div>
         <div className="text-blue-gray-900 flex gap-2 sm:justify-center">
           {status === "loading" ? (
             <Loader2 className="text-primary-foreground" />

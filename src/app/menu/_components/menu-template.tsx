@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
+import { RouterOutputs } from "@/trpc/react";
 
 export function MenuTemplate({
   name,
@@ -15,8 +16,10 @@ export function MenuTemplate({
   footer,
   className = "",
   id = "",
+  products = [],
 }: {
-  name: menuKey;
+  name: string;
+  products: RouterOutputs["sampleMenu"]["getMainMenu"][string];
   className?: string;
   id?: string;
   header?: ReactNode;
@@ -58,7 +61,7 @@ export function MenuTemplate({
               </div>
             </li>
           ) : (
-            <MenuProduct key={uuid()} product={product} menuSample={name} />
+            <MenuProduct key={product.id} product={product} menuSample={name} />
           );
         })}
       </ul>

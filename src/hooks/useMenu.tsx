@@ -1,13 +1,6 @@
 "use client";
 import { MenuToState } from "@/lib/utils";
-import {
-  Menu,
-  MenuProduct,
-  MenuState,
-  menuKey,
-  menuKeys,
-  productsState,
-} from "menu";
+import { MenuProduct, MenuState } from "menu";
 import { v4 as uuid } from "uuid";
 import {
   Dispatch,
@@ -19,6 +12,7 @@ import {
   useMemo,
   useState,
 } from "react";
+import { RouterOutputs } from "@/trpc/react";
 
 type MenuContextProps = {
   menu: MenuState;
@@ -26,9 +20,14 @@ type MenuContextProps = {
   hideZeroQt: boolean;
   setHideZeroQt: Dispatch<SetStateAction<boolean>>;
   clearQuantities: () => void;
-  addProduct: (menuSample: menuKey, product: MenuProduct[]) => void;
+  addProduct: (menuSample: string, product: MenuProduct[]) => void;
+  changeVariant: (
+    menuSample: string,
+    productId: string,
+    variantId: string,
+  ) => void;
   changeQuantity: (
-    menuSample: menuKey,
+    menuSample: string,
     productId: string,
     quantity: number,
   ) => void;
@@ -40,6 +39,7 @@ export const MenuContext = createContext<MenuContextProps>({
   setHideZeroQt: () => false,
   clearQuantities: () => null,
   changeQuantity: () => null,
+  changeVariant: () => null,
   addProduct: () => null,
 });
 export const useMenu = () => useContext(MenuContext);
@@ -48,7 +48,7 @@ export const MenuProvider = ({
   dbMenu,
   children,
 }: {
-  dbMenu: Menu;
+  dbMenu: RouterOutputs["sampleMenu"]["getMainMenu"];
   children: ReactNode;
 }) => {
   const [menu, setMenu] = useState<MenuState>({});
@@ -60,7 +60,7 @@ export const MenuProvider = ({
   }, [dbMenu]);
   const totalSum = useMemo(() => {
     if (!menu) return 0;
-    return (Object.keys(menu) as menuKey[]).reduce((prev, curr) => {
+    return Object.keys(menu).reduce((prev, curr) => {
       if (!menu?.[curr]) return prev;
       return (
         prev +
@@ -72,8 +72,25 @@ export const MenuProvider = ({
       );
     }, 0);
   }, [menu]);
+  const changeVariant = (
+    menuSample: string,
+    productId: string,
+    variantId: string,
+  ) => {
+    const newMenuSample = menu[menuSample]?.map((product) => {
+      if (product.id == productId) {
+        return {
+          ...product,
+          active: variantId,
+        };
+      }
+      return product;
+    });
+    if (!newMenuSample) throw new Error("Product not found");
+    setMenu((prev) => ({ ...prev, [menuSample]: newMenuSample }));
+  };
   const changeQuantity = (
-    menuSample: menuKey,
+    menuSample: string,
     productId: string,
     quantity: number,
   ) => {
@@ -87,18 +104,20 @@ export const MenuProvider = ({
       }
       return product;
     });
+    if (!newMenuSample) throw new Error("Product not found");
     setMenu((prev) => ({ ...prev, [menuSample]: newMenuSample }));
   };
   const clearQuantities = () => {
     const newMenu: MenuState = {};
-    (Object.keys(menu) as menuKey[]).forEach((key) => {
+    Object.keys(menu).forEach((key) => {
+      if (!menu[key]) return null;
       newMenu[key] = menu[key]?.map((prod) => {
         return { ...prod, quantity: 0, totalPrice: 0 };
       });
     });
     setMenu(newMenu);
   };
-  const addProduct = (menuName: menuKey, products: MenuProduct[]) => {
+  const addProduct = (menuName: string, products: MenuProduct[]) => {
     if (!menu?.[menuName]) return null;
     const newMenu = [
       ...(menu[menuName] as any),
@@ -117,6 +136,7 @@ export const MenuProvider = ({
         menu,
         totalSum,
         changeQuantity,
+        changeVariant,
         clearQuantities,
         addProduct,
         hideZeroQt,

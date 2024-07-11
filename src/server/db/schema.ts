@@ -10,6 +10,7 @@ import {
   date,
   pgEnum,
   text,
+  boolean,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
@@ -29,14 +30,19 @@ export const products = createTable(
   "product",
   {
     id: idtype("id").primaryKey().notNull(),
-    name: varchar("name", { length: 256 }).unique(),
-    price: decimal("price"),
+    name: varchar("name", { length: 256 }).unique().notNull(),
+    price: decimal("price").notNull(),
     categoryId: idtype("category_id").references(() => categories.id),
+    categoryName: varchar("category_name", { length: 256 }),
   },
   (product) => ({
     categoryIdIdx: index("product_categoryId_idx").on(product.categoryId),
   }),
 );
+export const variants = createTable("variant", {
+  id: idtype("id").primaryKey().notNull(),
+  name: varchar("name", { length: 256 }).unique(),
+});
 
 export const productsRelations = relations(products, ({ one, many }) => ({
   samples: many(productsToSamples),
@@ -47,6 +53,20 @@ export const productsRelations = relations(products, ({ one, many }) => ({
   orders: many(productstoOrders),
 }));
 
+export const productsToVariants = createTable(
+  "products_to_variants",
+  {
+    productId: idtype("product_id")
+      .notNull()
+      .references(() => products.id),
+    variantId: idtype("variant_id")
+      .notNull()
+      .references(() => variants.id),
+  },
+  (t) => ({
+    compoundKey: primaryKey({ columns: [t.productId, t.variantId] }),
+  }),
+);
 export const productsToSamples = createTable(
   "products_to_samples",
   {
@@ -57,6 +77,9 @@ export const productsToSamples = createTable(
       .notNull()
       .references(() => menuSamples.id),
     quantity: integer("quantity").notNull(),
+    variant_name: varchar("variant_name", { length: 255 }).references(
+      () => variants.name,
+    ),
   },
   (t) => ({
     compoundKey: primaryKey({ columns: [t.productId, t.sampleId] }),

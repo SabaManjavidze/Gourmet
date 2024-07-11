@@ -62,9 +62,8 @@ export function NavDrawer({
                 src={session.user.image as string}
                 width={65}
                 height={65}
-                className={`rounded-full border-[3px] object-cover ${
-                  pathname == PROFILE_ROUTE ? "border-accent" : "border-primary"
-                }`}
+                className={`rounded-full border-[3px] object-cover ${pathname == PROFILE_ROUTE ? "border-accent" : "border-primary"
+                  }`}
                 alt="user profile image"
               />
               <h3 className="text-lg font-bold">{session.user.name}</h3>
@@ -133,9 +132,6 @@ export function NavDrawer({
           )}
         </SheetHeader>
         <div className="grid py-4">
-          <div className="flex items-center justify-start">
-            <LanguageDropdown className="mt-3 justify-start p-0 text-base first:!w-auto" />
-          </div>
           <ul className="mt-3 flex flex-col gap-y-2 font-medium">
             {routes.map(({ title, route }, idx) => (
               <li key={idx}>
@@ -167,8 +163,14 @@ export function NavDrawer({
 
           <span className="mt-3 flex items-center font-semibold">
             <h3 className="tracking-tight">+995 597 555 266</h3>
-            <PhoneCall className="ml-2" size={20} />
+            <PhoneCall className="ml-2" size={15} />
           </span>
+        </div>
+        <div className="flex items-center justify-start">
+          <LanguageDropdown
+            iconSize={20}
+            className="mt-0 justify-start p-0 text-sm first:!w-auto"
+          />
         </div>
 
         <SheetFooter className="absolute bottom-5 left-5">

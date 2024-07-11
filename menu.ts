@@ -1,6 +1,6 @@
 import { MenuProduct } from "@/app/menu/_components/menu-product";
 
-export const Menu = {
+const Menu = {
   "Main Course": [
     { name: "khachapuri", price: 3.0 },
     { name: "megruli khachapuri", price: 3.0 },
@@ -187,20 +187,22 @@ export type Menu = {
   [key in keyof typeof Menu]?: MenuProduct[];
 };
 export type MenuState = {
-  [key in keyof typeof Menu]?: productState[];
+  [key: string]: productState[];
 };
 export type menuKey = keyof typeof Menu;
 
 export type productState = MenuProduct & {
-  id: string;
   totalPrice: number;
   quantity: number;
+  active?: string;
 };
 
 export interface productsState {
   [productId: string]: MenuProduct & { totalPrice: number; quantity: number };
 }
 export type MenuProduct = {
+  id: string;
   name: string;
   price: number;
+  variants?: MenuProduct[];
 };

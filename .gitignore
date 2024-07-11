@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# scripts
+/src/lib/scripts
+
 # database
 /src/server/db/migrations
 

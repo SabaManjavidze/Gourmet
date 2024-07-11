@@ -1,6 +1,6 @@
-import { cn } from "@/lib/utils";
+import { cn, limitTxt } from "@/lib/utils";
 import Marquee from "@/components/magicui/marquee";
-import { Star } from "lucide-react";
+import { Star, StarOff } from "lucide-react";
 import { v4 as uuid } from "uuid";
 import { sampleMenus } from "menu";
 import { CardContainer, CardBody } from "../3d-card";
@@ -12,61 +12,84 @@ import {
   CarouselNext,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import Link from "next/link";
 
 const reviews = [
   {
-    name: "Jack",
-    username: "@jack",
-    body: "I've never seen anything like this before. It's amazing. I love it.",
-    img: "https://avatar.vercel.sh/jack",
+    name: "Tamar Gelashvili",
+    body: "Great Desserts, Excellent Staff and nice indoors seating area. I have only tried their cakes and they are always new and well prepared. I hope they will continue this way.",
+    rating: 5,
+    img: "/imgs/reviews/Tamar Gelashvili.png",
+    url: "https://maps.app.goo.gl/habwA8Lra2WRex6u6",
   },
   {
-    name: "Jill",
-    username: "@jill",
-    body: "I'm at a loss for words. This is amazing. I love it.I'm at a loss for words. This is amazing. I love it.I'm at a loss for words. This is amazing. I love it.I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jill",
+    name: "Julia",
+    body: "The interior looks normal, but dessers are wonderful! Good general food(by weight) Tasty desserts and coffee",
+    img: "/imgs/reviews/Julia.png",
+    rating: 5,
+    url: "https://maps.app.goo.gl/gW3FhZshGRuNePzg8",
   },
   {
-    name: "John",
-    username: "@john",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/john",
+    name: "Tale Of",
+    body: "Addictive cakes! Just wow! After one slice you'll like to try all the others! I wished there was a metro station in front of this lovely bar so I could go having breakfast there everyday!!",
+    rating: 5,
+    img: "/imgs/reviews/Tale Of.png",
+    url: "https://maps.app.goo.gl/4MHYc5zyRvsp38Er7",
   },
   {
-    name: "Jane",
-    username: "@jane",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jane",
+    name: "Giorgi Karkashadze",
+    rating: 4,
+    body: "Better than most places of similar style, but still lack of choice, and too many things are made with mayo",
+    img: "/imgs/reviews/Giorgi Karkashadze.png",
+    url: "https://maps.app.goo.gl/mTwXij1xqnURG1hX6",
   },
   {
-    name: "Jenny",
-    username: "@jenny",
-    body: "I'm at a loss for words. This is amazing. I love it.I'm at a loss for words. This is amazing. I love it.I'm at a loss for words. This is amazing. I love it.I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/jenny",
+    name: "Yahya Dalati",
+    body: "It was great experience there.",
+    rating: 5,
+    url: "https://maps.app.goo.gl/mkoMDXYSuCAnprJTA",
+    img: "/imgs/reviews/Yahya Dalati.png",
   },
   {
-    name: "James",
-    username: "@james",
-    body: "I'm at a loss for words. This is amazing. I love it.",
-    img: "https://avatar.vercel.sh/james",
+    name: "Mainframe",
+    rating: 3,
+    body: "Not bad. Staff is very attentive.",
+    img: "/imgs/reviews/Mainframe.png",
+    url: "https://maps.app.goo.gl/yNMo9qVj77pZUeQr8",
+  },
+  {
+    name: "Валерия Владимировна",
+    rating: 5,
+    body: "Very beautiful and tasty desserts, you can also snack on salad and cutlets) the interior is modern and very clean, the sellers are polite and one girl even speaks English) and the prices are simply unrealistically low! I advise you to visit them or order delivery of desserts with condensed milk)",
+    img: "/imgs/reviews/Валерия Владимировна.png",
+    url: "https://maps.app.goo.gl/o1zy8avrUPGYyL2X6",
+  },
+  {
+    name: "Özkan Korkmaz",
+    rating: 5,
+    body: "A great place, I definitely recommend it.",
+    img: "/imgs/reviews/Özkan Korkmaz.png",
+    url: "https://maps.app.goo.gl/iryX14EG6FYGo12B7",
   },
 ];
-
-const firstRow = reviews.slice(0, reviews.length / 2);
 
 const ReviewCard = ({
   img,
   name,
-  username,
   body,
+  rating,
+  url,
 }: {
   img: string;
   name: string;
-  username: string;
   body: string;
+  rating: number;
+  url: string;
 }) => {
   return (
-    <figure
+    <Link
+      href={url}
+      target="_blank"
       className={cn(
         "relative h-52 max-h-56 w-64 cursor-pointer overflow-hidden rounded-xl border p-4 duration-150 hover:scale-105",
         // light styles
@@ -86,16 +109,25 @@ const ReviewCard = ({
           />
           <div className="flex flex-col justify-center">
             <figcaption className="font-medium dark:text-white">
-              {name}
+              {limitTxt(name, 12)}
             </figcaption>
             <span className="flex font-medium dark:text-white/40">
-              {[...Array(5)].map((val) => (
+              {[...Array(rating)].map((val) => (
                 <Star
                   key={uuid()}
                   size={12}
                   className="fill-yellow-400 text-yellow-400"
                 />
               ))}
+              {5 - rating > 0
+                ? [...Array(5 - rating)].map((val) => (
+                  <Star
+                    key={uuid()}
+                    size={12}
+                    className="fill-muted-foreground text-muted-foreground"
+                  />
+                ))
+                : null}
             </span>
           </div>
         </div>
@@ -133,7 +165,7 @@ const ReviewCard = ({
       <p className="absolute bottom-2 text-sm text-muted-foreground">
         12/02/2024
       </p>
-    </figure>
+    </Link>
   );
 };
 
@@ -147,14 +179,22 @@ const UserReviewsCarousel = () => {
       className="max-w-[75%] px-5 max-md:px-0 max-sm:w-full"
     >
       <CarouselContent className="flex h-56 items-center">
-        {reviews.concat(reviews).map(({ body, img, username, name }, index) => (
-          <CarouselItem
-            key={uuid()}
-            className="flex justify-center hover:z-20 max-md:basis-full md:basis-1/2 lg:basis-1/3 2xl:basis-1/5"
-          >
-            <ReviewCard body={body} img={img} name={name} username={username} />
-          </CarouselItem>
-        ))}
+        {reviews
+          .concat(reviews)
+          .map(({ url, body, img, name, rating }, index) => (
+            <CarouselItem
+              key={uuid()}
+              className="flex justify-center hover:z-20 max-md:basis-full md:basis-1/2 lg:basis-1/3 2xl:basis-1/5"
+            >
+              <ReviewCard
+                url={url}
+                body={body}
+                img={img}
+                name={name}
+                rating={rating}
+              />
+            </CarouselItem>
+          ))}
       </CarouselContent>
       <CarouselPrevious
         variant={"outline-white"}

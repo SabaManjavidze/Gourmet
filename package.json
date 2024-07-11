@@ -11,8 +11,8 @@
     "lint": "next lint",
     "start": "next start",
     "genpush": "npm run gen && npm run push",
-    "push": "npx drizzle-kit generate && npx drizzle-kit push",
-    "gen": "npx drizzle-kit generate && npx drizzle-kit push",
+    "push": "npx drizzle-kit push",
+    "gen": "npx drizzle-kit generate",
     "ts-node": "ts-node --compiler-options \"{\\\"module\\\":\\\"commonJS\\\"}\""
   },
   "dependencies": {

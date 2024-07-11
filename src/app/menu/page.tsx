@@ -7,13 +7,16 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { HideZeroCheckbox } from "./_components/hidezero-checkbox";
 import { Input } from "@/components/ui/input";
 import { SumSection } from "./_components/sum-section";
-import { XIcon } from "lucide-react";
+import { Loader2, XIcon } from "lucide-react";
 import { ClearButton } from "./_components/clear-button";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
+import { api } from "@/trpc/react";
 
 export default function MenuPage() {
+  const { data, isLoading, error } = api.sampleMenu.getMainMenu.useQuery();
+
   const [orderOpen, setOrderOpen] = useState(false);
   const handleSaveClick = () => {
     console.log("saved");
@@ -24,27 +27,35 @@ export default function MenuPage() {
   const closeOrderModal = () => {
     setOrderOpen(false);
   };
+  if (error) throw error;
+  if (isLoading || !data)
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-background">
+        <Loader2 size={200} color={"black"} />
+      </div>
+    );
   return (
     <main className="mt-8">
-      <div className="flex h-[500px] flex-col items-center justify-center bg-menu-banner bg-cover bg-center bg-no-repeat">
-        <h1 className="text-shadow-sm font-lucida-bold text-8xl">Menu</h1>
-        <p className="mt-2 text-xl font-normal text-blue-950/80">
+      <div className="flex w-full flex-col items-center justify-center bg-menu-banner bg-contain bg-center bg-no-repeat py-48 max-lg:bg-none">
+        <h1 className="text-shadow-sm z-10 font-lucida-bold text-8xl">Menu</h1>
+        <p className="z-10 mt-2 text-xl font-normal text-blue-950/80">
           Explore, Customize, and Order Your Perfect Meal!
         </p>
       </div>
       <div className="mx-44 p-12 px-36 pb-20 pt-0 max-xl:mx-16 max-xl:px-0 max-lg:mx-5 max-sm:mx-6">
         <div>
-          <MenuProvider dbMenu={Menu}>
+          <MenuProvider dbMenu={data}>
             <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
-            {menuKeys.map((item, idx) => (
+            {Object.keys(data).map((item, idx) => (
               <MenuTemplate
                 key={uuid()}
+                products={data[item] ?? []}
                 name={item}
                 header={
                   idx == 0 ? (
                     <div className="mt-8">
                       <div className="flex items-center justify-center">
-                        <h3 className="text-xl font-semibold text-gray-500">
+                        <h3 className="text-xl font-semibold text-gray-500 max-lg:text-base max-md:text-sm">
                           Please Enter Number of Guests and Get Perfect Menu For
                           You
                         </h3>

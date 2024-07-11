@@ -7,8 +7,8 @@ export function ClearButton() {
   const { clearQuantities } = useMenu();
   return (
     <button
-      className="flex items-center text-lg
-                    text-gray-500 duration-150 hover:text-gray-400"
+      className="flex items-center text-lg text-gray-500
+                    duration-150 hover:text-gray-400 max-md:text-sm"
       onClick={clearQuantities}
     >
       <h3>Clear</h3>

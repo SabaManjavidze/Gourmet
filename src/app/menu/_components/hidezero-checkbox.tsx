@@ -15,12 +15,12 @@ export function HideZeroCheckbox({
         <>
           <Checkbox
             size="sm"
-            className="border-2"
+            className="border-2 max-md:h-4 max-md:w-4"
             onCheckedChange={(checked) => setHideZeroQt(Boolean(checked))}
           />
           <label
             htmlFor="terms"
-            className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 max-md:text-sm"
           >
             Hide the products with zero quantity
           </label>
@@ -35,7 +35,7 @@ export function HideZeroCheckbox({
           </label>
           <Checkbox
             size="sm"
-            className="border-2"
+            className="border-2 max-md:h-3 max-md:w-3"
             onCheckedChange={(checked) => setHideZeroQt(Boolean(checked))}
           />
         </>
