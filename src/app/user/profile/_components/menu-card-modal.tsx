@@ -27,7 +27,8 @@ export function MenuCardModal({
       closeModal={closeModal}
       className="max-h-[80%] w-[70%] overflow-auto px-36"
     >
-      <MenuProvider dbMenu={{ "Canape/Salads": Menu["Canape/Salads"] }}>
+      <h3>hello</h3>
+      {/* <MenuProvider dbMenu={{ "Canape/Salads": Menu["Canape/Salads"] }}>
         <OrderNowModal
           open={orderNow}
           closeModal={() => setOrderNow(false)}
@@ -46,7 +47,7 @@ export function MenuCardModal({
             </Button>
           </div>
         </div>
-      </MenuProvider>
+      </MenuProvider> */}
     </Modal>
   );
 }

@@ -22,7 +22,7 @@ export const sampleMenuRouter = createTRPCRouter({
       .where(eq(menuSamples.name, "Main Menu"));
     if (!mainMenu[0]) throw new Error("Main Menu not found");
 
-    const data: Record<string, Product[]> = {};
+    const formatedData: Record<string, Product[]> = {};
     const pts = await db
       .select()
       .from(productsToSamples)
@@ -37,14 +37,15 @@ export const sampleMenuRouter = createTRPCRouter({
       const variantName = item?.products_to_samples?.variant_name;
       if (!categoryName) throw new Error("Category not found");
 
-      if (data[categoryName] && variantName && !variant_map[variantName]) {
+      const sample = formatedData[categoryName];
+      if (sample !== undefined && variantName && !variant_map[variantName]) {
         variant_map[variantName] = item.product.id;
       } else if (
-        data[categoryName] &&
+        sample !== undefined &&
         variantName &&
         variant_map[variantName]
       ) {
-        for (const defVar of data[categoryName]) {
+        for (const defVar of sample) {
           if (!defVar) throw new Error("Product not found");
           if (defVar.id === variant_map[variantName]) {
             defVar?.variants?.push({
@@ -58,15 +59,15 @@ export const sampleMenuRouter = createTRPCRouter({
         return;
       }
 
-      if (data[categoryName]) {
-        data[categoryName].push({
+      if (sample !== undefined) {
+        sample.push({
           id: item.product.id,
           name: item.product.name,
           price: parseFloat(item.product.price),
           variants: [],
         });
       } else {
-        data[categoryName] = [
+        formatedData[categoryName] = [
           {
             id: item.product.id,
             name: item.product.name,
@@ -76,6 +77,6 @@ export const sampleMenuRouter = createTRPCRouter({
         ];
       }
     });
-    return data;
+    return formatedData;
   }),
 });

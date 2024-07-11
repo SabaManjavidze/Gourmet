@@ -111,9 +111,10 @@ export const MenuProvider = ({
     const newMenu: MenuState = {};
     Object.keys(menu).forEach((key) => {
       if (!menu[key]) return null;
-      newMenu[key] = menu[key]?.map((prod) => {
-        return { ...prod, quantity: 0, totalPrice: 0 };
-      });
+      newMenu[key] =
+        menu[key]?.map((prod) => {
+          return { ...prod, quantity: 0, totalPrice: 0 };
+        }) ?? [];
     });
     setMenu(newMenu);
   };

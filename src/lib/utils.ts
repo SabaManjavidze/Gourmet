@@ -20,20 +20,21 @@ export const MenuToState = (
   const state: MenuState = {};
   Object.keys(menu).forEach((key) => {
     if (!menu[key]) throw new Error("Menu not found");
-    state[key] = menu[key]?.map(({ name, price, id, variants }, idx) => {
-      if (variants) {
-        return {
-          id,
-          variants,
-          active: id,
-          name,
-          price,
-          totalPrice: 0,
-          quantity: 0,
-        };
-      }
-      return { id, variants, name, price, totalPrice: 0, quantity: 0 };
-    });
+    state[key] =
+      menu[key]?.map(({ name, price, id, variants }, idx) => {
+        if (variants) {
+          return {
+            id,
+            variants,
+            active: id,
+            name,
+            price,
+            totalPrice: 0,
+            quantity: 0,
+          };
+        }
+        return { id, variants, name, price, totalPrice: 0, quantity: 0 };
+      }) ?? [];
   });
   return state;
 };

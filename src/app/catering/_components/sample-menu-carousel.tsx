@@ -15,8 +15,8 @@ export function SampleMenuCarousel({
   onItemClick,
   currMenu,
 }: {
-  onItemClick?: (name: menuKey) => void;
-  currMenu: menuKey;
+  onItemClick?: (name: string) => void;
+  currMenu: string;
 }) {
   return (
     <Carousel

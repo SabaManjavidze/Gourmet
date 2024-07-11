@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 import { SampleMenuCarousel } from "./_components/sample-menu-carousel";
 import { MenuProvider } from "@/hooks/useMenu";
 import { Button } from "@/components/ui/button";
-import { PlusCircle, XCircleIcon, XIcon } from "lucide-react";
+import { Loader2, PlusCircle, XCircleIcon, XIcon } from "lucide-react";
 import { AddProductModal } from "./_components/add-product-modal";
 import { Input } from "@/components/ui/input";
 import { HideZeroCheckbox } from "../menu/_components/hidezero-checkbox";
@@ -14,25 +14,38 @@ import { SumSection } from "../menu/_components/sum-section";
 import { ClearButton } from "../menu/_components/clear-button";
 import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import { api } from "@/trpc/react";
 
 export default function Catering() {
-  const [currMenu, setCurrMenu] = useState<menuKey>("Drinks");
+  const [currMenu, setCurrMenu] = useState("");
   const [orderOpen, setOrderOpen] = useState(false);
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const {
+    data: dbMenu,
+    isLoading,
+    error,
+  } = api.sampleMenu.getMainMenu.useQuery();
   useEffect(() => {
     const menuArg = searchParams.get("menu");
-    if (typeof menuArg == "string" && menuKeys.includes(menuArg as menuKey)) {
-      setCurrMenu(menuArg as menuKey);
+    if (!isLoading && dbMenu) {
+      setCurrMenu(menuArg ?? (Object.keys(dbMenu)[0] as string));
       document
         .getElementById("menu")
         ?.scrollIntoView({ inline: "end", behavior: "smooth" });
     }
-  }, [router]);
+  }, [isLoading, dbMenu]);
 
-  const handleItemClick = (name: menuKey) => {
+  if (error) throw error;
+  if (isLoading || !dbMenu?.[currMenu])
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-background">
+        <Loader2 size={50} color={"black"} />
+      </div>
+    );
+  const handleItemClick = (name: string) => {
     setCurrMenu(name);
     document
       .getElementById("menu")
@@ -54,9 +67,6 @@ export default function Catering() {
   const handleSaveClick = () => {
     console.log("saved");
   };
-  const dbMenu = useMemo(() => {
-    return { [currMenu]: Menu[currMenu] };
-  }, [currMenu]);
   return (
     <main className="min-h-[140vh]">
       <div className="relative flex h-[500px] flex-col items-center justify-center bg-sample-menus bg-cover bg-center bg-no-repeat">
@@ -74,13 +84,13 @@ export default function Catering() {
       <div className="mx-44 rounded-xl px-36 pb-20">
         <MenuProvider dbMenu={dbMenu}>
           <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
-          <AddProductModal
+          {/* <AddProductModal
             menuSample={currMenu}
             open={open}
             closeModal={closeModal}
-          />
+          /> */}
           <MenuTemplate
-            key={uuid()}
+            products={dbMenu[currMenu] ?? []}
             name={currMenu}
             id="menu"
             header={

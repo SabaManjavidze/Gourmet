@@ -16,11 +16,12 @@ export function AddProductModal({
   menuSample,
 }: {
   open: boolean;
-  menuSample: menuKey;
+  menuSample: string;
   closeModal: () => void;
 }) {
   const { mutateAsync: search } = api.product.search.useMutation();
-  const [filter, setFilter] = useState<menuKey | "">("");
+  //get categories
+  const [filter, setFilter] = useState<string>("");
   const handleFilterClick = (name: menuKey) => {
     setFilter(name);
   };
@@ -34,13 +35,13 @@ export function AddProductModal({
     setSelected((prev) => [...prev, productId]);
   };
   const handleSave = () => {
-    const newProds = selected.map((item) => {
-      return {
-        name: item,
-        price: 3,
-      };
-    });
-    addProduct(menuSample, newProds);
+    // const newProds = selected.map((item) => {
+    //   return {
+    //     name: item,
+    //     price: 3,
+    //   };
+    // });
+    // addProduct(menuSample, newProds);
     closeModal();
     setSelected([]);
   };
@@ -116,7 +117,7 @@ export function AddProductModal({
           </div>
         </div>
         <div className="mt-16 flex flex-col items-center overflow-y-auto">
-          {Menu["Canape/Salads"].map((product) => (
+          {/* {Menu["Canape/Salads"].map((product) => (
             <button
               key={uuid()}
               className={`flex w-[90%] justify-between border border-t-transparent px-8 py-5 
@@ -128,7 +129,7 @@ export function AddProductModal({
               <h3>{product.name}</h3>
               <h3>${product.price}</h3>
             </button>
-          ))}
+          ))} */}
         </div>
       </div>
     </Modal>
