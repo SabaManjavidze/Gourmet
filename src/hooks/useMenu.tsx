@@ -119,13 +119,25 @@ export const MenuProvider = ({
     setMenu(newMenu);
   };
   const addProduct = (menuName: string, products: MenuProduct[]) => {
+    // menu renders one item less that it actually has.
+    // product variants are messed up either in db or in the way they are fetched.
     if (!menu?.[menuName]) return null;
-    const newMenu = [
-      ...(menu[menuName] as any),
-      ...products.map(({ name, price }) => {
-        return { id: uuid(), name, price, quantity: 1, totalPrice: price };
-      }),
-    ];
+    const addedProds = [];
+    for (const product of products) {
+      const found = menu[menuName].find(
+        (prod) =>
+          prod.id == product.id ||
+          !!prod?.variants?.find((varp) => varp.id == product.id),
+      );
+      if (found) continue;
+      addedProds.push({
+        ...product,
+        active: product.id,
+        quantity: 1,
+        totalPrice: product.price,
+      });
+    }
+    const newMenu = menu[menuName].concat(addedProds);
     setMenu((prev) => ({
       ...prev,
       [menuName]: newMenu,

@@ -44,4 +44,3 @@ yarn-error.log*
 *.tsbuildinfo
 
 .vercel
-src/lib/scripts/populateProducts.ts

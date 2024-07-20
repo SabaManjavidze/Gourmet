@@ -20,7 +20,7 @@ export const createTable = pgTableCreator((name) => `gourmet_${name}`);
 
 export const categories = createTable("category", {
   id: idtype("id").primaryKey(),
-  name: varchar("name", { length: 256 }),
+  name: varchar("name", { length: 256 }).notNull(),
 });
 export const categoriesRelationships = relations(categories, ({ many }) => ({
   products: many(products),
@@ -101,7 +101,7 @@ export const productsToSamplesRelations = relations(
 
 export const menuSamples = createTable("menu_samples", {
   id: idtype("id").primaryKey().notNull(),
-  name: varchar("name", { length: 50 }).unique(),
+  name: varchar("name", { length: 50 }).unique().notNull(),
   picture: varchar("picture", { length: 255 }),
 });
 export const menuSamplesRelations = relations(menuSamples, ({ many }) => ({

@@ -31,7 +31,7 @@ export default function MenuPage() {
   if (isLoading || !data)
     return (
       <div className="flex min-h-screen w-full items-center justify-center bg-background">
-        <Loader2 size={200} color={"black"} />
+        <Loader2 size={50} color={"black"} />
       </div>
     );
   return (
@@ -42,8 +42,8 @@ export default function MenuPage() {
           Explore, Customize, and Order Your Perfect Meal!
         </p>
       </div>
-      <div className="mx-44 p-12 px-36 pb-20 pt-0 max-xl:mx-16 max-xl:px-0 max-lg:mx-5 max-sm:mx-6">
-        <div>
+      <div className="flex justify-center pb-20">
+        <div className="w-3/4">
           <MenuProvider dbMenu={data}>
             <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
             {Object.keys(data).map((item, idx) => (

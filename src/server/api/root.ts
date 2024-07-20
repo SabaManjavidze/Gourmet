@@ -1,6 +1,12 @@
 import { productRouter } from "@/server/api/routers/product";
-import { createCallerFactory, createTRPCRouter } from "@/server/api/trpc";
+import {
+  createCallerFactory,
+  createTRPCRouter,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { sampleMenuRouter } from "./routers/sample_menu";
+import { db } from "../db";
+import { categories } from "../db/schema";
 
 /**
  * This is the primary router for your server.
@@ -10,6 +16,10 @@ import { sampleMenuRouter } from "./routers/sample_menu";
 export const appRouter = createTRPCRouter({
   product: productRouter,
   sampleMenu: sampleMenuRouter,
+  getCategories: publicProcedure.query(async () => {
+    const cats = await db.select().from(categories);
+    return cats;
+  }),
 });
 
 // export type definition of API

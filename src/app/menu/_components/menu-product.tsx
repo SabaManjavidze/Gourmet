@@ -23,7 +23,7 @@ export function MenuProduct({
       w-full justify-between text-center text-lg font-medium 
       max-lg:text-base max-md:text-sm`}
     >
-      <div className="w-1/2 flex-col max-sm:w-2/5 max-xs:w-1/4">
+      <div className="w-1/2 flex-col overflow-x-hidden max-sm:w-2/5 max-xs:w-1/4 xl:w-3/4">
         <p
           className={twMerge(
             cls,
@@ -64,7 +64,10 @@ export function MenuProduct({
           </ul>
         ) : null}
       </div>
-      <div className="flex w-1/2 justify-between max-sm:w-3/5 max-xs:w-3/4">
+      <div
+        className="xl:1/4 flex w-1/2 justify-between whitespace-nowrap 
+        *:h-full *:w-full max-sm:w-3/5 max-sm:whitespace-pre-line max-xs:w-3/4"
+      >
         <p className={twMerge(cls, "flex items-center justify-center")}>
           {product.price}
         </p>
@@ -85,7 +88,9 @@ export function MenuProduct({
             "h-full text-center text-lg font-medium focus-within:z-10 max-lg:text-base max-md:text-sm",
           )}
         />
-        <p className={cls}>{product.totalPrice}</p>
+        <p className={twMerge(cls, "flex items-center justify-center")}>
+          {product.totalPrice}
+        </p>
       </div>
     </li>
   );
