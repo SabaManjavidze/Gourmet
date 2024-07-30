@@ -54,7 +54,7 @@ export function OrderNowModal({
       isOpen={open}
       closeModal={closeModal}
       title="Contact Information"
-      className="w-3/5"
+      className="max-h-[90%] w-3/5 overflow-y-auto"
     >
       <Form {...form}>
         <form
@@ -228,7 +228,7 @@ export function OrderNowModal({
               ${totalSum}
             </h3>
           </div>
-          <div className="mt-5 flex justify-center">
+          <div className="flex justify-center py-5">
             <Button
               type="submit"
               variant={"accent"}

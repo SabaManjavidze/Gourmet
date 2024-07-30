@@ -8,7 +8,7 @@ import {
 import { products, productsToVariants, variants } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { eq, like } from "drizzle-orm";
-import { MenuProduct } from "menu";
+import { ProductWithVariants } from "menu";
 
 export const productRouter = createTRPCRouter({
   search: publicProcedure
@@ -18,9 +18,9 @@ export const productRouter = createTRPCRouter({
         .select()
         .from(products)
         .where(like(products.name, `%${query}%`));
-      const formatedProds: MenuProduct[] = [];
+      const formatedProds: ProductWithVariants[] = [];
       for (const prod of results) {
-        const newProd: MenuProduct = {
+        const newProd: ProductWithVariants = {
           id: prod.id,
           name: prod.name,
           price: Number(prod.price),
@@ -34,6 +34,7 @@ export const productRouter = createTRPCRouter({
           formatedProds.push(newProd);
           continue;
         }
+        newProd;
         const prodVariants = await db
           .select()
           .from(productsToVariants)

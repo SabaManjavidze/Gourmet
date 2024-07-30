@@ -7,19 +7,18 @@ import {
 } from "@/server/api/trpc";
 import {
   menuSamples,
+  orders,
   products,
+  productstoOrders,
   productsToSamples,
   productsToVariants,
   variants,
 } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { eq, like } from "drizzle-orm";
-interface Product {
-  id: string;
-  name: string;
-  price: number;
-  variants?: Product[];
-}
+import { v4 as uuid } from "uuid";
+import { ProductWithVariants } from "menu";
+
 export const sampleMenuRouter = createTRPCRouter({
   getMenus: publicProcedure.query(async () => {
     const menus = await db.select().from(menuSamples);
@@ -35,7 +34,6 @@ export const sampleMenuRouter = createTRPCRouter({
         .where(eq(menuSamples.name, input.menuName));
       if (!menu[0]) throw new Error("Menu not found");
 
-      const formatedData: Record<string, Product[]> = {};
       const pts = await db
         .select()
         .from(productsToSamples)
@@ -44,24 +42,40 @@ export const sampleMenuRouter = createTRPCRouter({
 
       const variant_map = {} as Record<string, string>;
 
-      pts.forEach((item) => {
-        if (!item) throw new Error("Product not found");
-        const categoryName = menu[0]?.name;
+      const categoryName = menu[0]?.name;
+      if (!categoryName) throw new Error("Category not found");
+      const formatedData: Record<string, ProductWithVariants[]> = {
+        [categoryName]: [],
+      };
+      const sample = formatedData[categoryName] as ProductWithVariants[];
+      for (const item of pts) {
         const variantName = item?.products_to_samples?.variant_name;
-        if (!categoryName) throw new Error("Category not found");
+        const formatedProd: ProductWithVariants = {
+          id: item.product.id,
+          name: item.product.name,
+          price: parseFloat(item.product.price),
+        };
+        const in_vars = variantName ? variant_map[variantName] : undefined;
+        if (!variantName || in_vars === undefined) {
+          sample.push({
+            id: item.product.id,
+            name: item.product.name,
+            price: parseFloat(item.product.price),
+            variants: [],
+          });
+        }
 
-        const sample = formatedData[categoryName];
-        if (sample !== undefined && variantName && !variant_map[variantName]) {
-          variant_map[variantName] = item.product.id;
-        } else if (
-          sample !== undefined &&
-          variantName &&
-          variant_map[variantName]
-        ) {
+        if (variantName) {
+          if (in_vars === undefined) {
+            variant_map[variantName] = item.product.id;
+            continue;
+          }
           for (const defVar of sample) {
-            if (!defVar) throw new Error("Product not found");
             if (defVar.id === variant_map[variantName]) {
-              defVar?.variants?.push({
+              if (!defVar.variant_name) {
+                defVar.variant_name = variantName;
+              }
+              defVar.variants?.push({
                 id: item.product.id,
                 name: item.product.name,
                 price: parseFloat(item.product.price),
@@ -69,27 +83,9 @@ export const sampleMenuRouter = createTRPCRouter({
               break;
             }
           }
-          return;
+          continue;
         }
-
-        if (sample !== undefined) {
-          sample.push({
-            id: item.product.id,
-            name: item.product.name,
-            price: parseFloat(item.product.price),
-            variants: [],
-          });
-        } else {
-          formatedData[categoryName] = [
-            {
-              id: item.product.id,
-              name: item.product.name,
-              price: parseFloat(item.product.price),
-              variants: [],
-            },
-          ];
-        }
-      });
+      }
       return formatedData;
     }),
   getMainMenu: publicProcedure.query(async () => {
@@ -99,7 +95,7 @@ export const sampleMenuRouter = createTRPCRouter({
       .where(eq(menuSamples.name, "Main Menu"));
     if (!mainMenu[0]) throw new Error("Main Menu not found");
 
-    const formatedData: Record<string, Product[]> = {};
+    const formatedData: Record<string, ProductWithVariants[]> = {};
     const pts = await db
       .select()
       .from(productsToSamples)

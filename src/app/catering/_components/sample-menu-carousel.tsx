@@ -68,8 +68,9 @@ export function SampleMenuCarousel({
               <CardContent className="relative flex aspect-video items-center justify-center rounded-xl p-6">
                 <Image
                   src={
-                    picture ??
-                    "https://i0.wp.com/www.glennhager.com/wp-content/uploads/2018/03/table.jpg"
+                    picture !== "" && picture !== null
+                      ? picture
+                      : "https://i0.wp.com/www.glennhager.com/wp-content/uploads/2018/03/table.jpg"
                   }
                   alt=""
                   fill

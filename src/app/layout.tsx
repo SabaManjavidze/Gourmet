@@ -8,6 +8,7 @@ import { Navbar } from "./_components/navbar";
 import { Footer } from "./_components/footer";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -33,6 +34,7 @@ export default async function RootLayout({
           <Navbar />
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </SessionProvider>
+        <Toaster />
         <Footer />
       </body>
     </html>

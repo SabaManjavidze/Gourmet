@@ -7,6 +7,7 @@ import {
 import { sampleMenuRouter } from "./routers/sample_menu";
 import { db } from "../db";
 import { categories } from "../db/schema";
+import { orderRouter } from "./routers/orders";
 
 /**
  * This is the primary router for your server.
@@ -16,6 +17,7 @@ import { categories } from "../db/schema";
 export const appRouter = createTRPCRouter({
   product: productRouter,
   sampleMenu: sampleMenuRouter,
+  order: orderRouter,
   getCategories: publicProcedure.query(async () => {
     const cats = await db.select().from(categories);
     return cats;

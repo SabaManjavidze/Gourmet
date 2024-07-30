@@ -75,7 +75,7 @@ export const productsToSamples = createTable(
       .references(() => products.id),
     sampleId: idtype("sample_id")
       .notNull()
-      .references(() => menuSamples.id),
+      .references(() => menuSamples.id, { onDelete: "cascade" }),
     quantity: integer("quantity").notNull(),
     variant_name: varchar("variant_name", { length: 255 }).references(
       () => variants.name,
@@ -107,14 +107,14 @@ export const menuSamples = createTable("menu_samples", {
 export const menuSamplesRelations = relations(menuSamples, ({ many }) => ({
   products: many(productsToSamples),
 }));
-export const statusEnum = pgEnum("status", ["draft", "on hold", "completed"]);
+export const statusEnum = pgEnum("status", ["draft", "submitted", "completed"]);
 export const orders = createTable(
   "order",
   {
     id: idtype("id").primaryKey().notNull(),
-    name: varchar("name"),
-    totalPrice: decimal("total_price"),
-    status: statusEnum("status"),
+    name: varchar("name").notNull(),
+    totalPrice: decimal("total_price").notNull(),
+    status: statusEnum("status").notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     userId: varchar("userId")
       .references(() => users.id)
@@ -136,9 +136,11 @@ export const productstoOrders = createTable(
       .references(() => products.id),
     orderId: idtype("order_id")
       .notNull()
-      .references(() => orders.id),
-    quantity: integer("quantity"),
-    totalPrice: decimal("total_price"),
+      .references(() => orders.id, { onDelete: "cascade" }),
+    quantity: integer("quantity").notNull(),
+    variant_name: varchar("variant_name", { length: 255 }).references(
+      () => variants.name,
+    ),
   },
   (pto) => ({
     compoundKey: primaryKey({

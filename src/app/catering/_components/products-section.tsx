@@ -10,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AddProductModal } from "./add-product-modal";
+import { BottomButtons } from "./bottom-buttons";
+import { AddProductsSection } from "@/app/menu/_components/add-products-section";
 
 export function ProductsSection({ currMenu }: { currMenu: string }) {
   const [orderOpen, setOrderOpen] = useState(false);
@@ -19,13 +21,7 @@ export function ProductsSection({ currMenu }: { currMenu: string }) {
     isLoading,
     error,
   } = api.sampleMenu.getMenuProducts.useQuery({ menuName: currMenu });
-  useEffect(() => {
-    if (!isLoading && dbMenu) {
-      console.log(dbMenu);
-    }
-  }, [isLoading, dbMenu]);
-  if (error) throw error;
-  if (isLoading || !dbMenu)
+  if (error ?? isLoading ?? !dbMenu)
     return (
       <div className="flex min-h-screen w-full items-center justify-center bg-background">
         <Loader2 size={50} color={"black"} />
@@ -58,7 +54,8 @@ export function ProductsSection({ currMenu }: { currMenu: string }) {
         />
       ) : null}
       <MenuTemplate
-        products={dbMenu[currMenu] ?? []}
+        // products={dbMenu[currMenu] ?? []}
+        addClick={addProductsClick}
         name={currMenu}
         id="menu"
         header={
@@ -81,49 +78,11 @@ export function ProductsSection({ currMenu }: { currMenu: string }) {
           </div>
         }
       />
-      <div
-        key="234234"
-        className="flex w-full justify-between text-center text-lg font-medium text-muted-sm"
-      >
-        <div className="flex w-1/2 items-center justify-center border border-t-0 max-sm:w-2/5 max-xs:w-1/4 xl:w-3/4">
-          <Button
-            variant={"ghost"}
-            className="group h-4/5 text-xl text-accent-foreground"
-            onClick={addProductsClick}
-          >
-            <PlusCircle className="mr-2" />
-            Add more Products
-          </Button>
-        </div>
-        <div className="flex w-1/2 justify-between text-2xl font-bold *:w-full max-sm:w-3/5 max-xs:w-3/4">
-          <p className="border border-l-0 border-t-0 p-5">-</p>
-          <p className="border border-l-0  border-t-0 p-5">-</p>
-          <p className="border border-l-0  border-t-0 p-5">-</p>
-        </div>
-      </div>
       <div className="mt-8">
         <SumSection />
       </div>
-      {/* if user is editing the menu make the buttons sticky else keep it normal. 
-            reset buttons to normal if currMenu is changed */}
       <div className={`sticky bottom-8 mt-8 flex w-full justify-center`}>
-        <div className="*:spacing flex w-[500px] justify-between *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
-          <Button
-            variant={"outline-accent"}
-            onClick={handleSaveClick}
-            size={"lg"}
-          >
-            Save For Later
-          </Button>
-          <Button
-            variant={"accent"}
-            onClick={handleOrderNowClick}
-            size={"lg"}
-            className={"border-accent"}
-          >
-            Order Now
-          </Button>
-        </div>
+        <BottomButtons />
       </div>
     </MenuProvider>
   );

@@ -11,43 +11,90 @@ import { MenuProvider } from "@/hooks/useMenu";
 import { MenuTemplate } from "@/app/menu/_components/menu-template";
 import { Menu } from "menu";
 import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
+import { api } from "@/trpc/react";
+import { Loader2 } from "lucide-react";
+import { BottomButtons } from "@/app/catering/_components/bottom-buttons";
+import { AddProductModal } from "@/app/catering/_components/add-product-modal";
 
 export function MenuCardModal({
+  orderId,
   open,
   closeModal,
 }: {
+  orderId: string;
   open: boolean;
   closeModal: () => void;
 }) {
   const [orderNow, setOrderNow] = useState(false);
+  const [addOpen, setAddOpen] = useState(false);
+  const [changes, setChanges] = useState(false);
+  const {
+    data: order,
+    isLoading,
+    error,
+  } = api.order.getUserOrder.useQuery(
+    {
+      orderId,
+    },
+    {
+      refetchOnMount: false,
+    },
+  );
+  if (error ?? isLoading ?? !order)
+    return (
+      <Modal
+        isOpen={open}
+        closeModal={closeModal}
+        className="max-h-[80%] w-[70%] overflow-auto px-36"
+      >
+        <div className="flex min-h-screen w-full items-center justify-center bg-background">
+          <Loader2 size={50} color={"black"} />
+        </div>
+      </Modal>
+    );
 
   return (
     <Modal
       isOpen={open}
-      closeModal={closeModal}
+      closeModal={() => {
+        if (changes) {
+          const confirm = window.confirm(
+            "You have unsaved changes, are you sure you want to leave?",
+          );
+          if (!confirm) return;
+        }
+        closeModal();
+      }}
       className="max-h-[80%] w-[70%] overflow-auto px-36"
     >
-      <h3>hello</h3>
-      {/* <MenuProvider dbMenu={{ "Canape/Salads": Menu["Canape/Salads"] }}>
+      <MenuProvider
+        dbMenu={{ [order.name]: order.products }}
+        setChanges={setChanges}
+        changes={changes}
+      >
+        {addOpen ? (
+          <AddProductModal
+            open={addOpen}
+            closeModal={() => setAddOpen(false)}
+            menuSample={order.name}
+          ></AddProductModal>
+        ) : null}
+
         <OrderNowModal
           open={orderNow}
           closeModal={() => setOrderNow(false)}
         ></OrderNowModal>
-        <MenuTemplate className="text-sm" name="Canape/Salads" />
+
+        <MenuTemplate
+          addClick={() => setAddOpen(true)}
+          className="text-sm"
+          name={order.name}
+        />
 
         <div className={`sticky bottom-0 mt-8 flex w-full justify-center`}>
-          <div className="*:spacing flex w-[501px] justify-center *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
-            <Button
-              variant={"accent"}
-              onClick={() => setOrderNow(true)}
-              size={"lg"}
-              className={"border-accent"}
-            >
-              Order Now
-            </Button>
-          </div>
+          <BottomButtons orderId={order.id} saveText="save" />
         </div>
-      </MenuProvider> */}
+      </MenuProvider>
     </Modal>
   );
 }

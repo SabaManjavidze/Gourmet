@@ -1,11 +1,12 @@
 import { Input } from "@/components/ui/input";
 import { TableRow, TableCell } from "@/components/ui/table";
 import { useMenu } from "@/hooks/useMenu";
-import type { MenuProduct, menuKey, productState } from "menu";
+import type { ProductWithVariants, menuKey, productState } from "menu";
 import { v4 as uuid } from "uuid";
 import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { DeleteIcon, XCircleIcon } from "lucide-react";
 
 const cls = "border border-t-0 border-l-0 w-full p-5";
 export function MenuProduct({
@@ -15,14 +16,23 @@ export function MenuProduct({
   menuSample: string;
   product: productState;
 }) {
-  const { changeQuantity, hideZeroQt, changeVariant } = useMenu();
+  const { changeQuantity, hideZeroQt, changeVariant, handleRemoveProduct } =
+    useMenu();
   return (
     <li
       // hidden={product.quantity == 0}
       className={`text-muted-sm ${hideZeroQt && product.quantity == 0 ? "hidden" : "flex"} 
-      w-full justify-between text-center text-lg font-medium 
-      max-lg:text-base max-md:text-sm`}
+      relative w-full justify-between text-center text-lg
+      font-medium max-lg:text-base max-md:text-sm`}
     >
+      <Button
+        onClick={() => handleRemoveProduct(product.id)}
+        className="absolute right-0 top-0 z-20 
+       flex h-auto items-end bg-transparent p-0
+      text-xs font-semibold text-muted-foreground hover:bg-transparent"
+      >
+        <DeleteIcon className="z-20 ml-1" size={20} />
+      </Button>
       <div className="w-1/2 flex-col overflow-x-hidden max-sm:w-2/5 max-xs:w-1/4 xl:w-3/4">
         <p
           className={twMerge(
@@ -30,10 +40,9 @@ export function MenuProduct({
             `${product.variants?.length ? "border-b-0 pb-2" : ""} overflow-hidden whitespace-nowrap border-l text-start`,
           )}
         >
-          {product.active == product.id
-            ? product.name
-            : product?.variants?.find((v) => v.id == product.active)?.name ??
-              "No variant"}
+          {product.active !== product.id
+            ? product?.variants?.find((v) => v.id == product.active)?.name
+            : product.name}
         </p>
         {product?.variants?.length ? (
           <ul className="flex gap-x-3 overflow-x-auto border border-t-0 px-4 pb-2">
@@ -80,7 +89,6 @@ export function MenuProduct({
               product.id,
               Number(e.currentTarget.value),
             );
-            console.log(Number(e.currentTarget.value));
           }}
           value={product.quantity}
           className={twMerge(

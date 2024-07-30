@@ -184,25 +184,31 @@ export const menuKeys = Object.keys(Menu) as unknown as Array<
   keyof typeof Menu
 >;
 export type Menu = {
-  [key in keyof typeof Menu]?: MenuProduct[];
+  [key in keyof typeof Menu]?: ProductWithVariants[];
 };
 export type MenuState = {
   [key: string]: productState[];
 };
 export type menuKey = keyof typeof Menu;
 
-export type productState = MenuProduct & {
+export type productState = ProductWithVariants & {
   totalPrice: number;
   quantity: number;
   active?: string;
 };
 
 export interface productsState {
-  [productId: string]: MenuProduct & { totalPrice: number; quantity: number };
+  [productId: string]: ProductWithVariants & {
+    totalPrice: number;
+    quantity: number;
+  };
 }
-export type MenuProduct = {
+export interface ProductWithVariants extends Product {
+  variants?: Product[];
+  variant_name?: string;
+}
+export interface Product {
   id: string;
   name: string;
   price: number;
-  variants?: MenuProduct[];
-};
+}

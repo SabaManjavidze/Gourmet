@@ -38,7 +38,7 @@ export function AddProductModal({
     data: cats,
     isLoading: catsLoading,
     error: catsError,
-  } = api.getCategories.useQuery();
+  } = api.getCategories.useQuery(undefined, { refetchOnMount: false });
   const [filter, setFilter] = useState<string>("");
   const handleFilterClick = (name: string) => {
     setFilter(name);
@@ -54,9 +54,15 @@ export function AddProductModal({
   if (catsError) throw catsError;
   if (catsLoading || !cats)
     return (
-      <div className="flex min-h-screen w-full items-center justify-center bg-white">
-        <Loader2 size={50} color={"black"} />
-      </div>
+      <Modal
+        isOpen={open}
+        closeModal={closeModal}
+        className="max-h-[80%] w-[70%] overflow-auto px-36"
+      >
+        <div className="flex min-h-screen w-full items-center justify-center bg-background">
+          <Loader2 size={50} color={"black"} />
+        </div>
+      </Modal>
     );
   const handleProductClick = (idx: number) => {
     if (selected.includes(idx)) {

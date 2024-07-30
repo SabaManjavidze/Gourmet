@@ -9,19 +9,24 @@ import { Input } from "@/components/ui/input";
 import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import { RouterOutputs } from "@/trpc/react";
+import { AddProductsSection } from "./add-products-section";
 
 export function MenuTemplate({
   name,
   header,
   footer,
+  addable = true,
+  addClick,
   className = "",
   id = "",
-  products = [],
+  // products = [],
 }: {
   name: string;
-  products: RouterOutputs["sampleMenu"]["getMainMenu"][string];
+  // products: RouterOutputs["sampleMenu"]["getMainMenu"][string];
   className?: string;
   id?: string;
+  addable?: boolean;
+  addClick?: () => void;
   header?: ReactNode;
   footer?: ReactNode;
 }) {
@@ -38,41 +43,39 @@ export function MenuTemplate({
       </div>
       {header ?? <div className="mt-10"></div>}
       <ul id={id} className="flex w-full flex-col pt-8">
-        {menu[name]?.map((product, idx) => {
-          return idx == 0 ? (
-            <li
-              key="234234"
-              className={twMerge(
-                `table-title-gradient max-h-18 flex h-full w-full 
+        <li
+          key="234234"
+          className={twMerge(
+            `table-title-gradient max-h-18 flex h-full w-full 
               justify-between text-center text-sm font-medium text-muted-sm 
               max-md:text-xs max-sm:text-xxs`,
-                className,
-              )}
-            >
-              <div className="w-1/2 border py-5 text-start font-bold max-sm:w-2/5 max-xs:w-1/4 xl:w-3/4">
-                <p className="ml-5">Items</p>
-              </div>
-              <div
-                className="xl:1/4 flex w-1/2 justify-between whitespace-nowrap font-bold 
+            className,
+          )}
+        >
+          <div className="w-1/2 border py-5 text-start font-bold max-sm:w-2/5 max-xs:w-1/4 xl:w-3/4">
+            <p className="ml-5">Items</p>
+          </div>
+          <div
+            className="xl:1/4 flex w-1/2 justify-between whitespace-nowrap font-bold 
               *:h-full *:w-full max-sm:w-3/5 max-sm:whitespace-pre-line max-xs:w-3/4"
-              >
-                <p className="flex w-full items-center justify-center border border-l-0">
-                  Price
-                </p>
-                <p className="flex w-full items-center justify-center border border-l-0">
-                  Quantity
-                </p>
-                <p className="flex w-full items-center justify-center border border-l-0">
-                  Total Price
-                </p>
-              </div>
-            </li>
-          ) : (
-            <MenuProduct key={product.id} product={product} menuSample={name} />
-          );
-        })}
+          >
+            <p className="flex w-full items-center justify-center border border-l-0">
+              Price
+            </p>
+            <p className="flex w-full items-center justify-center border border-l-0">
+              Quantity
+            </p>
+            <p className="flex w-full items-center justify-center border border-l-0">
+              Total Price
+            </p>
+          </div>
+        </li>
+        {menu[name]?.map((product, idx) => (
+          <MenuProduct key={product.id} product={product} menuSample={name} />
+        ))}
       </ul>
-      {footer}
+      {footer ?? null}
+      {addable && addClick ? <AddProductsSection onClick={addClick} /> : null}
     </div>
   );
 }

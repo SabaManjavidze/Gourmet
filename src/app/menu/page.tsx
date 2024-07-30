@@ -49,7 +49,8 @@ export default function MenuPage() {
             {Object.keys(data).map((item, idx) => (
               <MenuTemplate
                 key={uuid()}
-                products={data[item] ?? []}
+                addable={false}
+                // products={data[item] ?? []}
                 name={item}
                 header={
                   idx == 0 ? (

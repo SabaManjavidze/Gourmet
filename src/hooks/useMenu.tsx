@@ -1,6 +1,6 @@
 "use client";
 import { MenuToState } from "@/lib/utils";
-import { MenuProduct, MenuState } from "menu";
+import { ProductWithVariants, MenuState } from "menu";
 import { v4 as uuid } from "uuid";
 import {
   Dispatch,
@@ -12,15 +12,19 @@ import {
   useMemo,
   useState,
 } from "react";
-import { RouterOutputs } from "@/trpc/react";
+import { api, RouterOutputs } from "@/trpc/react";
 
 type MenuContextProps = {
   menu: MenuState;
   totalSum: number;
   hideZeroQt: boolean;
+  changes: boolean;
   setHideZeroQt: Dispatch<SetStateAction<boolean>>;
   clearQuantities: () => void;
-  addProduct: (menuSample: string, product: MenuProduct[]) => void;
+  handleSaveClick: (orderId?: string) => Promise<void>;
+  handleRemoveProduct: (productId: string) => void;
+  handleOrderClick: () => void;
+  addProduct: (menuSample: string, product: ProductWithVariants[]) => void;
   changeVariant: (
     menuSample: string,
     productId: string,
@@ -36,9 +40,13 @@ export const MenuContext = createContext<MenuContextProps>({
   menu: {},
   totalSum: 0,
   hideZeroQt: false,
+  changes: false,
   setHideZeroQt: () => false,
   clearQuantities: () => null,
   changeQuantity: () => null,
+  handleOrderClick: () => null,
+  handleRemoveProduct: () => null,
+  handleSaveClick: async (orderId?: string) => undefined,
   changeVariant: () => null,
   addProduct: () => null,
 });
@@ -46,18 +54,25 @@ export const useMenu = () => useContext(MenuContext);
 
 export const MenuProvider = ({
   dbMenu,
+  setChanges,
   children,
+  changes,
 }: {
-  dbMenu: RouterOutputs["sampleMenu"]["getMainMenu"];
+  dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
+  setChanges?: Dispatch<SetStateAction<boolean>>;
+  changes?: boolean;
   children: ReactNode;
 }) => {
   const [menu, setMenu] = useState<MenuState>({});
+  const [removeProduct, setRemoveProduct] = useState<string[]>([]);
+  const utils = api.useUtils();
   const [hideZeroQt, setHideZeroQt] = useState(false);
+  const { mutateAsync: createOrder } = api.order.createUserOrder.useMutation();
 
   useEffect(() => {
     const state = MenuToState(dbMenu);
     setMenu(state);
-  }, [dbMenu]);
+  }, []);
   const totalSum = useMemo(() => {
     if (!menu) return 0;
     return Object.keys(menu).reduce((prev, curr) => {
@@ -106,6 +121,64 @@ export const MenuProvider = ({
     });
     if (!newMenuSample) throw new Error("Product not found");
     setMenu((prev) => ({ ...prev, [menuSample]: newMenuSample }));
+    setChanges?.(true);
+  };
+  const handleRemoveProduct = (productId: string) => {
+    if (removeProduct.includes(productId)) return null;
+    setRemoveProduct((prev) => [...prev, productId]);
+    setMenu((prev) => {
+      const newMenu: typeof menu = {};
+      let keyt = "";
+      Object.keys(prev).forEach((key) => {
+        const m = prev[key];
+        if (m === undefined) return null;
+        newMenu[key] = m.filter((prod) => {
+          if (prod.id == productId) {
+            keyt = key;
+            return false;
+          }
+          return true;
+        });
+      });
+      return Object.assign(prev, { [keyt]: newMenu[keyt] });
+    });
+    setChanges?.(true);
+  };
+  const handleSaveClick = async (orderId?: string) => {
+    // if orderId is passed it means we are updating an existing order
+    // else we are creating a new order
+    const menuName = Object.keys(menu)[0];
+    if (!menuName) return;
+    const prods = [];
+    for (const prod of menu[menuName] ?? []) {
+      if (removeProduct.includes(prod.id)) continue;
+      prods.push({
+        id: prod.active ?? prod.id,
+        quantity: prod.quantity,
+        variant_name: prod.variant_name,
+      });
+    }
+    if (orderId) {
+      await utils.client.order.removeProductFromOrder.mutate({
+        orderId,
+        productIds: removeProduct,
+      });
+    }
+    await createOrder({
+      orderId,
+      menuName,
+      totalPrice: totalSum.toString(),
+      status: "draft",
+      products: prods,
+    });
+    await utils.order.getUserOrders.invalidate();
+    if (orderId) {
+      await utils.order.getUserOrder.invalidate({ orderId });
+    }
+    setChanges?.(false);
+  };
+  const handleOrderClick = () => {
+    console.log("order clicked");
   };
   const clearQuantities = () => {
     const newMenu: MenuState = {};
@@ -117,10 +190,9 @@ export const MenuProvider = ({
         }) ?? [];
     });
     setMenu(newMenu);
+    setChanges?.(true);
   };
-  const addProduct = (menuName: string, products: MenuProduct[]) => {
-    // menu renders one item less that it actually has.
-    // product variants are messed up either in db or in the way they are fetched.
+  const addProduct = (menuName: string, products: ProductWithVariants[]) => {
     const prods = menu[menuName];
     if (!prods) return null;
     const addedProds = [];
@@ -128,7 +200,7 @@ export const MenuProvider = ({
       const found = prods.find(
         (prod) =>
           prod.id == product.id ||
-          !!prod?.variants?.find((varp) => varp.id == product.id),
+          product?.variants?.find((varp) => varp.id == prod.id),
       );
       if (found) continue;
       addedProds.push({
@@ -143,13 +215,18 @@ export const MenuProvider = ({
       ...prev,
       [menuName]: newMenu,
     }));
+    setChanges?.(true);
   };
   return (
     <MenuContext.Provider
       value={{
         menu,
         totalSum,
+        changes: !!changes,
         changeQuantity,
+        handleRemoveProduct,
+        handleOrderClick,
+        handleSaveClick,
         changeVariant,
         clearQuantities,
         addProduct,
