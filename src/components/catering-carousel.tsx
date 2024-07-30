@@ -1,7 +1,6 @@
 "use client";
 import * as React from "react";
 import { Card, CardContent } from "@/components/ui/card";
-import { sampleMenus } from "menu";
 import {
   Carousel,
   CarouselContent,
@@ -15,15 +14,28 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CardBody, CardContainer } from "./3d-card";
 import { v4 as uuid } from "uuid";
+import { api } from "@/trpc/react";
+import { Loader2 } from "lucide-react";
 
 export function CateringCarousel() {
   const router = useRouter();
   const handleItemClick = (name: string) => {
     router.push(`/catering?menu=${name}`);
   };
+  const {
+    data: sampleMenus,
+    isLoading,
+    error,
+  } = api.sampleMenu.getMenus.useQuery();
   const autoplay = React.useMemo(() => {
     return Autoplay({ delay: 2000 });
   }, []);
+  if (isLoading || !sampleMenus)
+    return (
+      <div className="flex min-h-screen w-full items-center justify-center bg-background">
+        <Loader2 size={50} color={"black"} />
+      </div>
+    );
   return (
     <Carousel
       plugins={[autoplay as any]}
@@ -35,9 +47,9 @@ export function CateringCarousel() {
       className="w-[90%] px-12 max-md:w-full max-md:px-0"
     >
       <CarouselContent>
-        {sampleMenus.concat(sampleMenus).map(({ name, src }, index) => (
+        {sampleMenus.concat(sampleMenus).map(({ id, name, picture }, index) => (
           <CarouselItem
-            key={uuid()}
+            key={id}
             className="hover:z-20 max-lg:basis-full lg:basis-1/2 2xl:basis-1/3"
           >
             <Link href={`/catering?menu=${name}`}>
@@ -48,7 +60,11 @@ export function CateringCarousel() {
                   max-sm:h-60 max-sm:w-60"
                 >
                   <Image
-                    src={src}
+                    src={
+                      picture !== "" && picture !== null
+                        ? picture
+                        : "https://i0.wp.com/www.glennhager.com/wp-content/uploads/2018/03/table.jpg"
+                    }
                     alt="no image"
                     fill
                     className="object-cover"
