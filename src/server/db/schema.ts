@@ -11,10 +11,11 @@ import {
   pgEnum,
   text,
   boolean,
+  uuid,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
-const idtype = (name: string) => varchar(name, { length: 36 });
+const idtype = (name: string) => uuid(name);
 
 export const createTable = pgTableCreator((name) => `gourmet_${name}`);
 

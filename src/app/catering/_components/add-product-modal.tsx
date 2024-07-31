@@ -13,6 +13,7 @@ import {
 } from "react";
 import { api } from "@/trpc/react";
 import { Loader2 } from "lucide-react";
+import { ProductWithVariants } from "menu";
 
 const cls =
   "fixed bottom-8 right-1/2 flex w-1/2 translate-x-1/2 justify-between bg-transparent";
@@ -27,7 +28,7 @@ export function AddProductModal({
 }) {
   const [query, setQuery] = useState("");
   const { addProduct } = useMenu();
-  const [selected, setSelected] = useState<number[]>([]);
+  const [selected, setSelected] = useState<ProductWithVariants[]>([]);
   const {
     data: prods,
     isPending: prodsLoading,
@@ -64,21 +65,16 @@ export function AddProductModal({
         </div>
       </Modal>
     );
-  const handleProductClick = (idx: number) => {
-    if (selected.includes(idx)) {
-      setSelected((prev) => prev.filter((item) => item != idx));
+  const handleProductClick = (product: ProductWithVariants) => {
+    if (selected.find((item) => item.id == product.id)) {
+      setSelected((prev) => prev.filter((item) => item.id != product.id));
       return;
     }
-    setSelected((prev) => [...prev, idx]);
+    setSelected((prev) => [...prev, product]);
   };
   const handleSave = () => {
-    if (!prods) return;
-    const newProds = selected.map((item) => {
-      const prd = prods[Number(item)];
-      if (!prd) throw new Error("no product");
-      return prd;
-    });
-    addProduct(menuSample, newProds);
+    if (!prods || selected.length == 0) return;
+    addProduct(menuSample, selected);
     closeModal();
     setSelected([]);
   };
@@ -123,6 +119,7 @@ export function AddProductModal({
         <div className="mt-12 flex w-full flex-col items-center px-4">
           <Input
             value={query}
+            autoFocus
             onChange={(e) => {
               setQuery(e.target.value);
               debouncedSearch(e.target.value);
@@ -147,19 +144,25 @@ export function AddProductModal({
           </div>
         </div>
         <div className="mt-16 flex flex-col items-center overflow-y-auto">
-          {prods?.map((product, idx) => (
-            <button
-              key={product.id}
-              className={`flex w-[90%] justify-between border border-t-transparent px-8 py-5 
+          {prodsLoading ? (
+            <div className="flex h-[400px] items-center justify-center">
+              <Loader2 size={30} />
+            </div>
+          ) : (
+            prods?.map((product, idx) => (
+              <button
+                key={product.id}
+                className={`flex w-[90%] justify-between border border-t-transparent px-8 py-5 
             text-xl font-semibold duration-150 first:border-t-border hover:border-t 
             hover:!border-accent/50 hover:bg-accent/15 
-            ${selected.includes(idx) ? "border-accent !border-t-accent bg-accent/25" : ""}`}
-              onClick={() => handleProductClick(idx)}
-            >
-              <h3>{product.name}</h3>
-              <h3>${product.price}</h3>
-            </button>
-          )) ?? null}
+            ${selected.find((item) => item.id == product.id) ? "border-accent !border-t-accent bg-accent/25" : ""}`}
+                onClick={() => handleProductClick(product)}
+              >
+                <h3>{product.name}</h3>
+                <h3>${product.price}</h3>
+              </button>
+            )) ?? null
+          )}
         </div>
       </div>
     </Modal>
