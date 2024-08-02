@@ -11,7 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { PROFILE_ROUTE } from "@/lib/utils";
 
@@ -24,7 +24,13 @@ const ProfileButton = ({
   userPicture,
   username,
 }: UserProfileButtonPropTypes) => {
-  const profileOptions = [{ title: "Profile", path: "/user/profile" }];
+  const { data: session } = useSession();
+  const profileOptions = [
+    {
+      title: "Profile",
+      path: session?.user.role == "user" ? "/user/profile" : "/admin/profile",
+    },
+  ];
   const pathname = usePathname();
   return (
     <DropdownMenu modal={false}>
@@ -36,7 +42,11 @@ const ProfileButton = ({
               width={35}
               height={35}
               className={`rounded-full border-2 object-cover p-0 ${
-                pathname == PROFILE_ROUTE ? "border-accent" : "border-primary"
+                pathname == PROFILE_ROUTE
+                  ? "border-accent"
+                  : session?.user.role == "user"
+                    ? "border-primary"
+                    : "border-red-700"
               }`}
               alt="user profile image"
             />

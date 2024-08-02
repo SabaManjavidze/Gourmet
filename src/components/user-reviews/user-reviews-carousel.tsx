@@ -121,12 +121,12 @@ const ReviewCard = ({
               ))}
               {5 - rating > 0
                 ? [...Array(5 - rating)].map((val) => (
-                  <Star
-                    key={uuid()}
-                    size={12}
-                    className="fill-muted-foreground text-muted-foreground"
-                  />
-                ))
+                    <Star
+                      key={uuid()}
+                      size={12}
+                      className="fill-muted-foreground text-muted-foreground"
+                    />
+                  ))
                 : null}
             </span>
           </div>
@@ -179,22 +179,20 @@ const UserReviewsCarousel = () => {
       className="max-w-[75%] px-5 max-md:px-0 max-sm:w-full"
     >
       <CarouselContent className="flex h-56 items-center">
-        {reviews
-          .concat(reviews)
-          .map(({ url, body, img, name, rating }, index) => (
-            <CarouselItem
-              key={uuid()}
-              className="flex justify-center hover:z-20 max-md:basis-full md:basis-1/2 lg:basis-1/3 2xl:basis-1/5"
-            >
-              <ReviewCard
-                url={url}
-                body={body}
-                img={img}
-                name={name}
-                rating={rating}
-              />
-            </CarouselItem>
-          ))}
+        {reviews.map(({ url, body, img, name, rating }, index) => (
+          <CarouselItem
+            key={uuid()}
+            className="flex justify-center hover:z-20 max-md:basis-full md:basis-1/2 lg:basis-1/3 2xl:basis-1/5"
+          >
+            <ReviewCard
+              url={url}
+              body={body}
+              img={img}
+              name={name}
+              rating={rating}
+            />
+          </CarouselItem>
+        ))}
       </CarouselContent>
       <CarouselPrevious
         variant={"outline-white"}

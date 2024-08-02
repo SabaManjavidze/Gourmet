@@ -13,7 +13,8 @@ export function BottomButtons({
   orderText?: string;
 }) {
   const [saveLoading, setSaveLoading] = useState(false);
-  const { handleSaveClick, handleOrderClick, changes } = useMenu();
+  const { handleSaveClick, handleOrderClick, changes, menu } = useMenu();
+  const [menuName] = Object.keys(menu);
   return (
     <div className="*:spacing flex w-[500px] justify-between *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
       <Button
@@ -24,7 +25,7 @@ export function BottomButtons({
           setSaveLoading(true);
           await handleSaveClick(orderId);
           setSaveLoading(false);
-          toast.success(orderId ? "Menu Updated" : "Menu Saved");
+          toast.success(orderId ? `${menuName} Updated` : `${menuName} Saved`);
         }}
         size={"lg"}
       >

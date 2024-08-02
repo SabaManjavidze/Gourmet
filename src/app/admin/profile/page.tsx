@@ -1,28 +1,42 @@
 "use client";
-import React, { useEffect, useMemo, useState } from "react";
-import Image from "next/image";
+import { MenuCardModal } from "@/app/user/profile/_components/menu-card-modal";
+import { OrderList } from "@/app/user/profile/_components/order-list";
 import { Tab, Tabs } from "@/components/ui/tabs";
-import { MenuCardModal } from "./_components/menu-card-modal";
 import { useSession } from "next-auth/react";
-import { OrderList } from "./_components/order-list";
+import Image from "next/image";
+import { useEffect, useMemo, useState } from "react";
+import { UserSearch } from "../_components/user-search";
+import { User } from "next-auth";
 
-export default function ProfilePage() {
-  const [open, setOpen] = useState<string | null>(null);
+export default function AdminProfilePage() {
   const { data: session } = useSession();
-  const tabs = [
-    {
-      title: "My Drafts",
-      value: "My Drafts",
-      content: <OrderList setOpen={setOpen} />,
-    },
-    {
-      title: "Order History",
-      value: "Order History",
-      content: <OrderList setOpen={setOpen} />,
-    },
-  ];
+  const [open, setOpen] = useState<string | null>(null);
+  const [selected, setSelected] = useState<User | undefined>();
+  const handleUserSearchClick = () => {
+    console.log(selected);
+  };
+  const tabs = useMemo(
+    () => [
+      {
+        title: "Orders",
+        value: "Orders",
+        content: <OrderList setOpen={setOpen} />,
+      },
+      {
+        title: "Search Users",
+        value: "Search Users",
+        content: (
+          <UserSearch
+            onSaveClick={handleUserSearchClick}
+            selected={selected}
+            setSelected={setSelected}
+          />
+        ),
+      },
+    ],
+    [],
+  );
   const [active, setActive] = useState<Tab>(tabs[0] as Tab);
-
   const closeModal = () => {
     setOpen(null);
   };

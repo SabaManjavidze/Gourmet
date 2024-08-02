@@ -24,7 +24,7 @@ export default function AuthModal({
       <div className="flex flex-col items-center justify-center md:p-24 md:py-16">
         <Button
           onClick={() => logIn("google")}
-          //   isLoading={loading == "google"}
+          isLoading={loading == "google"}
           className="flex h-16 w-72 cursor-pointer items-center justify-center rounded bg-blue-500 px-4 py-3 text-sm font-bold text-gray-100 shadow hover:bg-blue-600 hover:text-white"
         >
           <svg

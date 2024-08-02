@@ -1,6 +1,8 @@
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import {
+  DefaultUser,
   getServerSession,
+  User,
   type DefaultSession,
   type NextAuthOptions,
 } from "next-auth";
@@ -12,7 +14,9 @@ import type { GoogleProfile } from "next-auth/providers/google";
 import axios from "axios";
 import { env } from "@/env";
 import { db } from "@/server/db";
-import { createTable } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
+import { createTable, users } from "@/server/db/schema";
+import { UserRole } from "@/lib/types";
 
 /**
  * Module augmentation for `next-auth` types. Allows us to add custom properties to the `session`
@@ -22,17 +26,12 @@ import { createTable } from "@/server/db/schema";
  */
 declare module "next-auth" {
   interface Session extends DefaultSession {
-    user: {
-      id: string;
-      // ...other properties
-      // role: UserRole;
-    } & DefaultSession["user"];
+    user: User;
   }
-
-  // interface User {
-  //   // ...other properties
-  //   // role: UserRole;
-  // }
+  interface User extends DefaultUser {
+    id: string;
+    role: UserRole;
+  }
 }
 
 /**
@@ -41,14 +40,32 @@ declare module "next-auth" {
  * @see https://next-auth.js.org/configuration/options
  */
 export const authOptions: NextAuthOptions = {
+  secret: env.NEXTAUTH_SECRET ?? "secret",
+  pages: {
+    signIn: "/",
+  },
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    session: ({ session, user }) => ({
-      ...session,
-      user: {
-        ...session.user,
-        id: user.id,
-      },
-    }),
+    async jwt({ token, user }) {
+      if (user?.id) {
+        const dbUser = await db.query.users.findFirst({
+          where(fields, operators) {
+            return operators.eq(fields.id, user.id);
+          },
+        });
+        if (!dbUser) throw new Error("User not found");
+        token.user = dbUser;
+      }
+      return token;
+    },
+    session: ({ session, token, user }) => {
+      return {
+        ...session,
+        user: token.user as User,
+      };
+    },
   },
   adapter: DrizzleAdapter(db, createTable) as Adapter,
   providers: [
@@ -56,30 +73,31 @@ export const authOptions: NextAuthOptions = {
       clientId: process.env.GOOGLE_CLIENT_ID?.toString() as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET?.toString() as string,
       allowDangerousEmailAccountLinking: true,
-      async profile(prof: GoogleProfile, tokens) {
-        let birthday: undefined | Date;
-        try {
-          const baseUrl = "https://people.googleapis.com/v1/people";
-          const { data } = await axios.get(
-            `${baseUrl}/${prof.sub}?personFields=birthdays&key=${
-              process.env.GOOGLE_API_KEY as string
-            }&access_token=${tokens.access_token}`,
-          );
-          const bd = data.birthdays[0].date;
-          birthday = new Date(bd.year, bd.month - 1, bd.day);
-        } catch (e) {
-          console.log("birthday error", JSON.stringify(e));
-        }
+      async profile(prof, tokens) {
+        // let birthday: undefined | Date;
+        // try {
+        //   const baseUrl = "https://people.googleapis.com/v1/people";
+        //   const { data } = await axios.get(
+        //     `${baseUrl}/${prof.sub}?personFields=birthdays&key=${
+        //       process.env.GOOGLE_API_KEY as string
+        //     }&access_token=${tokens.access_token}`,
+        //   );
+        //   const bd = data.birthdays[0].date;
+        //   birthday = new Date(bd.year, bd.month - 1, bd.day);
+        // } catch (e) {
+        //   console.log("birthday error", JSON.stringify(e));
+        // }
         return {
-          firstName: prof.given_name,
-          lastName: prof.family_name,
+          // firstName: prof.given_name,
+          // lastName: prof.family_name,
           email: prof.email,
           id: prof.sub,
+          role: "user",
           image: prof.picture,
           name: prof.name,
-          birthday,
-          emailVerified: new Date(),
-        };
+          // birthday,
+          // emailVerified: new Date(),
+        } satisfies User;
       },
     }),
     FacebookProvider({
@@ -97,14 +115,15 @@ export const authOptions: NextAuthOptions = {
       profile(profile: FacebookProfile) {
         return {
           id: profile.id,
-          firstName: profile.first_name,
-          lastName: profile.last_name,
+          // firstName: profile.first_name,
+          // lastName: profile.last_name,
+          role: "user",
           email: profile.email,
           name: profile.name,
           image: profile.picture.data.url,
-          birthday: new Date(profile.birthday),
-          emailVerified: new Date(),
-        };
+          // birthday: new Date(profile.birthday),
+          // emailVerified: new Date(),
+        } satisfies User;
       },
     }),
   ],

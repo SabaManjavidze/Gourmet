@@ -72,6 +72,7 @@ export async function getUserOrdersWithPaging(
     .where(and(eq(orders.status, status), eq(orders.userId, userId)));
   if (!totalItems) return { orders: [], totalPages: 0 };
   const totalPages = Math.ceil(totalItems.count / limit);
+  console.log(order, totalPages);
 
   const result: Order[] = [];
   for (const ord of order) {
@@ -167,7 +168,6 @@ export async function createUserOrder(
       orderId: ord.id,
     };
   });
-  console.log(products);
 
   const final_prods = await db
     .insert(productstoOrders)
@@ -210,7 +210,7 @@ export const orderRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ input: { orderId }, ctx: { session } }) => {
-      await db
+      return await db
         .delete(orders)
         .where(and(eq(orders.id, orderId), eq(orders.userId, session.user.id)));
     }),
@@ -224,7 +224,12 @@ export const orderRouter = createTRPCRouter({
       }),
     )
     .query(async ({ input: { status, page, limit }, ctx: { session } }) => {
-      await getUserOrdersWithPaging(status, page, limit, session.user.id);
+      return await getUserOrdersWithPaging(
+        status,
+        page,
+        limit,
+        session.user.id,
+      );
     }),
   getUserOrder: protectedProcedure
     .input(

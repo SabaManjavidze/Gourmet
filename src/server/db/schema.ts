@@ -17,7 +17,7 @@ import { type AdapterAccount } from "next-auth/adapters";
 
 const idtype = (name: string) => uuid(name);
 
-export const createTable = pgTableCreator((name) => `gourmet_${name}`);
+export const createTable = pgTableCreator((name) => name);
 
 export const categories = createTable("category", {
   id: idtype("id").primaryKey(),
@@ -59,10 +59,10 @@ export const productsToVariants = createTable(
   {
     productId: idtype("product_id")
       .notNull()
-      .references(() => products.id),
+      .references(() => products.id, { onDelete: "cascade" }),
     variantId: idtype("variant_id")
       .notNull()
-      .references(() => variants.id),
+      .references(() => variants.id, { onDelete: "cascade" }),
   },
   (t) => ({
     compoundKey: primaryKey({ columns: [t.productId, t.variantId] }),
@@ -73,7 +73,7 @@ export const productsToSamples = createTable(
   {
     productId: idtype("product_id")
       .notNull()
-      .references(() => products.id),
+      .references(() => products.id, { onDelete: "cascade" }),
     sampleId: idtype("sample_id")
       .notNull()
       .references(() => menuSamples.id, { onDelete: "cascade" }),
@@ -117,8 +117,8 @@ export const orders = createTable(
     totalPrice: decimal("total_price").notNull(),
     status: statusEnum("status").notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
-    userId: varchar("userId")
-      .references(() => users.id)
+    userId: idtype("userId")
+      .references(() => users.id, { onDelete: "cascade" })
       .notNull(),
   },
   (order) => ({
@@ -151,14 +151,14 @@ export const productstoOrders = createTable(
 );
 export const roleEnum = pgEnum("role", ["user", "admin"]);
 export const users = createTable("user", {
-  id: varchar("id", { length: 255 }).notNull().primaryKey(),
-  name: varchar("name", { length: 255 }),
-  role: roleEnum("role").default("user"),
+  id: idtype("id").notNull().primaryKey(),
+  name: varchar("name", { length: 255 }).notNull(),
+  role: roleEnum("role").default("user").notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   emailVerified: timestamp("emailVerified", {
     mode: "date",
   }).default(sql`CURRENT_TIMESTAMP`),
-  image: varchar("image", { length: 255 }),
+  image: varchar("image", { length: 255 }).notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -169,9 +169,9 @@ export const usersRelations = relations(users, ({ many }) => ({
 export const accounts = createTable(
   "account",
   {
-    userId: varchar("userId", { length: 255 })
+    userId: idtype("userId")
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, { onDelete: "cascade" }),
     type: varchar("type", { length: 255 })
       .$type<AdapterAccount["type"]>()
       .notNull(),
@@ -203,9 +203,9 @@ export const sessions = createTable(
     sessionToken: varchar("sessionToken", { length: 255 })
       .notNull()
       .primaryKey(),
-    userId: varchar("userId", { length: 255 })
+    userId: idtype("userId")
       .notNull()
-      .references(() => users.id),
+      .references(() => users.id, { onDelete: "cascade" }),
     expires: timestamp("expires", { mode: "date" }).notNull(),
   },
   (session) => ({

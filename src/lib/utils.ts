@@ -16,7 +16,11 @@ export function keysFromObject<T extends object>(object: T): (keyof T)[] {
 }
 
 export const limitTxt = (str: string, limit: number) => {
-  return str.length > limit ? `${str.slice(0, limit)}...` : str;
+  const news =
+    str.length > limit
+      ? `${str.slice(0, str[limit - 1] == " " ? limit - 1 : limit)}...`
+      : str;
+  return news;
 };
 export const MenuToState = (
   menu: Record<string, (ProductWithVariants & { quantity?: number })[]>,

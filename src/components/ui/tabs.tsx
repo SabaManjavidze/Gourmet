@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
-type Tab = {
+export type Tab = {
   title: string;
   value: string;
   content?: string | React.ReactNode;
@@ -12,6 +12,8 @@ type Tab = {
 
 export const Tabs = ({
   tabs: propTabs,
+  active,
+  setActive,
   perspective = false,
   containerClassName,
   activeTabClassName,
@@ -19,13 +21,15 @@ export const Tabs = ({
   contentClassName,
 }: {
   tabs: Tab[];
+  active: Tab;
+  setActive: Dispatch<SetStateAction<Tab>>;
   containerClassName?: string;
   activeTabClassName?: string;
   tabClassName?: string;
   contentClassName?: string;
   perspective?: boolean;
 }) => {
-  const [active, setActive] = useState<Tab>(propTabs[0] as Tab);
+  // const [active, setActive] = useState<Tab>(propTabs[0] as Tab);
   const [tabs, setTabs] = useState<Tab[]>(propTabs);
 
   const moveSelectedTabToTop = (idx: number) => {

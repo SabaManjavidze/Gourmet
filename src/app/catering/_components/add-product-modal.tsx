@@ -39,7 +39,7 @@ export function AddProductModal({
     data: cats,
     isLoading: catsLoading,
     error: catsError,
-  } = api.getCategories.useQuery(undefined, { refetchOnMount: false });
+  } = api.getCategories.useQuery();
   const [filter, setFilter] = useState<string>("");
   const handleFilterClick = (name: string) => {
     setFilter(name);

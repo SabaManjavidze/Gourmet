@@ -32,14 +32,9 @@ export function MenuCardModal({
     data: order,
     isLoading,
     error,
-  } = api.order.getUserOrder.useQuery(
-    {
-      orderId,
-    },
-    {
-      refetchOnMount: false,
-    },
-  );
+  } = api.order.getUserOrder.useQuery({
+    orderId,
+  });
   if (error ?? isLoading ?? !order)
     return (
       <Modal

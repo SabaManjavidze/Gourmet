@@ -9,7 +9,7 @@ import {
   variants,
 } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { and, eq, like, or } from "drizzle-orm";
+import { and, eq, ilike, like, or } from "drizzle-orm";
 import { ProductWithVariants } from "menu";
 import {
   createUserOrder,
@@ -103,7 +103,10 @@ export const adminRouter = createTRPCRouter({
         .from(users)
         .where(
           and(
-            or(like(users.email, `%${query}%`), like(users.name, `%${query}%`)),
+            or(
+              ilike(users.email, `%${query}%`),
+              ilike(users.name, `%${query}%`),
+            ),
             eq(users.role, "user"),
           ),
         );

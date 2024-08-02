@@ -59,14 +59,15 @@ export function NavDrawer({
           {status == "authenticated" ? (
             <div className="relative flex flex-col items-center justify-center gap-y-2">
               <Image
-                src={session.user.image as string}
+                src={session.user?.image ?? "/imgs/saba.png"}
                 width={65}
                 height={65}
-                className={`rounded-full border-[3px] object-cover ${pathname == PROFILE_ROUTE ? "border-accent" : "border-primary"
-                  }`}
+                className={`rounded-full border-[3px] object-cover ${
+                  pathname == PROFILE_ROUTE ? "border-accent" : "border-primary"
+                }`}
                 alt="user profile image"
               />
-              <h3 className="text-lg font-bold">{session.user.name}</h3>
+              <h3 className="text-lg font-bold">{session.user?.name}</h3>
             </div>
           ) : (
             <div>

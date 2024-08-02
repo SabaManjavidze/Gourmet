@@ -37,17 +37,25 @@ export function OrderList({ setOpen }: { setOpen: (id: string) => void }) {
           ref={listRef}
           className="relative grid w-full grid-cols-3 gap-6 bg-white max-xl:grid-cols-3 max-lg:grid-cols-2 max-md:px-8 max-sm:grid-cols-1"
         >
-          {data.orders.map(({ name, id, products, totalPrice, created_at }) => (
-            <MenuCard
-              key={id}
-              id={id}
-              title={name}
-              totalPrice={totalPrice}
-              created_at={created_at}
-              onClick={() => setOpen(id)}
-              products={products}
-            />
-          ))}
+          {data.orders.length > 0 ? (
+            data.orders.map(
+              ({ name, id, products, totalPrice, created_at }) => (
+                <MenuCard
+                  key={id}
+                  id={id}
+                  title={name}
+                  totalPrice={totalPrice}
+                  created_at={created_at}
+                  onClick={() => setOpen(id)}
+                  products={products}
+                />
+              ),
+            )
+          ) : (
+            <div>
+              <h2 className="ml-4 text-muted-foreground">0 Results Found</h2>
+            </div>
+          )}
         </ul>
         <div>
           {data.totalPages > 1 ? (

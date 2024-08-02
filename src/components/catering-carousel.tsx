@@ -13,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { CardBody, CardContainer } from "./3d-card";
-import { v4 as uuid } from "uuid";
+import { v4 as uuid, v4 } from "uuid";
 import { api } from "@/trpc/react";
 import { Loader2 } from "lucide-react";
 
@@ -47,7 +47,7 @@ export function CateringCarousel() {
       className="w-[90%] px-12 max-md:w-full max-md:px-0"
     >
       <CarouselContent>
-        {sampleMenus.concat(sampleMenus).map(({ id, name, picture }, index) => (
+        {sampleMenus.map(({ id, name, picture }, index) => (
           <CarouselItem
             key={id}
             className="hover:z-20 max-lg:basis-full lg:basis-1/2 2xl:basis-1/3"

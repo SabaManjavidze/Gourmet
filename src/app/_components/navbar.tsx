@@ -53,7 +53,10 @@ export function Navbar() {
   const { data: session, status } = useSession();
   const handleCloseAuthModal = () => setAuthOpen(false);
   return (
-    <nav className="sticky top-0 z-40 flex h-16 items-center justify-between border-b bg-accent-light px-10 max-lg:justify-center">
+    <nav
+      className="sticky top-0 z-40 flex h-16 items-center justify-between border-b
+    border-b-accent-light bg-accent-light px-10 max-lg:justify-center"
+    >
       <div className="absolute left-5 lg:hidden">
         <NavDrawer
           triggerButton={
