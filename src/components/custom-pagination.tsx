@@ -12,11 +12,11 @@ import {
 
 export function CustomPagination({
   page,
-  status,
+  args = "",
   totalPages,
 }: {
   page: number;
-  status: string;
+  args?: string;
   totalPages: number;
 }) {
   return (
@@ -25,7 +25,7 @@ export function CustomPagination({
         {page != 1 ? (
           <PaginationItem>
             <PaginationPrevious
-              href={`/user/profile?page=${page - 1}&status=${status}`}
+              href={`/user/profile?page=${page - 1}&${args}`}
             />
           </PaginationItem>
         ) : null}
@@ -35,7 +35,7 @@ export function CustomPagination({
             className={`border-2 ${page == idx + 1 ? "border-accent" : "border-transparent"}`}
           >
             <PaginationLink
-              href={`/user/profile?page=${idx + 1}&status=${status}`}
+              href={`/user/profile?page=${idx + 1}&${args}`}
             >
               {idx + 1}
             </PaginationLink>
@@ -44,7 +44,7 @@ export function CustomPagination({
         {page != totalPages ? (
           <PaginationItem>
             <PaginationNext
-              href={`/user/profile?page=${page + 1}&status=${status}`}
+              href={`/user/profile?page=${page + 1}&${args}`}
             />
           </PaginationItem>
         ) : null}

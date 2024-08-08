@@ -13,6 +13,7 @@ import {
   useState,
 } from "react";
 import { api, RouterOutputs } from "@/trpc/react";
+import { useSession } from "next-auth/react";
 
 type MenuContextProps = {
   menu: MenuState;
@@ -54,20 +55,22 @@ export const useMenu = () => useContext(MenuContext);
 
 export const MenuProvider = ({
   dbMenu,
+  userId,
   setChanges,
   children,
   changes,
 }: {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
+  userId?: string;
   setChanges?: Dispatch<SetStateAction<boolean>>;
   changes?: boolean;
   children: ReactNode;
 }) => {
   const [menu, setMenu] = useState<MenuState>({});
   const [removeProduct, setRemoveProduct] = useState<string[]>([]);
+  const { data: session } = useSession()
   const utils = api.useUtils();
   const [hideZeroQt, setHideZeroQt] = useState(false);
-  const { mutateAsync: createOrder } = api.order.createUserOrder.useMutation();
 
   useEffect(() => {
     const state = MenuToState(dbMenu);
@@ -79,11 +82,11 @@ export const MenuProvider = ({
       if (!menu?.[curr]) return prev;
       return (
         prev +
-          Number(
-            menu[curr]?.reduce((prev1, curr1) => {
-              return prev1 + curr1.price * curr1.quantity;
-            }, 0),
-          ) || 0
+        Number(
+          menu[curr]?.reduce((prev1, curr1) => {
+            return prev1 + curr1.price * curr1.quantity;
+          }, 0),
+        ) || 0
       );
     }, 0);
   }, [menu]);
@@ -158,22 +161,46 @@ export const MenuProvider = ({
         variant_name: prod.variant_name,
       });
     }
-    if (orderId) {
-      await utils.client.order.removeProductFromOrder.mutate({
+    if (session?.user?.role == "user") {
+
+      if (orderId && removeProduct.length > 0) {
+        await utils.client.order.removeProductFromOrder.mutate({
+          orderId,
+          productIds: removeProduct,
+        });
+      }
+      await utils.client.order.createUserOrder.mutate({
         orderId,
-        productIds: removeProduct,
+        menuName,
+        totalPrice: totalSum.toString(),
+        status: "draft",
+        products: prods,
       });
-    }
-    await createOrder({
-      orderId,
-      menuName,
-      totalPrice: totalSum.toString(),
-      status: "draft",
-      products: prods,
-    });
-    await utils.order.getUserOrders.invalidate();
-    if (orderId) {
-      await utils.order.getUserOrder.invalidate({ orderId });
+      await utils.order.getUserOrders.invalidate();
+      if (orderId) {
+        await utils.order.getUserOrder.invalidate({ orderId });
+      }
+    } else if (userId && session?.user?.role == "admin") {
+
+      if (orderId && removeProduct.length > 0) {
+        await utils.client.admin.removeProductFromUserOrder.mutate({
+          orderId,
+          userId,
+          productIds: removeProduct,
+        });
+      }
+      await utils.client.admin.createUserOrder.mutate({
+        userId,
+        orderId,
+        menuName,
+        totalPrice: totalSum.toString(),
+        status: "draft",
+        products: prods,
+      });
+      await utils.admin.getUserOrders.invalidate();
+      if (orderId) {
+        await utils.admin.getUserOrder.invalidate({ userId, orderId });
+      }
     }
     setChanges?.(false);
   };

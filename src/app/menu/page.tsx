@@ -3,7 +3,6 @@ import { Menu, menuKeys } from "menu";
 import { MenuTemplate } from "./_components/menu-template";
 import { v4 as uuid } from "uuid";
 import { MenuProvider } from "@/hooks/useMenu";
-import { Checkbox } from "@/components/ui/checkbox";
 import { HideZeroCheckbox } from "./_components/hidezero-checkbox";
 import { Input } from "@/components/ui/input";
 import { SumSection } from "./_components/sum-section";

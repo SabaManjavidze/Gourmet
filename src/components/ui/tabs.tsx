@@ -12,8 +12,6 @@ export type Tab = {
 
 export const Tabs = ({
   tabs: propTabs,
-  active,
-  setActive,
   perspective = false,
   containerClassName,
   activeTabClassName,
@@ -21,15 +19,13 @@ export const Tabs = ({
   contentClassName,
 }: {
   tabs: Tab[];
-  active: Tab;
-  setActive: Dispatch<SetStateAction<Tab>>;
   containerClassName?: string;
   activeTabClassName?: string;
   tabClassName?: string;
   contentClassName?: string;
   perspective?: boolean;
 }) => {
-  // const [active, setActive] = useState<Tab>(propTabs[0] as Tab);
+  const [active, setActive] = useState<Tab>(propTabs[0] as Tab);
   const [tabs, setTabs] = useState<Tab[]>(propTabs);
 
   const moveSelectedTabToTop = (idx: number) => {

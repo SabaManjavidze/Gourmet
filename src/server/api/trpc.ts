@@ -97,7 +97,7 @@ export const publicProcedure = t.procedure;
  */
 
 export const adminProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+  if (!ctx?.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   // //  check if admin
@@ -112,7 +112,7 @@ export const adminProcedure = t.procedure.use(({ ctx, next }) => {
   });
 });
 export const protectedProcedure = t.procedure.use(({ ctx, next }) => {
-  if (!ctx.session || !ctx.session.user) {
+  if (!ctx?.session?.user) {
     throw new TRPCError({ code: "UNAUTHORIZED" });
   }
   return next({

@@ -21,7 +21,6 @@ export default function ProfilePage() {
       content: <OrderList setOpen={setOpen} />,
     },
   ];
-  const [active, setActive] = useState<Tab>(tabs[0] as Tab);
 
   const closeModal = () => {
     setOpen(null);
@@ -54,7 +53,7 @@ export default function ProfilePage() {
         <div
           className={`flex w-full max-w-5xl flex-col items-start justify-start [perspective:1000px]`}
         >
-          <Tabs tabs={tabs} active={active} setActive={setActive} />
+          <Tabs tabs={tabs} />
         </div>
       </div>
     </div>

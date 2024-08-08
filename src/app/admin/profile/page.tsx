@@ -1,45 +1,33 @@
 "use client";
-import { MenuCardModal } from "@/app/user/profile/_components/menu-card-modal";
 import { OrderList } from "@/app/user/profile/_components/order-list";
 import { Tab, Tabs } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { useEffect, useMemo, useState } from "react";
-import { UserSearch } from "../_components/user-search";
+import { UserSearch } from "./_components/user-search";
 import { User } from "next-auth";
+import { AdminProvider } from "@/hooks/useAdmin";
+import { AdminOrderList } from "./_components/admin-order-list";
 
 export default function AdminProfilePage() {
   const { data: session } = useSession();
-  const [open, setOpen] = useState<string | null>(null);
-  const [selected, setSelected] = useState<User | undefined>();
-  const handleUserSearchClick = () => {
-    console.log(selected);
-  };
-  const tabs = useMemo(
-    () => [
+
+  const tabs =
+    [
       {
         title: "Orders",
         value: "Orders",
-        content: <OrderList setOpen={setOpen} />,
+        content: <AdminOrderList />,
       },
       {
         title: "Search Users",
         value: "Search Users",
         content: (
           <UserSearch
-            onSaveClick={handleUserSearchClick}
-            selected={selected}
-            setSelected={setSelected}
           />
         ),
       },
-    ],
-    [],
-  );
-  const [active, setActive] = useState<Tab>(tabs[0] as Tab);
-  const closeModal = () => {
-    setOpen(null);
-  };
+    ]
 
   return (
     <div className="container flex min-h-screen flex-col justify-between pb-96 pt-28">
@@ -47,9 +35,6 @@ export default function AdminProfilePage() {
         className="flex w-full flex-col 
       items-center bg-background px-3 max-md:px-0 md:flex-row md:items-start lg:px-5"
       >
-        {!!open ? (
-          <MenuCardModal open={!!open} orderId={open} closeModal={closeModal} />
-        ) : null}
         <div className="flex w-full flex-col items-center md:w-1/4 md:items-start">
           <div className="flex h-auto w-full flex-col items-center justify-start">
             <Image
@@ -57,7 +42,11 @@ export default function AdminProfilePage() {
               width={120}
               height={120}
               quality={100}
-              className="h-[120px] rounded-full border-4 border-accent object-cover"
+              className={`h-[120px] rounded-full border-4 border-accent object-cover
+                  ${session?.user.role == "user"
+                  ? "border-primary"
+                  : "border-red-700"}
+            `}
               alt="User Profile Picture"
             />
             <h2 className="pt-3 text-2xl font-semibold">
@@ -68,7 +57,11 @@ export default function AdminProfilePage() {
         <div
           className={`flex w-full max-w-5xl flex-col items-start justify-start [perspective:1000px]`}
         >
-          <Tabs tabs={tabs} active={active} setActive={setActive} />
+          <AdminProvider>
+            <Tabs
+              tabs={tabs}
+            />
+          </AdminProvider>
         </div>
       </div>
     </div>

@@ -9,7 +9,7 @@ import {
   variants,
 } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { and, eq, ilike, like, or } from "drizzle-orm";
+import { and, count, eq, ilike, like, or } from "drizzle-orm";
 import { ProductWithVariants } from "menu";
 import {
   createUserOrder,
@@ -80,7 +80,7 @@ export const adminRouter = createTRPCRouter({
         orderId: z.string().uuid(),
       }),
     )
-    .mutation(async ({ input: { userId, orderId } }) => {
+    .query(async ({ input: { userId, orderId } }) => {
       return await getUserOrder(orderId, userId);
     }),
   getUserOrders: adminProcedure
@@ -91,16 +91,24 @@ export const adminRouter = createTRPCRouter({
         limit: z.number().min(1).max(20).optional().default(20),
       }),
     )
-    .mutation(async ({ input: { userId, limit, page } }) => {
+    .query(async ({ input: { userId, limit, page } }) => {
       return await getUserOrdersWithPaging("draft", page, limit, userId);
     }),
   searchUsers: adminProcedure
     .input(z.object({ query: z.string().min(2) }))
     .mutation(async ({ input: { query } }) => {
       // search users by name or email
-      const results = await db
-        .select()
+      const results = await db.select({
+        id: users.id,
+        name: users.name,
+        role: users.role,
+        email: users.email,
+        image: users.image,
+        orderCount: count(orders.id)
+      })
         .from(users)
+        .innerJoin(orders,
+          and(eq(orders.userId, users.id), eq(orders.status, "draft")))
         .where(
           and(
             or(
@@ -108,8 +116,9 @@ export const adminRouter = createTRPCRouter({
               ilike(users.name, `%${query}%`),
             ),
             eq(users.role, "user"),
-          ),
-        );
+          )
+        ).groupBy(users.id)
+      console.log(JSON.stringify(results, null, 2))
       return results;
     }),
 });

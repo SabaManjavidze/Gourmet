@@ -1,20 +1,12 @@
-"use client";
-import type { Dispatch } from "react";
 import React, { useState } from "react";
-import { v4 as uuid } from "uuid";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { MenuProvider } from "@/hooks/useMenu";
 import { MenuTemplate } from "@/app/menu/_components/menu-template";
-import { Menu } from "menu";
-import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 import { api } from "@/trpc/react";
 import { Loader2 } from "lucide-react";
 import { BottomButtons } from "@/app/catering/_components/bottom-buttons";
 import { AddProductModal } from "@/app/catering/_components/add-product-modal";
+import { useAdmin } from "@/hooks/useAdmin";
 
 export function MenuCardModal({
   orderId,
@@ -25,16 +17,17 @@ export function MenuCardModal({
   open: boolean;
   closeModal: () => void;
 }) {
-  const [orderNow, setOrderNow] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
   const [changes, setChanges] = useState(false);
+  const { selected } = useAdmin()
   const {
     data: order,
     isLoading,
     error,
-  } = api.order.getUserOrder.useQuery({
+  } = api.admin.getUserOrder.useQuery({
     orderId,
-  });
+    userId: selected?.id ?? ""
+  }, { enabled: !!selected });
   if (error) throw error;
   if (isLoading || !order)
     return (
@@ -66,6 +59,7 @@ export function MenuCardModal({
       <MenuProvider
         dbMenu={{ [order.name]: order.products }}
         setChanges={setChanges}
+        userId={selected?.id ?? ""}
         changes={changes}
       >
         {addOpen ? (
@@ -76,10 +70,10 @@ export function MenuCardModal({
           ></AddProductModal>
         ) : null}
 
-        <OrderNowModal
-          open={orderNow}
-          closeModal={() => setOrderNow(false)}
-        ></OrderNowModal>
+        {/* <OrderNowModal */}
+        {/*   open={orderNow} */}
+        {/*   closeModal={() => setOrderNow(false)} */}
+        {/* ></OrderNowModal> */}
 
         <MenuTemplate
           addClick={() => setAddOpen(true)}

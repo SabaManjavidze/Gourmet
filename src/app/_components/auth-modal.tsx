@@ -8,11 +8,11 @@ export default function AuthModal({
   modalOpen,
   closeModal,
 }: //   setShowModal,
-{
-  modalOpen: boolean;
-  //   setShowModal: Dispatch<SetStateAction<boolean>>;
-  closeModal: () => void;
-}) {
+  {
+    modalOpen: boolean;
+    //   setShowModal: Dispatch<SetStateAction<boolean>>;
+    closeModal: () => void;
+  }) {
   const [loading, setLoading] = useState<AuthProviders | "none">("none");
   const logIn = async (provider: AuthProviders) => {
     setLoading(provider);

@@ -1,8 +1,6 @@
-"use client";
-
 import { cn } from "@/lib/utils";
 import { v4 as uuid } from "uuid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { MenuCardModal } from "./menu-card-modal";
 import { ProductWithVariants } from "menu";
 import { GrabIcon, Trash, XCircleIcon } from "lucide-react";
@@ -34,6 +32,10 @@ export function MenuCard({
       utils.order.getUserOrders.invalidate();
     },
   });
+  useEffect(() => {
+    console.log({ products })
+  }, [products])
+
   const handleDeleteClick = async () => {
     await deleteOrder({ orderId: id });
   };
@@ -49,7 +51,7 @@ export function MenuCard({
       </Button>
       <button
         onClick={onClick}
-        className="flex w-full flex-col justify-center 
+        className="flex w-full flex-col justify-center
         border border-accent text-start duration-150 hover:shadow-lg hover:shadow-black/15"
       >
         <AnimatedList
