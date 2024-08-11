@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useMenu } from "@/hooks/useMenu";
+import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -14,6 +15,7 @@ export function BottomButtons({
 }) {
   const [saveLoading, setSaveLoading] = useState(false);
   const { handleSaveClick, handleOrderClick, changes, menu } = useMenu();
+  const { status } = useSession()
   const [menuName] = Object.keys(menu);
   return (
     <div className="*:spacing flex w-[500px] justify-between *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
@@ -22,6 +24,10 @@ export function BottomButtons({
         isLoading={saveLoading}
         disabled={!changes}
         onClick={async () => {
+          if (status !== "authenticated") {
+            toast.error("You need to authenticate");
+            return
+          }
           setSaveLoading(true);
           await handleSaveClick(orderId);
           setSaveLoading(false);
@@ -33,7 +39,14 @@ export function BottomButtons({
       </Button>
       <Button
         variant={"accent"}
-        onClick={handleOrderClick}
+        onClick={() => {
+          if (status !== "authenticated") {
+            toast.error("You need to authenticate");
+            return
+          }
+          handleOrderClick
+        }
+        }
         size={"lg"}
         className={"border-accent"}
       >

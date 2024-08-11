@@ -14,6 +14,8 @@ export default withAuth(
         const firstRoute = req.url.split("/")[3];
         if (firstRoute === "admin") {
           return (token as any).user?.role === "admin";
+        } else if (firstRoute == "user") {
+          return !!token?.user;
         }
         return true;
       },

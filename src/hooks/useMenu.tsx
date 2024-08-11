@@ -68,7 +68,7 @@ export const MenuProvider = ({
 }) => {
   const [menu, setMenu] = useState<MenuState>({});
   const [removeProduct, setRemoveProduct] = useState<string[]>([]);
-  const { data: session } = useSession()
+  const { data: session, status } = useSession()
   const utils = api.useUtils();
   const [hideZeroQt, setHideZeroQt] = useState(false);
 
@@ -112,6 +112,7 @@ export const MenuProvider = ({
     productId: string,
     quantity: number,
   ) => {
+    console.log({ quantity })
     const newMenuSample = menu[menuSample]?.map((product) => {
       if (product.id == productId) {
         return {
@@ -151,7 +152,7 @@ export const MenuProvider = ({
     // if orderId is passed it means we are updating an existing order
     // else we are creating a new order
     const menuName = Object.keys(menu)[0];
-    if (!menuName) return;
+    if (!menuName || status !== "authenticated") return;
     const prods = [];
     for (const prod of menu[menuName] ?? []) {
       if (removeProduct.includes(prod.id)) continue;
@@ -205,6 +206,7 @@ export const MenuProvider = ({
     setChanges?.(false);
   };
   const handleOrderClick = () => {
+    if (status !== "authenticated") return;
     console.log("order clicked");
   };
   const clearQuantities = () => {

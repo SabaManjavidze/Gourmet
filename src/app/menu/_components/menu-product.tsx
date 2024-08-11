@@ -84,13 +84,19 @@ export function MenuProduct({
           type="number"
           min={0}
           onChange={(e) => {
+            let val = e.currentTarget.value
+            if (val == "" && product.quantity !== 0) {
+              val = "0"
+            }
+            const q = parseInt(val)
+            if (isNaN(q)) return
             changeQuantity(
               menuSample,
               product.id,
-              Number(e.currentTarget.value),
+              q || 0,
             );
           }}
-          value={product.quantity}
+          value={product.quantity.toString()}
           className={twMerge(
             cls,
             "h-full text-center text-lg font-medium focus-within:z-10 max-lg:text-base max-md:text-sm",

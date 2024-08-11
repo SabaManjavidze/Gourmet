@@ -32,9 +32,6 @@ export function MenuCard({
       utils.order.getUserOrders.invalidate();
     },
   });
-  useEffect(() => {
-    console.log({ products })
-  }, [products])
 
   const handleDeleteClick = async () => {
     await deleteOrder({ orderId: id });

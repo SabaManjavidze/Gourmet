@@ -18,7 +18,7 @@ export default function ProfilePage() {
     {
       title: "Order History",
       value: "Order History",
-      content: <OrderList setOpen={setOpen} />,
+      content: <h2 className="text-mted">You have no orders</h2>,
     },
   ];
 
