@@ -1,7 +1,8 @@
+"use client"
 import { api } from "@/trpc/react";
 import { MenuCard } from "./menu-card";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Loader2 } from "lucide-react";
 import { CustomPagination } from "@/components/custom-pagination";
 import { useEffect, useState } from "react";
@@ -15,6 +16,8 @@ const checkStatus = (status: string) => {
 export function OrderList({ setOpen }: { setOpen: (id: string) => void }) {
   const searchParams = useSearchParams();
   const [listRef] = useAutoAnimate();
+  const router = useRouter();
+  const pathname = usePathname();
   const page = Number(searchParams.get("page") ?? 1);
   const status = searchParams.get("status") ?? "draft";
   const { data, isLoading, error } = api.order.getUserOrders.useQuery({
@@ -22,6 +25,11 @@ export function OrderList({ setOpen }: { setOpen: (id: string) => void }) {
     page,
     limit: 6,
   });
+  useEffect(() => {
+    if (data && Number(data?.totalPages) + 1 < page) {
+      router.replace(`${pathname}?page=${data.totalPages + 1}&status=${status}`)
+    }
+  }, [data])
   if (error) throw error;
   if (isLoading || !data)
     return (

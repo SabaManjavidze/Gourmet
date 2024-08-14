@@ -8,29 +8,31 @@ import { UserSearch } from "./_components/user-search";
 import { User } from "next-auth";
 import { AdminProvider } from "@/hooks/useAdmin";
 import { AdminOrderList } from "./_components/admin-order-list";
+import { UserSearchTab } from "./_components/user-search-tab";
 
+const tabs =
+  [
+    {
+      title: "Orders",
+      value: "Orders",
+      content: <AdminOrderList />,
+    },
+    {
+      title: "Search Users",
+      value: "Search Users",
+      content: (
+        <UserSearchTab
+        />
+      ),
+    },
+  ]
 export default function AdminProfilePage() {
   const { data: session } = useSession();
 
-  const tabs =
-    [
-      {
-        title: "Orders",
-        value: "Orders",
-        content: <AdminOrderList />,
-      },
-      {
-        title: "Search Users",
-        value: "Search Users",
-        content: (
-          <UserSearch
-          />
-        ),
-      },
-    ]
 
   return (
-    <div className="container flex min-h-screen flex-col justify-between pb-96 pt-28">
+    <div className="container flex min-h-screen flex-col
+      justify-between pb-[40rem] max-xl:pb-[65rem] max-lg:pb-[130rem] pt-28">
       <div
         className="flex w-full flex-col 
       items-center bg-background px-3 max-md:px-0 md:flex-row md:items-start lg:px-5"

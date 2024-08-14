@@ -1,6 +1,5 @@
-"use client";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useState, createContext, useContext } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
@@ -9,6 +8,17 @@ export type Tab = {
   value: string;
   content?: string | React.ReactNode;
 };
+
+const TabContext = createContext<{
+  active: Tab;
+  setActive: Dispatch<SetStateAction<Tab>>;
+  switchTab: (query: number | string) => void,
+}>({
+  active: { title: "", value: "", content: "" },
+  setActive: () => null,
+  switchTab: () => null,
+})
+export const useTabs = () => useContext(TabContext)
 
 export const Tabs = ({
   tabs: propTabs,
@@ -27,6 +37,17 @@ export const Tabs = ({
 }) => {
   const [active, setActive] = useState<Tab>(propTabs[0] as Tab);
   const [tabs, setTabs] = useState<Tab[]>(propTabs);
+
+  const switchTab = (query: number | string) => {
+    if (typeof query == "number" && tabs?.[query] !== undefined) {
+      setActive(tabs[query] as Tab)
+    } else if (typeof query == "string") {
+      const t = tabs.find(item => item.value == query)
+      if (!t) return
+      setActive(t)
+    }
+
+  }
 
   const moveSelectedTabToTop = (idx: number) => {
     if (perspective) {
@@ -82,16 +103,18 @@ export const Tabs = ({
           </button>
         ))}
       </div>
-      <FadeInDiv
-        tabs={perspective ? tabs : [active]}
-        perspective={perspective}
-        key={active.value}
-        hovering={hovering}
-        className={cn(
-          perspective && hovering ? "mt-32" : "mt-8",
-          contentClassName,
-        )}
-      />
+      <TabContext.Provider value={{ active, setActive, switchTab }}>
+        <FadeInDiv
+          tabs={perspective ? tabs : [active]}
+          perspective={perspective}
+          key={active.value}
+          hovering={hovering}
+          className={cn(
+            perspective && hovering ? "mt-32" : "mt-8",
+            contentClassName,
+          )}
+        />
+      </TabContext.Provider>
     </>
   );
 };

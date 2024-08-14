@@ -35,9 +35,10 @@ export function NavDrawer({
 }: {
   triggerButton?: React.ReactNode;
 }) {
+  const { data: session, status } = useSession();
   const routes = [
     {
-      route: "/user/profile",
+      route: session?.user.role == "user" ? "/user/profile" : "/admin/profile",
       title: "Profile",
     },
     {
@@ -46,7 +47,6 @@ export function NavDrawer({
     },
   ];
   const pathname = usePathname();
-  const { data: session, status } = useSession();
   const [auth, setAuth] = React.useState(false);
   return (
     <Sheet>
@@ -62,9 +62,8 @@ export function NavDrawer({
                 src={session.user?.image ?? "/imgs/saba.png"}
                 width={65}
                 height={65}
-                className={`rounded-full border-[3px] object-cover ${
-                  pathname == PROFILE_ROUTE ? "border-accent" : "border-primary"
-                }`}
+                className={`rounded-full border-[3px] object-cover ${pathname == PROFILE_ROUTE ? "border-accent" : "border-primary"
+                  }`}
                 alt="user profile image"
               />
               <h3 className="text-lg font-bold">{session.user?.name}</h3>

@@ -1,5 +1,6 @@
 import { withAuth } from "next-auth/middleware";
 import { env } from "./env";
+import { redirect } from "next/navigation";
 
 export default withAuth(
   // `withAuth` augments your `Request` with the user's token.
@@ -15,7 +16,8 @@ export default withAuth(
         if (firstRoute === "admin") {
           return (token as any).user?.role === "admin";
         } else if (firstRoute == "user") {
-          return !!token?.user;
+          const authed = !!token?.user
+          return authed;
         }
         return true;
       },

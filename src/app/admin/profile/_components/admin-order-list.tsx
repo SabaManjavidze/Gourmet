@@ -53,6 +53,7 @@ export function AdminOrderList() {
                 <MenuCard
                   key={id}
                   id={id}
+                  userId={selected?.id}
                   title={name}
                   totalPrice={totalPrice}
                   created_at={created_at}

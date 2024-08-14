@@ -8,11 +8,12 @@ import { Button } from "@/components/ui/button";
 import { api } from "@/trpc/react";
 import NumberTicker from "@/components/magicui/number-ticker";
 import TypingAnimation from "@/components/magicui/typing-animation";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { AnimatedList } from "@/components/magicui/animated-list";
+import { useSession } from "next-auth/react";
 
 export function MenuCard({
   id,
+  userId,
   title,
   totalPrice,
   created_at,
@@ -20,25 +21,40 @@ export function MenuCard({
   onClick,
 }: {
   id: string;
+  userId?: string;
   title: string;
   created_at: string;
   totalPrice: string;
   onClick: () => void;
   products: (ProductWithVariants & { quantity: number })[];
 }) {
+  const { data: session } = useSession()
   const utils = api.useUtils();
-  const { mutateAsync: deleteOrder } = api.order.deleteUserOrder.useMutation({
+  const [adminLoading, setAdminLoading] = useState(false)
+  const { mutateAsync: deleteOrder, isPending } = api.order.deleteUserOrder.useMutation({
     onSuccess() {
       utils.order.getUserOrders.invalidate();
     },
   });
 
   const handleDeleteClick = async () => {
-    await deleteOrder({ orderId: id });
+    if (session?.user.role == "user") {
+      await deleteOrder({ orderId: id });
+    } else if (session?.user.role == "admin" && userId) {
+      setAdminLoading(true)
+      await utils.client.admin.deleteUserOrder.mutate(
+        {
+          orderId: id,
+          userId,
+        })
+      await utils.admin.getUserOrders.invalidate()
+      setAdminLoading(false)
+    }
   };
   return (
     <div className="relative rounded-lg bg-white">
       <Button
+        isLoading={isPending || adminLoading}
         onClick={handleDeleteClick}
         className="absolute right-0 top-4 z-20 mt-1 flex 
       -translate-y-full translate-x-1/2 items-end bg-transparent text-xs

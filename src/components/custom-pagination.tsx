@@ -9,6 +9,7 @@ import {
   PaginationLink,
   PaginationNext,
 } from "./ui/pagination";
+import { useSession } from "next-auth/react";
 
 export function CustomPagination({
   page,
@@ -19,13 +20,14 @@ export function CustomPagination({
   args?: string;
   totalPages: number;
 }) {
+  const { data: session } = useSession()
   return (
     <Pagination className="mt-12">
       <PaginationContent>
         {page != 1 ? (
           <PaginationItem>
             <PaginationPrevious
-              href={`/user/profile?page=${page - 1}&${args}`}
+              href={`/${session?.user?.role ?? "user"}/profile?page=${page - 1}&${args}`}
             />
           </PaginationItem>
         ) : null}
@@ -35,7 +37,7 @@ export function CustomPagination({
             className={`border-2 ${page == idx + 1 ? "border-accent" : "border-transparent"}`}
           >
             <PaginationLink
-              href={`/user/profile?page=${idx + 1}&${args}`}
+              href={`/${session?.user?.role ?? "user"}/profile?page=${idx + 1}&${args}`}
             >
               {idx + 1}
             </PaginationLink>
@@ -44,7 +46,7 @@ export function CustomPagination({
         {page != totalPages ? (
           <PaginationItem>
             <PaginationNext
-              href={`/user/profile?page=${page + 1}&${args}`}
+              href={`/${session?.user?.role ?? "user"}/profile?page=${page + 1}&${args}`}
             />
           </PaginationItem>
         ) : null}

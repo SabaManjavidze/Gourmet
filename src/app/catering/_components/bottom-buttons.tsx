@@ -8,17 +8,20 @@ export function BottomButtons({
   saveText,
   orderText,
   orderId,
+  size = "lg",
 }: {
   saveText?: string;
   orderId?: string;
   orderText?: string;
+  size?: "sm" | "lg" | "xl";
 }) {
   const [saveLoading, setSaveLoading] = useState(false);
   const { handleSaveClick, handleOrderClick, changes, menu } = useMenu();
   const { status } = useSession()
   const [menuName] = Object.keys(menu);
   return (
-    <div className="*:spacing flex w-[500px] justify-between *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
+    <div className="*:spacing flex w-[500px] justify-between *:border-2 
+      *:py-6 *:font-bold *:uppercase *:tracking-wider">
       <Button
         variant={"outline-accent"}
         isLoading={saveLoading}
@@ -29,11 +32,12 @@ export function BottomButtons({
             return
           }
           setSaveLoading(true);
-          await handleSaveClick(orderId);
+          const success = await handleSaveClick(orderId);
           setSaveLoading(false);
+          if (!success) return
           toast.success(orderId ? `${menuName} Updated` : `${menuName} Saved`);
         }}
-        size={"lg"}
+        size={size}
       >
         {saveText ?? "Save For Later"}
       </Button>
@@ -44,10 +48,10 @@ export function BottomButtons({
             toast.error("You need to authenticate");
             return
           }
-          handleOrderClick
+          handleOrderClick()
         }
         }
-        size={"lg"}
+        size={size}
         className={"border-accent"}
       >
         {orderText ?? "Order Now"}

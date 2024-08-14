@@ -27,7 +27,8 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container flex min-h-screen flex-col justify-between pb-96 pt-28">
+    <div className="container flex min-h-screen flex-col justify-between
+      pb-[40rem] max-xl:pb-[65rem] max-lg:pb-[130rem] pt-28 max-md:pt-14">
       <div
         className="flex w-full flex-col 
       items-center bg-background px-3 max-md:px-0 md:flex-row md:items-start lg:px-5"
@@ -51,7 +52,8 @@ export default function ProfilePage() {
           </div>
         </div>
         <div
-          className={`flex w-full max-w-5xl flex-col items-start justify-start [perspective:1000px]`}
+          className={`flex w-full max-w-5xl flex-col items-start justify-start 
+[perspective:1000px] max-md:mt-5`}
         >
           <Tabs tabs={tabs} />
         </div>

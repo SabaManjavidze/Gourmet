@@ -14,6 +14,7 @@ import {
 } from "react";
 import { api, RouterOutputs } from "@/trpc/react";
 import { useSession } from "next-auth/react";
+import { UserSearchModal } from "@/app/admin/_components/user-search-modal";
 
 type MenuContextProps = {
   menu: MenuState;
@@ -22,7 +23,7 @@ type MenuContextProps = {
   changes: boolean;
   setHideZeroQt: Dispatch<SetStateAction<boolean>>;
   clearQuantities: () => void;
-  handleSaveClick: (orderId?: string) => Promise<void>;
+  handleSaveClick: (orderId?: string) => Promise<boolean>;
   handleRemoveProduct: (productId: string) => void;
   handleOrderClick: () => void;
   addProduct: (menuSample: string, product: ProductWithVariants[]) => void;
@@ -47,7 +48,7 @@ export const MenuContext = createContext<MenuContextProps>({
   changeQuantity: () => null,
   handleOrderClick: () => null,
   handleRemoveProduct: () => null,
-  handleSaveClick: async (orderId?: string) => undefined,
+  handleSaveClick: async (orderId?: string) => false,
   changeVariant: () => null,
   addProduct: () => null,
 });
@@ -66,6 +67,8 @@ export const MenuProvider = ({
   changes?: boolean;
   children: ReactNode;
 }) => {
+  const [adminUserId, setAdminUserId] = useState<string | undefined>(userId);
+  const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<MenuState>({});
   const [removeProduct, setRemoveProduct] = useState<string[]>([]);
   const { data: session, status } = useSession()
@@ -151,8 +154,9 @@ export const MenuProvider = ({
   const handleSaveClick = async (orderId?: string) => {
     // if orderId is passed it means we are updating an existing order
     // else we are creating a new order
+    if (status !== "authenticated") return false
     const menuName = Object.keys(menu)[0];
-    if (!menuName || status !== "authenticated") return;
+    if (!menuName) return false;
     const prods = [];
     for (const prod of menu[menuName] ?? []) {
       if (removeProduct.includes(prod.id)) continue;
@@ -181,17 +185,22 @@ export const MenuProvider = ({
       if (orderId) {
         await utils.order.getUserOrder.invalidate({ orderId });
       }
-    } else if (userId && session?.user?.role == "admin") {
+    } else if (session?.user?.role == "admin") {
+      if (!orderId && !adminUserId) {
+        setOpen(true)
+        return false
+      }
+      if (!adminUserId) return false
 
       if (orderId && removeProduct.length > 0) {
         await utils.client.admin.removeProductFromUserOrder.mutate({
           orderId,
-          userId,
+          userId: adminUserId,
           productIds: removeProduct,
         });
       }
       await utils.client.admin.createUserOrder.mutate({
-        userId,
+        userId: adminUserId,
         orderId,
         menuName,
         totalPrice: totalSum.toString(),
@@ -204,6 +213,7 @@ export const MenuProvider = ({
       }
     }
     setChanges?.(false);
+    return true
   };
   const handleOrderClick = () => {
     if (status !== "authenticated") return;
@@ -263,6 +273,16 @@ export const MenuProvider = ({
         setHideZeroQt,
       }}
     >
+      {
+        session?.user?.role == "admin" && open ?
+          <UserSearchModal
+            open={open}
+            userId={adminUserId}
+            setUserId={setAdminUserId}
+            closeModal={() => setOpen(false)}
+          />
+          : null
+      }
       {children}
     </MenuContext.Provider>
   );

@@ -11,11 +11,10 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AddProductModal } from "./add-product-modal";
 import { BottomButtons } from "./bottom-buttons";
-import { AddProductsSection } from "@/app/menu/_components/add-products-section";
 
 export function ProductsSection({ currMenu }: { currMenu: string }) {
   const [orderOpen, setOrderOpen] = useState(false);
-  const [changes, setChanges] = useState(false);
+  const [userId, setUserId] = useState<string | undefined>();
   const [addProdOpen, setAddProdOpen] = useState(false);
   const {
     data: dbMenu,
@@ -45,7 +44,7 @@ export function ProductsSection({ currMenu }: { currMenu: string }) {
     setOrderOpen(false);
   };
   return (
-    <MenuProvider dbMenu={dbMenu} changes={true}>
+    <MenuProvider dbMenu={dbMenu} changes={true} userId={userId}>
       <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
       {addProdOpen ? (
         <AddProductModal
