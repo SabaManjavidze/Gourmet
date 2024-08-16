@@ -118,7 +118,6 @@ export const adminRouter = createTRPCRouter({
             eq(users.role, "user"),
           )
         ).groupBy(users.id)
-      console.log(JSON.stringify(results, null, 2))
       return results;
     }),
 });

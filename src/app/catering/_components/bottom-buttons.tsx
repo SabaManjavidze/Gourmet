@@ -5,11 +5,15 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 export function BottomButtons({
+  orderClick,
+  saveClick,
   saveText,
   orderText,
   orderId,
   size = "lg",
 }: {
+  orderClick?: () => void;
+  saveClick?: () => void;
   saveText?: string;
   orderId?: string;
   orderText?: string;
@@ -17,11 +21,13 @@ export function BottomButtons({
 }) {
   const [saveLoading, setSaveLoading] = useState(false);
   const { handleSaveClick, handleOrderClick, changes, menu } = useMenu();
-  const { status } = useSession()
+  const { status } = useSession();
   const [menuName] = Object.keys(menu);
   return (
-    <div className="*:spacing flex w-[500px] justify-between *:border-2 
-      *:py-6 *:font-bold *:uppercase *:tracking-wider">
+    <div
+      className="*:spacing flex w-[500px] justify-between *:border-2 
+      *:py-6 *:font-bold *:uppercase *:tracking-wider"
+    >
       <Button
         variant={"outline-accent"}
         isLoading={saveLoading}
@@ -29,12 +35,13 @@ export function BottomButtons({
         onClick={async () => {
           if (status !== "authenticated") {
             toast.error("You need to authenticate");
-            return
+            return;
           }
           setSaveLoading(true);
+          saveClick?.();
           const success = await handleSaveClick(orderId);
           setSaveLoading(false);
-          if (!success) return
+          if (!success) return;
           toast.success(orderId ? `${menuName} Updated` : `${menuName} Saved`);
         }}
         size={size}
@@ -46,11 +53,11 @@ export function BottomButtons({
         onClick={() => {
           if (status !== "authenticated") {
             toast.error("You need to authenticate");
-            return
+            return;
           }
-          handleOrderClick()
-        }
-        }
+          orderClick?.();
+          handleOrderClick();
+        }}
         size={size}
         className={"border-accent"}
       >

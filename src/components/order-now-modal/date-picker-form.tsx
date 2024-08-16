@@ -19,12 +19,12 @@ import {
 } from "@/components/ui/form";
 type DatePickerFormProps = {
   control: any;
-  title?: string;
+  placeholder?: string;
   name: string;
 };
 export function DatePickerForm({
   name,
-  title = "",
+  placeholder = "pick a date",
   control,
 }: DatePickerFormProps) {
   return (
@@ -46,7 +46,7 @@ export function DatePickerForm({
                   {field.value ? (
                     format(field.value, "PPP")
                   ) : (
-                    <span>Pick a date</span>
+                    <span>{placeholder}</span>
                   )}
                   <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                 </Button>

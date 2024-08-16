@@ -35,7 +35,7 @@ export function NameInputs({
               <FormControl>
                 <Input
                   className="text-md w-full rounded-sm py-2"
-                  placeholder={"First Name"}
+                  placeholder={"first name"}
                   {...field}
                   defaultValue={defaultFirst}
                 />
@@ -55,7 +55,7 @@ export function NameInputs({
               <FormControl>
                 <Input
                   className="text-md w-full rounded-sm py-2"
-                  placeholder={"Last Name"}
+                  placeholder={"last name"}
                   {...field}
                   defaultValue={defaultLast}
                 />

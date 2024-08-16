@@ -26,6 +26,7 @@ import { DatePickerForm } from "./date-picker-form";
 import { useMenu } from "@/hooks/useMenu";
 import { TimePickerForm } from "../ui/time-picker/form";
 
+const titleClass = "text-lg whitespace-nowrap font-bold text-accent-foreground";
 export function OrderNowModal({
   open,
   closeModal,
@@ -33,13 +34,6 @@ export function OrderNowModal({
   open: boolean;
   closeModal: () => void;
 }) {
-  //   const trpc = api.useContext();
-  //   const { mutateAsync: addShippingAddress, isLoading } =
-  //     api.address.addShippingAddress.useMutation({
-  //       onSuccess() {
-  //         trpc.address.getUserAddress.invalidate();
-  //       },
-  //     });
   const { totalSum } = useMenu();
   const form = useForm<OrderFormType>({
     resolver: zodResolver(orderNowSchema),
@@ -66,9 +60,7 @@ export function OrderNowModal({
           <div className="flex w-full items-center justify-between gap-x-12">
             <div className="flex h-full flex-col items-center justify-start gap-y-24">
               <div className="flex flex-col gap-y-7">
-                <h3 className="text-lg font-bold text-accent-foreground">
-                  Primary Contact Information
-                </h3>
+                <h3 className={titleClass}>Primary Contact Information</h3>
                 {InputSchema["Primary Contact Information"].map((item) => {
                   if (!item?.name) {
                     return (
@@ -93,7 +85,7 @@ export function OrderNowModal({
                           <FormControl>
                             <Input
                               className="text-md w-full rounded-sm py-2"
-                              placeholder={item.title}
+                              placeholder={item.title.toLowerCase()}
                               type={item.type ?? "text"}
                               {...field}
                               defaultValue={""}
@@ -106,9 +98,7 @@ export function OrderNowModal({
                 })}
               </div>
               <div className="flex w-full flex-col gap-y-7">
-                <h3 className="text-lg font-bold text-accent-foreground">
-                  Delivery Information
-                </h3>
+                <h3 className={titleClass}>Delivery Information</h3>
                 {InputSchema["Delivery Information"].map((item) => {
                   if (!item?.name) {
                     return (
@@ -133,7 +123,7 @@ export function OrderNowModal({
                           <FormControl>
                             <Input
                               className="text-md w-full rounded-sm py-2"
-                              placeholder={item.title}
+                              placeholder={item.title.toLowerCase()}
                               type={item?.type ?? "text"}
                               {...field}
                               defaultValue={""}
@@ -148,7 +138,7 @@ export function OrderNowModal({
             </div>
             <div className="flex h-full flex-col items-center justify-start gap-y-24">
               <div className="flex flex-col gap-y-7">
-                <h3 className="text-lg font-bold text-accent-foreground">
+                <h3 className={titleClass}>
                   Secondary Contact Information (Optional)
                 </h3>
                 {InputSchema["Secondary Contact Information (Optional)"].map(
@@ -176,7 +166,7 @@ export function OrderNowModal({
                             <FormControl>
                               <Input
                                 className="text-md w-full rounded-sm py-2"
-                                placeholder={item.title}
+                                placeholder={item.title.toLowerCase()}
                                 type={item.type ?? "text"}
                                 {...field}
                                 defaultValue={""}
@@ -190,9 +180,7 @@ export function OrderNowModal({
                 )}
               </div>
               <div className="flex w-full flex-col gap-y-7">
-                <h3 className="text-lg font-bold text-accent-foreground">
-                  Company Information (Optional)
-                </h3>
+                <h3 className={titleClass}>Company Information (Optional)</h3>
                 {InputSchema["Company Information (Optional)"].map((item) => {
                   return (
                     <FormField
@@ -208,7 +196,9 @@ export function OrderNowModal({
                           <FormControl>
                             <Input
                               className="text-md w-full rounded-sm py-2"
-                              placeholder={item.title}
+                              placeholder={
+                                item?.placeholder ?? item.title.toLowerCase()
+                              }
                               type={item?.type ?? "text"}
                               {...field}
                               defaultValue={""}

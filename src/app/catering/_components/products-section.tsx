@@ -82,7 +82,7 @@ export function ProductsSection({ currMenu }: { currMenu: string }) {
         <SumSection />
       </div>
       <div className={`sticky bottom-8 mt-8 flex w-full justify-center`}>
-        <BottomButtons />
+        <BottomButtons orderClick={handleOrderNowClick} />
       </div>
     </MenuProvider>
   );

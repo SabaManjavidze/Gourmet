@@ -51,7 +51,7 @@ export function SampleMenuCarousel({
     document
       .getElementById("menu")
       ?.scrollIntoView({ inline: "end", behavior: "smooth" });
-    router.replace(pathname + `?menu=${name}`, { scroll: false });
+    router.replace(pathname + `menu=${currMenu}`, { scroll: false });
   };
   return (
     <Carousel opts={{ loop: false }} className="w-[90%] px-12">

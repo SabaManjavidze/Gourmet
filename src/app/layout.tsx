@@ -1,7 +1,6 @@
 import "@/styles/globals.css";
-
+import NextTopLoader from "nextjs-toploader";
 import { Inter } from "next/font/google";
-
 import { TRPCReactProvider } from "@/trpc/react";
 import SessionProvider from "@/app/_components/session-provider";
 import { Navbar } from "./_components/navbar";
@@ -50,6 +49,7 @@ export default async function RootLayout({
         <link rel="manifest" href="/site.webmanifest" />
       </head>
       <body className={`font-sans ${inter.variable}`}>
+        <NextTopLoader color="orange" />
         <SessionProvider session={session}>
           <Navbar />
           <TRPCReactProvider>{children}</TRPCReactProvider>

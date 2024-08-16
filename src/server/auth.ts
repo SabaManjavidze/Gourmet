@@ -10,8 +10,6 @@ import { type Adapter } from "next-auth/adapters";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
 import type { FacebookProfile } from "next-auth/providers/facebook";
-import type { GoogleProfile } from "next-auth/providers/google";
-import axios from "axios";
 import { env } from "@/env";
 import { db } from "@/server/db";
 import { eq } from "drizzle-orm";

@@ -71,7 +71,7 @@ export const MenuProvider = ({
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<MenuState>({});
   const [removeProduct, setRemoveProduct] = useState<string[]>([]);
-  const { data: session, status } = useSession()
+  const { data: session, status } = useSession();
   const utils = api.useUtils();
   const [hideZeroQt, setHideZeroQt] = useState(false);
 
@@ -81,17 +81,20 @@ export const MenuProvider = ({
   }, []);
   const totalSum = useMemo(() => {
     if (!menu) return 0;
-    return Object.keys(menu).reduce((prev, curr) => {
+    const s = Object.keys(menu).reduce((prev, curr) => {
       if (!menu?.[curr]) return prev;
       return (
         prev +
-        Number(
-          menu[curr]?.reduce((prev1, curr1) => {
-            return prev1 + curr1.price * curr1.quantity;
-          }, 0),
-        ) || 0
+          Number(
+            menu[curr]?.reduce((prev1, curr1) => {
+              return (
+                prev1 + Math.round(100 * curr1.price * curr1.quantity) / 100
+              );
+            }, 0),
+          ) || 0
       );
     }, 0);
+    return s;
   }, [menu]);
   const changeVariant = (
     menuSample: string,
@@ -115,13 +118,13 @@ export const MenuProvider = ({
     productId: string,
     quantity: number,
   ) => {
-    console.log({ quantity })
+    console.log({ quantity });
     const newMenuSample = menu[menuSample]?.map((product) => {
       if (product.id == productId) {
         return {
           ...product,
           quantity,
-          totalPrice: quantity * Number(product?.price),
+          totalPrice: Math.round(100 * quantity * Number(product?.price)) / 100,
         };
       }
       return product;
@@ -154,7 +157,7 @@ export const MenuProvider = ({
   const handleSaveClick = async (orderId?: string) => {
     // if orderId is passed it means we are updating an existing order
     // else we are creating a new order
-    if (status !== "authenticated") return false
+    if (status !== "authenticated") return false;
     const menuName = Object.keys(menu)[0];
     if (!menuName) return false;
     const prods = [];
@@ -167,7 +170,6 @@ export const MenuProvider = ({
       });
     }
     if (session?.user?.role == "user") {
-
       if (orderId && removeProduct.length > 0) {
         await utils.client.order.removeProductFromOrder.mutate({
           orderId,
@@ -187,10 +189,10 @@ export const MenuProvider = ({
       }
     } else if (session?.user?.role == "admin") {
       if (!orderId && !adminUserId) {
-        setOpen(true)
-        return false
+        setOpen(true);
+        return false;
       }
-      if (!adminUserId) return false
+      if (!adminUserId) return false;
 
       if (orderId && removeProduct.length > 0) {
         await utils.client.admin.removeProductFromUserOrder.mutate({
@@ -213,7 +215,7 @@ export const MenuProvider = ({
       }
     }
     setChanges?.(false);
-    return true
+    return true;
   };
   const handleOrderClick = () => {
     if (status !== "authenticated") return;
@@ -273,16 +275,14 @@ export const MenuProvider = ({
         setHideZeroQt,
       }}
     >
-      {
-        session?.user?.role == "admin" && open ?
-          <UserSearchModal
-            open={open}
-            userId={adminUserId}
-            setUserId={setAdminUserId}
-            closeModal={() => setOpen(false)}
-          />
-          : null
-      }
+      {session?.user?.role == "admin" && open ? (
+        <UserSearchModal
+          open={open}
+          userId={adminUserId}
+          setUserId={setAdminUserId}
+          closeModal={() => setOpen(false)}
+        />
+      ) : null}
       {children}
     </MenuContext.Provider>
   );

@@ -1,7 +1,6 @@
 "use client";
 
 import * as React from "react";
-import { Clock } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { TimePickerInput } from "./input";
 
@@ -17,10 +16,10 @@ export function TimePickerDemo({ date, setDate }: TimePickerDemoProps) {
 
   return (
     <div className="flex items-end gap-2 gap-x-1">
-      <div className="grid gap-1 text-center">
-        <Label htmlFor="hours" className="text-xs">
+      <div className="text-center">
+        {/* <Label htmlFor="hours" className="text-xs">
           Hours
-        </Label>
+        </Label> */}
         <TimePickerInput
           picker="hours"
           date={date}
@@ -33,10 +32,10 @@ export function TimePickerDemo({ date, setDate }: TimePickerDemoProps) {
       <div className="flex h-10 items-center text-lg font-semibold">
         <p>:</p>
       </div>
-      <div className="grid gap-1 text-center">
-        <Label htmlFor="minutes" className="text-xs">
+      <div className="text-center">
+        {/* <Label htmlFor="minutes" className="text-xs">
           Minutes
-        </Label>
+        </Label> */}
         <TimePickerInput
           picker="minutes"
           date={date}
@@ -45,9 +44,6 @@ export function TimePickerDemo({ date, setDate }: TimePickerDemoProps) {
           onLeftFocus={() => hourRef.current?.focus()}
           onRightFocus={() => secondRef.current?.focus()}
         />
-      </div>
-      <div className="flex h-10 items-center">
-        <Clock className="ml-2 h-4 w-4" />
       </div>
     </div>
   );

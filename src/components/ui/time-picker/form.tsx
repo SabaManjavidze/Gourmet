@@ -34,7 +34,7 @@ export function TimePickerForm({
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem className="flex flex-col">
+        <FormItem className="mt-2 flex flex-col">
           <FormMessage />
           <FormControl>
             <TimePickerDemo setDate={field.onChange} date={field.value} />
