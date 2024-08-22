@@ -16,9 +16,35 @@ import {
   getUserOrder,
   getUserOrdersWithPaging,
   removeProductFromUserOrder,
+  Status,
 } from "./orders";
 
 export const adminRouter = createTRPCRouter({
+  getOrderHistory: adminProcedure
+    .input(
+      z.object({
+        page: z.number().min(1).optional().default(1),
+        limit: z.number().min(1).max(20).optional().default(20),
+      }),
+    )
+    .query(async ({ input: { page, limit } }) => {
+      const offset = (page - 1) * limit;
+      const status: Status = "draft";
+      const orderHistory = await db
+        .select()
+        .from(orders)
+        .limit(limit)
+        .offset(offset)
+        .innerJoin(users, eq(orders.userId, users.id))
+        .where(eq(orders.status, status));
+      const [totalItems] = await db
+        .select({ count: count() })
+        .from(orders)
+        .where(eq(orders.status, status));
+      if (!totalItems) return { orders: [], totalPages: 0 };
+      const totalPages = Math.ceil(totalItems.count / limit);
+      return { orders: orderHistory, totalPages };
+    }),
   createUserOrder: adminProcedure
     .input(
       z.object({
@@ -98,17 +124,20 @@ export const adminRouter = createTRPCRouter({
     .input(z.object({ query: z.string().min(2) }))
     .mutation(async ({ input: { query } }) => {
       // search users by name or email
-      const results = await db.select({
-        id: users.id,
-        name: users.name,
-        role: users.role,
-        email: users.email,
-        image: users.image,
-        orderCount: count(orders.id)
-      })
+      const results = await db
+        .select({
+          id: users.id,
+          name: users.name,
+          role: users.role,
+          email: users.email,
+          image: users.image,
+          orderCount: count(orders.id),
+        })
         .from(users)
-        .innerJoin(orders,
-          and(eq(orders.userId, users.id), eq(orders.status, "draft")))
+        .innerJoin(
+          orders,
+          and(eq(orders.userId, users.id), eq(orders.status, "draft")),
+        )
         .where(
           and(
             or(
@@ -116,8 +145,9 @@ export const adminRouter = createTRPCRouter({
               ilike(users.name, `%${query}%`),
             ),
             eq(users.role, "user"),
-          )
-        ).groupBy(users.id)
+          ),
+        )
+        .groupBy(users.id);
       return results;
     }),
 });

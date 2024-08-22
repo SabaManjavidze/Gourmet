@@ -14,20 +14,27 @@ import { useSession } from "next-auth/react";
 export function CustomPagination({
   page,
   args = "",
+  previousHref,
+  nextHref,
   totalPages,
 }: {
   page: number;
   args?: string;
+  previousHref?: string;
+  nextHref?: string;
   totalPages: number;
 }) {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   return (
     <Pagination className="mt-12">
       <PaginationContent>
         {page != 1 ? (
           <PaginationItem>
             <PaginationPrevious
-              href={`/${session?.user?.role ?? "user"}/profile?page=${page - 1}&${args}`}
+              href={
+                previousHref ??
+                `/${session?.user?.role ?? "user"}/profile?page=${page - 1}&${args}`
+              }
             />
           </PaginationItem>
         ) : null}
@@ -46,7 +53,10 @@ export function CustomPagination({
         {page != totalPages ? (
           <PaginationItem>
             <PaginationNext
-              href={`/${session?.user?.role ?? "user"}/profile?page=${page + 1}&${args}`}
+              href={
+                nextHref ??
+                `/${session?.user?.role ?? "user"}/profile?page=${page + 1}&${args}`
+              }
             />
           </PaginationItem>
         ) : null}

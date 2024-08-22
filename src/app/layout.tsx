@@ -8,6 +8,7 @@ import { Footer } from "./_components/footer";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { Toaster } from "@/components/ui/sonner";
+import { Viewport } from "next";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -18,6 +19,12 @@ export const metadata = {
   title: "Gourmet",
   description: "Fourshet",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
+};
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default async function RootLayout({
@@ -48,9 +55,9 @@ export default async function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body className={`font-sans ${inter.variable}`}>
-        <NextTopLoader color="orange" />
+      <body>
         <SessionProvider session={session}>
+          <NextTopLoader color="orange" showSpinner={false} />
           <Navbar />
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </SessionProvider>

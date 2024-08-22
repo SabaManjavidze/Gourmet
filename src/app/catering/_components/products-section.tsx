@@ -14,14 +14,17 @@ import { BottomButtons } from "./bottom-buttons";
 
 export function ProductsSection({ currMenu }: { currMenu: string }) {
   const [orderOpen, setOrderOpen] = useState(false);
-  const [userId, setUserId] = useState<string | undefined>();
   const [addProdOpen, setAddProdOpen] = useState(false);
   const {
     data: dbMenu,
     isLoading,
     error,
-  } = api.sampleMenu.getMenuProducts.useQuery({ menuName: currMenu });
-  if (error ?? isLoading ?? !dbMenu)
+  } = api.sampleMenu.getMenuProducts.useQuery(
+    { menuName: currMenu },
+    { enabled: !!currMenu },
+  );
+  if (error) throw error;
+  if (isLoading || !dbMenu)
     return (
       <div className="flex min-h-screen w-full items-center justify-center bg-background">
         <Loader2 size={50} color={"black"} />
@@ -44,7 +47,7 @@ export function ProductsSection({ currMenu }: { currMenu: string }) {
     setOrderOpen(false);
   };
   return (
-    <MenuProvider dbMenu={dbMenu} changes={true} userId={userId}>
+    <MenuProvider dbMenu={dbMenu} changes={true}>
       <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
       {addProdOpen ? (
         <AddProductModal
