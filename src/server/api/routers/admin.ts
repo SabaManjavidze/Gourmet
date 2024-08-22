@@ -35,7 +35,10 @@ export const adminRouter = createTRPCRouter({
         .from(orders)
         .limit(limit)
         .offset(offset)
-        .innerJoin(users, eq(orders.userId, users.id))
+        .innerJoin(
+          users,
+          and(eq(orders.userId, users.id), eq(users.role, "user")),
+        )
         .where(eq(orders.status, status));
       const [totalItems] = await db
         .select({ count: count() })

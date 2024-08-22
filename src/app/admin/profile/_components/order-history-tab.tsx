@@ -22,7 +22,7 @@ export function OrderHistoryTab() {
       page,
       limit: 8,
     });
-  const { open, setOpen } = useAdmin();
+  const { open, setOpen, selected, setSelected } = useAdmin();
   const closeModal = () => {
     setOpen(null);
   };
@@ -39,10 +39,11 @@ export function OrderHistoryTab() {
         <Loader2 size={50} color={"black"} />
       </div>
     );
-  const handleUserClick = (orderId: string) => {
+  const handleUserClick = (user: User, orderId: string) => {
     if (open !== orderId) {
-      switchTab(0);
+      setOpen(orderId);
     }
+    if (selected?.id !== user.id) setSelected(user);
   };
   return (
     <div>
@@ -56,8 +57,8 @@ export function OrderHistoryTab() {
             className={`flex w-[90%] items-center justify-between border border-t-transparent 
             px-8 py-2 font-semibold duration-150 first:border-t-border 
             hover:border-t hover:!border-accent/50 hover:bg-accent/15
-            ${open === order.id ? "border-accent !border-t-accent bg-accent/25" : ""}`}
-            onClick={() => handleUserClick(order.id)}
+            ${selected?.id === user.id ? "border-accent !border-t-accent bg-accent/25" : ""}`}
+            onClick={() => handleUserClick(user, order.id)}
           >
             <div className="flex items-center gap-x-4">
               <h3 className="text-base">{limitTxt(user.name, 16)}</h3>
@@ -82,7 +83,7 @@ export function OrderHistoryTab() {
               <div className="flex items-center gap-x-2">
                 <h3
                   className="flex w-4 items-center
-                    justify-center rounded-full text-sm text-green-500 text-primary-foreground"
+                    justify-center rounded-full text-sm text-green-500"
                 >
                   ${order.totalPrice}
                 </h3>
