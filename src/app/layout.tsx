@@ -49,7 +49,7 @@ export default async function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body>
+      <body className={`font ${inter.variable}`}>
         <SessionProvider session={session}>
           <NextTopLoader color="orange" showSpinner={false} />
           <Navbar />

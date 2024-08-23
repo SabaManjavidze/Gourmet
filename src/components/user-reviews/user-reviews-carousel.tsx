@@ -98,7 +98,7 @@ const ReviewCard = ({
         "dark:border-gray-50/[.1] dark:bg-gray-50/[.10] dark:hover:bg-gray-50/[.15]",
       )}
     >
-      <div className="flex flex-row items-center justify-between">
+      <div className="flex h-1/3 flex-row items-center justify-between">
         <div className="flex items-center gap-2">
           <img
             className="rounded-full"
@@ -108,7 +108,7 @@ const ReviewCard = ({
             src={img}
           />
           <div className="flex flex-col justify-center">
-            <figcaption className="font-medium dark:text-white">
+            <figcaption className="whitespace-nowrap font-medium dark:text-white">
               {limitTxt(name, 12)}
             </figcaption>
             <span className="flex font-medium dark:text-white/40">
@@ -159,12 +159,12 @@ const ReviewCard = ({
           </svg>
         </div>
       </div>
-      <blockquote className="mt-4 overflow-hidden text-ellipsis [-webkit-box-orient:vertical] [-webkit-line-clamp:4] [display:-webkit-box] hover:flex hover:max-h-[90px] hover:overflow-y-auto">
+      <blockquote className="h-1/2 overflow-hidden text-ellipsis [-webkit-box-orient:vertical] [-webkit-line-clamp:4] [display:-webkit-box] hover:flex hover:max-h-[90px] hover:overflow-y-auto">
         {body}
       </blockquote>
-      <p className="absolute bottom-2 text-sm text-muted-foreground">
-        12/02/2024
-      </p>
+      <div className="mt-3 flex h-1/5 items-center">
+        <p className="text-sm text-muted-foreground">12/02/2024</p>
+      </div>
     </Link>
   );
 };
@@ -176,7 +176,7 @@ const UserReviewsCarousel = () => {
         align: "center",
         loop: true,
       }}
-      className="max-w-[75%] px-5 max-md:px-0 max-sm:w-full"
+      className="max-w-[80%] px-5 max-md:px-0"
     >
       <CarouselContent className="flex h-56 items-center">
         {reviews.map(({ url, body, img, name, rating }, index) => (
@@ -196,12 +196,12 @@ const UserReviewsCarousel = () => {
       </CarouselContent>
       <CarouselPrevious
         variant={"outline-white"}
-        className="h-12 w-12 max-md:h-8 max-md:w-8"
+        className="h-12 w-12 max-md:h-8 max-md:w-8 max-sm:ml-4"
         iconStyle="h-6 w-6"
       />
       <CarouselNext
         variant={"outline-white"}
-        className="h-12 w-12 max-md:h-8 max-md:w-8"
+        className="h-12 w-12 max-md:h-8 max-md:w-8 max-sm:mr-4"
         iconStyle="h-6 w-6"
       />
     </Carousel>

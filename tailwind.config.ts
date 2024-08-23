@@ -35,7 +35,14 @@ const config = {
         "160": "160%",
       },
       backgroundImage: {
+        "dishes-banner": "url('/imgs/dishes.png')",
+        date: "url('/imgs/date.png')",
+        "round-dish1": "url('/imgs/round-dish1.png')",
+        "round-dish2": "url('/imgs/round-dish2.png')",
+        video1: "url('/imgs/video1.png')",
+        video2: "url('/imgs/video2.png')",
         "menu-banner": "url('/imgs/menu.png')",
+        "about-us-banner": "url('/imgs/about-us.jpg')",
         rectangle: "url('/imgs/rectangle.png')",
         "sample-menus": "url('/imgs/sample-menus.png')",
         vignete:

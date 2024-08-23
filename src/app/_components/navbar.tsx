@@ -62,7 +62,8 @@ export function Navbar() {
           triggerButton={
             <Button
               variant={"outline"}
-              className="rounded-xl border-2 border-border p-2 duration-150"
+              className="rounded-xl border-[1.3pt] border-black
+              bg-transparent p-2 duration-150"
               onClick={() => setOpen(true)}
             >
               <MenuIcon />
@@ -101,7 +102,10 @@ export function Navbar() {
                 href={route}
               >
                 {route == pathname ? (
-                  <div className="right-left absolute bottom-0 h-1 w-3/5 translate-y-1 rounded-xl bg-accent"></div>
+                  <div
+                    className="right-left absolute bottom-0 h-[1px] w-3/5 
+                  translate-y-1 rounded-3xl bg-accent"
+                  ></div>
                 ) : null}
                 {title}
               </Link>

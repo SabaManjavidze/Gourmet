@@ -12,6 +12,8 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 import { api } from "@/trpc/react";
+import { BottomButtons } from "../catering/_components/bottom-buttons";
+import { NumberOfGuests } from "./_components/number-of-guests";
 
 export default function MenuPage() {
   const { data, isLoading, error } = api.sampleMenu.getMainMenu.useQuery();
@@ -36,14 +38,19 @@ export default function MenuPage() {
   return (
     <main className="mt-8">
       <div className="flex w-full flex-col items-center justify-center bg-menu-banner bg-contain bg-center bg-no-repeat py-48 max-lg:bg-none">
-        <h1 className="text-shadow-sm z-10 font-lucida-bold text-8xl">Menu</h1>
-        <p className="z-10 mt-2 text-xl font-normal text-blue-950/80">
+        <h1 className="text-shadow-sm z-10 font-lucida-bold text-8xl max-md:text-6xl">
+          Menu
+        </h1>
+        <p
+          className="z-10 mt-2 text-center text-xl font-normal 
+        text-blue-950/80 max-md:text-base"
+        >
           Explore, Customize, and Order Your Perfect Meal!
         </p>
       </div>
       <div className="flex justify-center pb-20">
-        <div className="w-3/4">
-          <MenuProvider dbMenu={data}>
+        <div className="w-3/4 max-md:w-[90%]">
+          <MenuProvider dbMenu={data} changes={true}>
             <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
             {Object.keys(data).map((item, idx) => (
               <MenuTemplate
@@ -54,17 +61,7 @@ export default function MenuPage() {
                 header={
                   idx == 0 ? (
                     <div className="mt-8">
-                      <div className="flex items-center justify-center">
-                        <h3 className="text-xl font-semibold text-gray-500 max-lg:text-base max-md:text-sm">
-                          Please Enter Number of Guests and Get Perfect Menu For
-                          You
-                        </h3>
-                        <Input
-                          placeholder="0"
-                          type="number"
-                          className="ml-4 w-16 rounded-xl text-center text-lg text-muted-sm"
-                        />
-                      </div>
+                      <NumberOfGuests />
 
                       <div className="mt-8 flex items-center justify-between px-3">
                         <HideZeroCheckbox iconSide="left" />
@@ -83,23 +80,7 @@ export default function MenuPage() {
               />
             ))}
             <div className={`sticky bottom-8 mt-8 flex w-full justify-center`}>
-              <div className="*:spacing flex w-[500px] justify-between *:border-2 *:py-6 *:text-base *:font-bold *:uppercase *:tracking-wider">
-                <Button
-                  variant={"outline-accent"}
-                  onClick={handleSaveClick}
-                  size={"lg"}
-                >
-                  Save For Later
-                </Button>
-                <Button
-                  variant={"accent"}
-                  onClick={handleOrderNowClick}
-                  size={"lg"}
-                  className={"border-accent"}
-                >
-                  Order Now
-                </Button>
-              </div>
+              <BottomButtons />
             </div>
           </MenuProvider>
         </div>

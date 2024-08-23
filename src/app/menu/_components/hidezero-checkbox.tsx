@@ -20,7 +20,7 @@ export function HideZeroCheckbox({
           />
           <label
             htmlFor="terms"
-            className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 max-md:text-sm"
+            className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 max-md:text-sm max-xs:text-xs"
           >
             Hide the products with zero quantity
           </label>

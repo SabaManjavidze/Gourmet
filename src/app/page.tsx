@@ -12,7 +12,8 @@ export default async function Home() {
         <div className="absolute inset-0 bg-black/10" />
         <div
           className="absolute right-1/2 top-1/2
-         h-[300px] w-[1050px]  -translate-y-1/2 translate-x-1/2 rounded-[70px] bg-vignete  opacity-50 blur-3xl max-lg:w-[600px] max-md:w-[400px]"
+         h-[300px] w-[1050px] -translate-y-1/2 translate-x-1/2 rounded-[70px] bg-vignete opacity-50 
+         blur-3xl max-lg:w-[600px] max-md:w-[400px] max-xs:w-[300px]"
         ></div>
         <h1 className="z-10 font-lucida-bold text-7xl italic text-white max-md:text-5xl max-sm:text-3xl">
           Welcome to Gourmet

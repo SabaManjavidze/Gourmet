@@ -121,6 +121,16 @@
   body {
     @apply bg-background text-foreground;
   }
+  .menu-table-other-fields {
+    @apply w-1/4 max-lg:w-2/5 max-sm:whitespace-pre-line max-sm:text-xxs
+    *:max-sm:!px-0;
+  }
+  .menu-table-variants {
+    @apply !text-xs max-lg:!h-6 max-lg:!px-2 max-sm:!text-xxxs;
+  }
+  .menu-table-items {
+    @apply w-3/4 max-lg:w-3/5 max-sm:!text-xs;
+  }
   .dotted {
     background-image: linear-gradient(
       to right,
@@ -142,6 +152,9 @@
   }
   .text-shadow-lg {
     text-shadow: 0px 0px 12px black;
+  }
+  .text-outline {
+    text-shadow: 0px 6px 2px rgba(0, 0, 0, 0.2);
   }
   .text-shadow-sm {
     text-shadow: 0px 6px 4px rgba(0, 0, 0, 0.15);

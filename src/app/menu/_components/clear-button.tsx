@@ -8,11 +8,11 @@ export function ClearButton() {
   return (
     <button
       className="flex items-center text-lg text-gray-500
-                    duration-150 hover:text-gray-400 max-md:text-sm"
+      duration-150 hover:text-gray-400 max-md:text-sm max-xs:text-xs"
       onClick={clearQuantities}
     >
       <h3>Clear</h3>
-      <XCircleIcon className="ml-1" />
+      <XCircleIcon className="ml-1 max-sm:h-5 max-sm:w-5" />
     </button>
   );
 }

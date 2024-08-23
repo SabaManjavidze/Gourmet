@@ -32,6 +32,7 @@ export function BottomButtons({
         variant={"outline-accent"}
         isLoading={saveLoading}
         disabled={!changes}
+        className="max-md:w-40 max-md:py-0 max-md:text-base max-xs:w-32 max-xs:text-xs "
         onClick={async () => {
           if (status !== "authenticated") {
             toast.error("You need to authenticate");
@@ -59,7 +60,8 @@ export function BottomButtons({
           handleOrderClick();
         }}
         size={size}
-        className={"border-accent"}
+        className="border-accent max-md:w-40 max-md:py-0 max-md:text-base 
+          max-xs:w-32 max-xs:text-xs"
       >
         {orderText ?? "Order Now"}
       </Button>

@@ -51,10 +51,13 @@ export function SampleMenuCarousel({
     document
       .getElementById("menu")
       ?.scrollIntoView({ inline: "end", behavior: "smooth" });
-    router.replace(pathname + `menu=${currMenu}`, { scroll: false });
+    router.replace(pathname + `?menu=${currMenu}`, { scroll: false });
   };
   return (
-    <Carousel opts={{ loop: false }} className="w-[90%] px-12">
+    <Carousel
+      opts={{ loop: false }}
+      className="w-[90%] px-12 max-md:w-4/5 max-md:px-5"
+    >
       <CarouselContent>
         {sampleMenus.map(({ name, picture, id }, index) => (
           <CarouselItem
@@ -90,12 +93,12 @@ export function SampleMenuCarousel({
       </CarouselContent>
       <CarouselPrevious
         variant={"default"}
-        className="h-12 w-12"
+        className="h-12 w-12 max-md:h-8 max-md:w-8 max-sm:ml-4 md:ml-4"
         iconStyle="h-6 w-6"
       />
       <CarouselNext
         variant={"default"}
-        className="h-12 w-12"
+        className="h-12 w-12 max-md:h-8 max-md:w-8 max-sm:mr-4 md:mr-4"
         iconStyle="h-6 w-6"
       />
     </Carousel>

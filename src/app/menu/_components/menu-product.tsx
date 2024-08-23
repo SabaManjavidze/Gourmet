@@ -31,13 +31,14 @@ export function MenuProduct({
        flex h-auto items-end bg-transparent p-0
       text-xs font-semibold text-muted-foreground hover:bg-transparent"
       >
-        <DeleteIcon className="z-20 ml-1" size={20} />
+        <DeleteIcon className="z-20 ml-1 max-md:h-4 max-md:w-4" size={20} />
       </Button>
-      <div className="w-1/2 flex-col overflow-x-hidden max-sm:w-2/5 max-xs:w-1/4 xl:w-3/4">
+      <div className="menu-table-items flex-col overflow-x-hidden">
         <p
           className={twMerge(
             cls,
-            `${product.variants?.length ? "border-b-0 pb-2" : ""} overflow-hidden whitespace-nowrap border-l text-start`,
+            `${product.variants?.length ? "border-b-0 pb-2" : "h-full"} 
+            overflow-hidden whitespace-nowrap border-l text-start`,
           )}
         >
           {product.active !== product.id
@@ -52,7 +53,9 @@ export function MenuProduct({
                 onClick={() =>
                   changeVariant(menuSample, product.id, product.id)
                 }
-                className={`h-8 rounded-xl text-xs text-foreground ${product.active == product.id ? "bg-accent/30" : ""}`}
+                className={`${product.active == product.id ? "bg-accent/30" : ""} 
+                  menu-table-variants h-8 rounded-xl 
+                  text-foreground`}
               >
                 {product.name}
               </Button>
@@ -64,7 +67,9 @@ export function MenuProduct({
                   onClick={() =>
                     changeVariant(menuSample, product.id, variant.id)
                   }
-                  className={`${product.active == variant.id ? "bg-accent/30" : ""} h-8 rounded-xl text-xs text-foreground`}
+                  className={`${product.active == variant.id ? "bg-accent/30" : ""} 
+                  menu-table-variants h-8 rounded-xl text-foreground 
+                  `}
                 >
                   {variant.name}
                 </Button>
@@ -74,8 +79,8 @@ export function MenuProduct({
         ) : null}
       </div>
       <div
-        className="xl:1/4 flex w-1/2 justify-between whitespace-nowrap 
-        *:h-full *:w-full max-sm:w-3/5 max-sm:whitespace-pre-line max-xs:w-3/4"
+        className="menu-table-other-fields flex justify-between whitespace-nowrap 
+        *:h-full *:w-full"
       >
         <p className={twMerge(cls, "flex items-center justify-center")}>
           {product.price}
@@ -84,23 +89,16 @@ export function MenuProduct({
           type="number"
           min={0}
           onChange={(e) => {
-            let val = e.currentTarget.value
+            let val = e.currentTarget.value;
             if (val == "" && product.quantity !== 0) {
-              val = "0"
+              val = "0";
             }
-            const q = parseInt(val)
-            if (isNaN(q)) return
-            changeQuantity(
-              menuSample,
-              product.id,
-              q || 0,
-            );
+            const q = parseInt(val);
+            if (isNaN(q)) return;
+            changeQuantity(menuSample, product.id, q || 0);
           }}
           value={product.quantity.toString()}
-          className={twMerge(
-            cls,
-            "h-full text-center text-lg font-medium focus-within:z-10 max-lg:text-base max-md:text-sm",
-          )}
+          className={twMerge(cls, "h-full text-center focus-within:z-10")}
         />
         <p className={twMerge(cls, "flex items-center justify-center")}>
           {product.totalPrice}

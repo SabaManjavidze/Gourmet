@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { AddProductModal } from "./add-product-modal";
 import { BottomButtons } from "./bottom-buttons";
+import { NumberOfGuests } from "@/app/menu/_components/number-of-guests";
 
 export function ProductsSection({ currMenu }: { currMenu: string }) {
   const [orderOpen, setOrderOpen] = useState(false);
@@ -63,16 +64,7 @@ export function ProductsSection({ currMenu }: { currMenu: string }) {
         id="menu"
         header={
           <div className="mt-8">
-            <div className="flex items-center justify-center">
-              <h3 className="text-xl font-semibold text-gray-500">
-                Please Enter Number of Guests and Get Perfect Menu For You
-              </h3>
-              <Input
-                placeholder="0"
-                type="number"
-                className="ml-4 w-16 rounded-xl text-center text-lg text-muted-sm"
-              />
-            </div>
+            <NumberOfGuests />
 
             <div className="mt-8 flex items-center justify-between px-3">
               <HideZeroCheckbox iconSide="left" />

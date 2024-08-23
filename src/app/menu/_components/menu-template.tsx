@@ -36,7 +36,8 @@ export function MenuTemplate({
       <div className="flex w-full justify-center">
         <h3
           className="menu-title-gradient w-min whitespace-nowrap border-b 
-        border-b-accent font-lucida-bold text-5xl leading-[70px]"
+        border-b-accent font-lucida-bold text-5xl leading-[70px] 
+        max-lg:text-4xl max-md:text-3xl"
         >
           {name}
         </h3>
@@ -46,18 +47,18 @@ export function MenuTemplate({
         <li
           key="234234"
           className={twMerge(
-            `table-title-gradient max-h-18 flex h-full w-full 
-              justify-between text-center text-sm font-medium text-muted-sm 
+            `table-title-gradient max-h-18 flex h-full w-full justify-between
+            text-center text-sm font-medium text-muted-sm 
               max-md:text-xs max-sm:text-xxs`,
             className,
           )}
         >
-          <div className="w-1/2 border py-5 text-start font-bold max-sm:w-2/5 max-xs:w-1/4 xl:w-3/4">
+          <div className="menu-table-items border py-5 text-start font-bold">
             <p className="ml-5">Items</p>
           </div>
           <div
-            className="xl:1/4 flex w-1/2 justify-between whitespace-nowrap font-bold 
-              *:h-full *:w-full max-sm:w-3/5 max-sm:whitespace-pre-line max-xs:w-3/4"
+            className="menu-table-other-fields flex justify-between whitespace-nowrap font-bold 
+              *:h-full *:w-full"
           >
             <p className="flex w-full items-center justify-center border border-l-0">
               Price
@@ -65,7 +66,10 @@ export function MenuTemplate({
             <p className="flex w-full items-center justify-center border border-l-0">
               Quantity
             </p>
-            <p className="flex w-full items-center justify-center border border-l-0">
+            <p
+              className="flex w-full items-center justify-center border 
+            border-l-0 max-sm:!whitespace-normal"
+            >
               Total Price
             </p>
           </div>
