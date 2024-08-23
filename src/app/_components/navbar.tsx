@@ -57,16 +57,16 @@ export function Navbar() {
       className="sticky top-0 z-40 flex h-16 items-center justify-between border-b
     border-b-accent-light bg-accent-light px-10 max-lg:justify-center"
     >
-      <div className="absolute left-5 lg:hidden">
+      <div className="absolute left-5 top-1/2 -translate-y-1/2 lg:hidden">
         <NavDrawer
           triggerButton={
             <Button
               variant={"outline"}
               className="rounded-xl border-[1.3pt] border-black
-              bg-transparent p-2 duration-150"
+              bg-transparent p-2 duration-150 max-sm:h-8 max-sm:w-8"
               onClick={() => setOpen(true)}
             >
-              <MenuIcon />
+              <MenuIcon className="max-sm:h-5 max-sm:w-5" />
             </Button>
           }
         />
@@ -87,7 +87,7 @@ export function Navbar() {
             >
               <Link
                 className={twMerge(
-                  "relative text-sm duration-150 ease-in-out hover:text-accent-foreground",
+                  "relative text-sm duration-150 ease-in-out hover:text-accent-foreground max-sm:text-xs",
                   pathname == route
                     ? "text-base text-accent-foreground hover:text-orange-400"
                     : "",

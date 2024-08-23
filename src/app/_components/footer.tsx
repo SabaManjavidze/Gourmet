@@ -69,7 +69,7 @@ export function Footer() {
 
           <div className="text-blue-gray-900 flex gap-2 sm:justify-center">
             <Link
-              href="#"
+              href="https://www.facebook.com/Gourmet.ge/"
               className="opacity-80 transition-opacity hover:opacity-100"
             >
               <svg

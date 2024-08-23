@@ -16,9 +16,8 @@ export function NumberOfGuests() {
       <Input
         placeholder="0"
         type="number"
-        className="ml-4 w-1/5 rounded-xl text-center text-lg
-                text-muted-sm max-xl:w-12 max-lg:h-8 max-lg:w-8 max-lg:px-0
-                max-lg:text-base"
+        className="ml-4 w-16 rounded-xl text-center text-lg text-muted-sm
+                max-lg:h-8 max-lg:text-base max-md:w-12 max-md:px-1 max-sm:text-xs"
       />
     </div>
   );
