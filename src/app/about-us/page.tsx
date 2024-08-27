@@ -38,7 +38,7 @@ export default function AboutUsPage() {
           <div className="flex !flex-[2] flex-col items-center gap-y-3 max-md:!flex-1">
             <p
               className="px-20 text-center text-xl leading-10 text-muted-foreground 
-            max-2xl:leading-8 max-xl:px-16 max-xl:text-lg max-lg:px-12 max-lg:text-base
+            max-2xl:leading-8 max-xl:px-16 max-xl:text-lg max-lg:px-6 max-lg:text-base max-md:px-0
             "
             >
               Lorem ipsum dolor sit amet, consectetur adipi scing elit. Etiam eu
@@ -118,15 +118,18 @@ export default function AboutUsPage() {
       </section>
       <section
         className="flex items-center justify-center gap-x-10 px-24 
-      *:w-full max-md:flex-col max-sm:px-12"
+      *:w-full max-md:flex-col max-sm:px-6"
       >
         <div className="flex flex-col items-start justify-center">
-          <h2 className="text-3xl font-bold max-xl:text-2xl max-lg:text-xl">
+          <h2
+            className="text-3xl font-bold max-xl:text-2xl max-lg:text-xl
+          max-md:text-center"
+          >
             Avail Our Services For All Kind Of Events
           </h2>
           <p
             className="mt-6 text-left text-xl leading-10 text-muted-foreground
-          max-xl:text-lg max-lg:text-base"
+          max-xl:text-lg max-lg:text-base max-md:text-center"
           >
             Lorem ipsum dolor sit amet, consectetur adipi scing elit. Etiam eu
             turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
@@ -153,10 +156,10 @@ export default function AboutUsPage() {
         className="max-lg:8 relative mx-32 flex h-[470px] bg-dishes-banner 
       bg-cover bg-center bg-no-repeat py-12 max-xl:mx-12 max-md:mx-0"
       >
-        <div className="absolute inset-12 bg-black opacity-20"></div>
+        <div className="absolute inset-12 bg-black opacity-20 max-sm:inset-3"></div>
         <div
           className="z-10 flex h-full w-full flex-col items-center 
-        justify-center px-40 max-md:px-20"
+        justify-center px-40 max-md:px-20 max-sm:px-5"
         >
           <h2
             className="text-shadow text-center text-4xl font-normal tracking-wide

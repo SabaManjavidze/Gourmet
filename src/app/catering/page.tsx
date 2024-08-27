@@ -2,10 +2,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { SampleMenuCarousel } from "./_components/sample-menu-carousel";
 import { ProductsSection } from "./_components/products-section";
-
+import { CateringProvider } from "@/hooks/useCatering";
 export default function Catering() {
-  const [currMenu, setCurrMenu] = useState("");
-
   return (
     <main className="min-h-[140vh]">
       <div className="relative flex h-[500px] flex-col items-center justify-center bg-sample-menus bg-cover bg-center bg-no-repeat">
@@ -28,14 +26,16 @@ export default function Catering() {
           Select, Customize, and Order Delicious Catering for Any Occasion
         </p>
       </div>
-      <div className="mt-16 flex w-full justify-center">
-        <SampleMenuCarousel currMenu={currMenu} setCurrMenu={setCurrMenu} />
-      </div>
-      <div className="flex w-full justify-center">
-        <div className="w-3/4 rounded-xl pb-20 max-xl:w-5/6">
-          <ProductsSection currMenu={currMenu} />
+      <CateringProvider>
+        <div className="mt-16 flex w-full justify-center">
+          <SampleMenuCarousel />
         </div>
-      </div>
+        <div className="flex w-full justify-center">
+          <div className="w-3/4 rounded-xl pb-20 max-xl:w-5/6">
+            <ProductsSection />
+          </div>
+        </div>
+      </CateringProvider>
     </main>
   );
 }

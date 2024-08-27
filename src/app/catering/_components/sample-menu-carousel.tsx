@@ -13,14 +13,10 @@ import { Loader2 } from "lucide-react";
 import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { currMenuType, useCatering } from "@/hooks/useCatering";
 
-export function SampleMenuCarousel({
-  currMenu,
-  setCurrMenu,
-}: {
-  currMenu: string;
-  setCurrMenu: (name: string) => void;
-}) {
+export function SampleMenuCarousel() {
+  const { currMenu, setCurrMenu } = useCatering();
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -32,8 +28,10 @@ export function SampleMenuCarousel({
 
   useEffect(() => {
     const menuArg = searchParams.get("menu");
-    if (!isLoading && sampleMenus?.[0]) {
-      setCurrMenu(menuArg ?? sampleMenus[0].name);
+    // if (!isLoading && sampleMenus?.[0]) {
+    if (!isLoading && sampleMenus?.[0] && menuArg) {
+      // setCurrMenu({ name: menuArg ?? sampleMenus[0].name, id: "" });
+      setCurrMenu({ name: menuArg, id: "" });
       document
         .getElementById("menu")
         ?.scrollIntoView({ inline: "end", behavior: "smooth" });
@@ -46,12 +44,12 @@ export function SampleMenuCarousel({
         <Loader2 size={50} color={"black"} />
       </div>
     );
-  const onItemClick = (name: string) => {
-    setCurrMenu(name);
+  const onItemClick = (item: currMenuType) => {
     document
       .getElementById("menu")
       ?.scrollIntoView({ inline: "end", behavior: "smooth" });
-    router.replace(pathname + `?menu=${currMenu}`, { scroll: false });
+    router.replace(pathname + `?menu=${item.name}`, { scroll: false });
+    setCurrMenu(undefined);
   };
   return (
     <Carousel
@@ -62,10 +60,10 @@ export function SampleMenuCarousel({
         {sampleMenus.map(({ name, picture, id }, index) => (
           <CarouselItem
             key={id}
-            className={`${currMenu == name ? "scale-100" : "scale-90"} w-[95%] duration-300 hover:scale-100 max-sm:w-full md:basis-1/2 lg:basis-1/3`}
+            className={`${currMenu?.name == name ? "scale-100" : "scale-90"} w-[95%] duration-300 hover:scale-100 max-sm:w-full md:basis-1/2 lg:basis-1/3`}
           >
             <Card
-              onClick={() => onItemClick(name)}
+              onClick={() => onItemClick({ name, id })}
               className="cursor-pointer rounded-xl border-[8px] border-b-0 border-[#BF9A50]"
             >
               <CardContent className="relative flex aspect-video items-center justify-center rounded-xl p-6">

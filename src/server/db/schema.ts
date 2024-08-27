@@ -12,6 +12,8 @@ import {
   text,
   boolean,
   uuid,
+  unique,
+  uniqueIndex,
 } from "drizzle-orm/pg-core";
 import { type AdapterAccount } from "next-auth/adapters";
 
@@ -74,16 +76,17 @@ export const productsToSamples = createTable(
     productId: idtype("product_id")
       .notNull()
       .references(() => products.id, { onDelete: "cascade" }),
-    sampleId: idtype("sample_id")
+    menuId: idtype("menu_id")
       .notNull()
-      .references(() => menuSamples.id, { onDelete: "cascade" }),
+      .references(() => menuSampleVariants.id, { onDelete: "cascade" }),
     quantity: integer("quantity").notNull(),
+    qgrowth_factor: decimal("qgrowth_factor").notNull(),
     variant_name: varchar("variant_name", { length: 255 }).references(
       () => variants.name,
     ),
   },
   (t) => ({
-    compoundKey: primaryKey({ columns: [t.productId, t.sampleId] }),
+    compoundKey: primaryKey({ columns: [t.productId, t.menuId] }),
   }),
 );
 export const productsToSamplesRelations = relations(
@@ -93,10 +96,36 @@ export const productsToSamplesRelations = relations(
       fields: [productsToSamples.productId],
       references: [products.id],
     }),
-    sample: one(menuSamples, {
-      fields: [productsToSamples.sampleId],
-      references: [menuSamples.id],
+    sample: one(menuSampleVariants, {
+      fields: [productsToSamples.menuId],
+      references: [menuSampleVariants.id],
     }),
+  }),
+);
+
+export const menuVariantEnum = pgEnum("type", [
+  "cheap",
+  "standard",
+  "expensive",
+]);
+export const menuSampleVariants = createTable(
+  "menu_sample_variants",
+  {
+    id: idtype("id").primaryKey().notNull(),
+    type: menuVariantEnum("type").notNull(),
+    person_range: integer("person_range").notNull(),
+    menu_id: idtype("menu_id")
+      .references(() => menuSamples.id)
+      .notNull(),
+  },
+  (t) => ({
+    unique: uniqueIndex().on(t.id, t.type, t.person_range),
+  }),
+);
+export const menuSampleVariantsRelations = relations(
+  menuSampleVariants,
+  ({ many }) => ({
+    products: many(productsToSamples),
   }),
 );
 
@@ -106,7 +135,7 @@ export const menuSamples = createTable("menu_samples", {
   picture: varchar("picture", { length: 255 }),
 });
 export const menuSamplesRelations = relations(menuSamples, ({ many }) => ({
-  products: many(productsToSamples),
+  variants: many(menuSampleVariants),
 }));
 export const statusEnum = pgEnum("status", ["draft", "submitted", "completed"]);
 export const orders = createTable(

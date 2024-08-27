@@ -1,6 +1,6 @@
 "use client";
 import { MenuToState } from "@/lib/utils";
-import { ProductWithVariants, MenuState } from "menu";
+import { ProductWithVariants, MenuState, productState } from "menu";
 import { v4 as uuid } from "uuid";
 import {
   Dispatch,
@@ -17,9 +17,13 @@ import { useSession } from "next-auth/react";
 import { UserSearchModal } from "@/app/admin/_components/user-search-modal";
 
 type MenuContextProps = {
+  dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
   menu: MenuState;
+  setMenu: Dispatch<SetStateAction<MenuState>>;
   totalSum: number;
   hideZeroQt: boolean;
+  personCount: number;
+  setPersonCount: Dispatch<SetStateAction<number>>;
   changes: boolean;
   setHideZeroQt: Dispatch<SetStateAction<boolean>>;
   clearQuantities: () => void;
@@ -39,8 +43,12 @@ type MenuContextProps = {
   ) => void;
 };
 export const MenuContext = createContext<MenuContextProps>({
+  dbMenu: {},
   menu: {},
   totalSum: 0,
+  personCount: 0,
+  setMenu: () => null,
+  setPersonCount: () => null,
   hideZeroQt: false,
   changes: false,
   setHideZeroQt: () => false,
@@ -57,17 +65,20 @@ export const useMenu = () => useContext(MenuContext);
 export const MenuProvider = ({
   dbMenu,
   userId,
+  personRanges,
   setChanges,
   children,
   changes,
 }: {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
   userId?: string;
+  personRanges?: { def: number; next: number };
   setChanges?: Dispatch<SetStateAction<boolean>>;
   changes?: boolean;
   children: ReactNode;
 }) => {
   const [adminUserId, setAdminUserId] = useState<string | undefined>(userId);
+  const [personCount, setPersonCount] = useState(personRanges?.def ?? 10);
   const [open, setOpen] = useState(false);
   const [menu, setMenu] = useState<MenuState>({});
   const [removeProduct, setRemoveProduct] = useState<string[]>([]);
@@ -113,12 +124,12 @@ export const MenuProvider = ({
     if (!newMenuSample) throw new Error("Product not found");
     setMenu((prev) => ({ ...prev, [menuSample]: newMenuSample }));
   };
+
   const changeQuantity = (
     menuSample: string,
     productId: string,
     quantity: number,
   ) => {
-    console.log({ quantity });
     const newMenuSample = menu[menuSample]?.map((product) => {
       if (product.id == productId) {
         return {
@@ -261,7 +272,11 @@ export const MenuProvider = ({
   return (
     <MenuContext.Provider
       value={{
+        personCount,
+        setPersonCount,
+        setMenu,
         menu,
+        dbMenu,
         totalSum,
         changes: !!changes,
         changeQuantity,

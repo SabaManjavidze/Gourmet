@@ -7,6 +7,7 @@ import {
 } from "@/server/api/trpc";
 import {
   menuSamples,
+  menuSampleVariants,
   orders,
   products,
   productstoOrders,
@@ -15,34 +16,50 @@ import {
   variants,
 } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { eq, like } from "drizzle-orm";
+import { and, eq, gt, like, ne } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
 import { ProductWithVariants } from "menu";
-
+export const menuTypeEnum = z.enum(["cheap", "standard", "expensive"]);
 export const sampleMenuRouter = createTRPCRouter({
   getMenus: publicProcedure.query(async () => {
-    const menus = await db.select().from(menuSamples);
+    const menus = await db
+      .select()
+      .from(menuSamples)
+      .where(ne(menuSamples.name, "Main Menu"));
     return menus;
   }),
   getMenuProducts: publicProcedure
-    .input(z.object({ menuName: z.string() }))
+    .input(
+      z.object({
+        menuId: z.string().uuid(),
+        menuType: menuTypeEnum,
+        personRange: z.number(),
+      }),
+    )
     .query(async ({ input }) => {
       // get menu from sample_menus
       const menu = await db
         .select()
-        .from(menuSamples)
-        .where(eq(menuSamples.name, input.menuName));
+        .from(menuSampleVariants)
+        .innerJoin(menuSamples, eq(menuSamples.id, menuSampleVariants.menu_id))
+        .where(
+          and(
+            eq(menuSampleVariants.menu_id, input.menuId),
+            eq(menuSampleVariants.person_range, input.personRange),
+            eq(menuSampleVariants.type, input.menuType),
+          ),
+        );
       if (!menu[0]) throw new Error("Menu not found");
 
       const pts = await db
         .select()
         .from(productsToSamples)
         .innerJoin(products, eq(products.id, productsToSamples.productId))
-        .where(eq(productsToSamples.sampleId, menu[0].id));
+        .where(eq(productsToSamples.menuId, menu[0].menu_sample_variants.id));
 
       const variant_map = {} as Record<string, string>;
 
-      const categoryName = menu[0]?.name;
+      const categoryName = menu[0]?.menu_samples.name;
       if (!categoryName) throw new Error("Category not found");
       const formatedData: Record<string, ProductWithVariants[]> = {
         [categoryName]: [],
@@ -50,17 +67,14 @@ export const sampleMenuRouter = createTRPCRouter({
       const sample = formatedData[categoryName] as ProductWithVariants[];
       for (const item of pts) {
         const variantName = item?.products_to_samples?.variant_name;
-        const formatedProd: ProductWithVariants = {
-          id: item.product.id,
-          name: item.product.name,
-          price: parseFloat(item.product.price),
-        };
         const in_vars = variantName ? variant_map[variantName] : undefined;
         if (!variantName || in_vars === undefined) {
           sample.push({
             id: item.product.id,
             name: item.product.name,
             price: parseFloat(item.product.price),
+            quantity: item.products_to_samples.quantity,
+            qgroth_factor: item.products_to_samples.qgrowth_factor,
             variants: [],
           });
         }
@@ -79,6 +93,8 @@ export const sampleMenuRouter = createTRPCRouter({
                 id: item.product.id,
                 name: item.product.name,
                 price: parseFloat(item.product.price),
+                qgroth_factor: item.products_to_samples.qgrowth_factor,
+                quantity: item.products_to_samples.quantity,
               });
               break;
             }
@@ -86,7 +102,21 @@ export const sampleMenuRouter = createTRPCRouter({
           continue;
         }
       }
-      return formatedData;
+      const nextPersonRange = await db
+        .select()
+        .from(menuSampleVariants)
+        .where(
+          and(
+            eq(menuSampleVariants.menu_id, input.menuId),
+            eq(menuSampleVariants.type, input.menuType),
+            gt(menuSampleVariants.person_range, input.personRange),
+          ),
+        )
+        .limit(1);
+      return {
+        data: formatedData,
+        nextPersonRange: nextPersonRange?.[0]?.person_range ?? undefined,
+      };
     }),
   getMainMenu: publicProcedure.query(async () => {
     const mainMenu = await db
@@ -100,7 +130,7 @@ export const sampleMenuRouter = createTRPCRouter({
       .select()
       .from(productsToSamples)
       .innerJoin(products, eq(products.id, productsToSamples.productId))
-      .where(eq(productsToSamples.sampleId, mainMenu[0].id));
+      .where(eq(productsToSamples.menuId, mainMenu[0].id));
 
     const variant_map = {} as Record<string, string>;
 
@@ -125,6 +155,7 @@ export const sampleMenuRouter = createTRPCRouter({
               id: item.product.id,
               name: item.product.name,
               price: parseFloat(item.product.price),
+              quantity: item.products_to_samples.quantity,
             });
             break;
           }
@@ -138,6 +169,7 @@ export const sampleMenuRouter = createTRPCRouter({
           name: item.product.name,
           price: parseFloat(item.product.price),
           variants: [],
+          quantity: item.products_to_samples.quantity,
         });
       } else {
         formatedData[categoryName] = [
@@ -146,6 +178,7 @@ export const sampleMenuRouter = createTRPCRouter({
             name: item.product.name,
             price: parseFloat(item.product.price),
             variants: [],
+            quantity: item.products_to_samples.quantity,
           },
         ];
       }

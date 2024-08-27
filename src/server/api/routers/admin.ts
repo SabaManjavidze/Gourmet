@@ -137,7 +137,7 @@ export const adminRouter = createTRPCRouter({
           orderCount: count(orders.id),
         })
         .from(users)
-        .innerJoin(
+        .leftJoin(
           orders,
           and(eq(orders.userId, users.id), eq(orders.status, "draft")),
         )
