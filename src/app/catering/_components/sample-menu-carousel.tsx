@@ -46,9 +46,9 @@ export function SampleMenuCarousel() {
     );
   const onItemClick = (item: currMenuType) => {
     document
-      .getElementById("menu")
-      ?.scrollIntoView({ inline: "end", behavior: "smooth" });
-    router.replace(pathname + `?menu=${item.name}`, { scroll: false });
+      .getElementById(item.name)
+      ?.scrollIntoView({ inline: "start", behavior: "smooth" });
+    // router.replace(pathname + `?menu=${item.name}`, { scroll: false });
     setCurrMenu(undefined);
   };
   return (

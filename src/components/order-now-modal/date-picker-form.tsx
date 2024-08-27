@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form";
 type DatePickerFormProps = {
   control: any;
+  className?: string;
   placeholder?: string;
   name: string;
 };
@@ -26,6 +27,7 @@ export function DatePickerForm({
   name,
   placeholder = "pick a date",
   control,
+  className,
 }: DatePickerFormProps) {
   return (
     <FormField
@@ -41,6 +43,7 @@ export function DatePickerForm({
                   className={cn(
                     "pl-3 text-left font-normal",
                     !field.value && "text-muted-foreground",
+                    className,
                   )}
                 >
                   {field.value ? (

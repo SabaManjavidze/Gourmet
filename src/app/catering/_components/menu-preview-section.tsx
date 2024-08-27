@@ -15,7 +15,7 @@ export function MenuPreviewSection({
   onOrderClick: (id: string, name: string) => void;
 }) {
   return (
-    <div className="flex flex-col gap-y-12 max-lg:gap-y-5">
+    <div className="flex flex-col gap-y-12 max-lg:gap-y-5" id={data.title}>
       <div
         className={`flex w-full items-center max-md:flex-col 
           ${data.imgSide == "right" ? "flex-row-reverse" : null}
@@ -42,6 +42,7 @@ export function MenuPreviewSection({
             {data.desc}
           </p>
           <Button
+            disabled={data.title != "Coffee Break"}
             onClick={() => onOrderClick(data.id, data.title)}
             className="mt-8 px-4 uppercase max-lg:hidden max-md:mt-3"
             size={"lg"}
@@ -66,7 +67,7 @@ export function MenuPreviewSection({
               xl:h-36 xl:w-48"
             >
               <Image
-                src={`/imgs/menu-previews/${data.title.toLowerCase()}/${data.title.toLowerCase()}${idx + 1}.png`}
+                src={`/imgs/menu-previews/${data.title}/${data.title.toLowerCase()}${idx + 1}.png`}
                 fill
                 className="object-cover"
                 alt=""
@@ -77,6 +78,7 @@ export function MenuPreviewSection({
       <div>
         <Button
           onClick={() => onOrderClick(data.id, data.title)}
+          disabled={data.title != "Coffee Break"}
           className="mt-8 px-4 uppercase max-lg:mt-0 max-md:mt-3 lg:hidden"
           size={"lg"}
           variant={"accent"}

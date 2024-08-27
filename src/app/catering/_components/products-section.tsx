@@ -19,6 +19,8 @@ import { MenuVariants } from "@/lib/types";
 import { CateringFormModal } from "./catering-form-modal";
 import { ProductWithVariants } from "menu";
 import { cateringFormType, useCatering } from "@/hooks/useCatering";
+import { usePathname, useRouter } from "next/navigation";
+import { CustomCateringFormModal } from "./custom-catering-form-modal";
 
 // const MenuPreviews: MenuPreview[] = [
 //   {
@@ -44,9 +46,12 @@ import { cateringFormType, useCatering } from "@/hooks/useCatering";
 // ];
 export function ProductsSection() {
   const [orderOpen, setOrderOpen] = useState(false);
+  const [customOpen, setCustomOpen] = useState(false);
   const { currMenu, setCurrMenu, formData, setFormData } = useCatering();
   const [selectedMenu, setSelectedMenu] = useState<undefined | string>();
   const [addProdOpen, setAddProdOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
   const {
     data: dbMenu,
     isLoading,
@@ -98,11 +103,17 @@ export function ProductsSection() {
     const m = sampleMenus.find((item) => item.id == selectedMenu);
     if (!m) return;
     setCurrMenu({ id: m.id, name: m.name });
+    router.replace(pathname + `?menu=${m.name}`, { scroll: false });
     await getMenuProducts();
   };
 
   return (
     <>
+      <CustomCateringFormModal
+        // onSubmit={onSubmit}
+        open={customOpen}
+        closeModal={() => setCustomOpen(false)}
+      />
       <CateringFormModal
         onSubmit={onSubmit}
         open={!!selectedMenu}
@@ -127,6 +138,44 @@ export function ProductsSection() {
               />
             </div>
           ))}
+          <section
+            className="relative flex h-[470px] w-full 
+      bg-dishes-banner bg-cover bg-center bg-no-repeat py-12"
+          >
+            <div className="absolute inset-12 bg-black opacity-20 max-sm:inset-3"></div>
+            <div
+              className="z-10 flex h-full w-full flex-col items-center 
+        justify-center px-40 max-md:px-20 max-sm:px-5"
+            >
+              <h2
+                className="text-shadow text-center text-4xl font-normal tracking-wide
+          text-white underline underline-offset-2 max-xl:text-2xl max-lg:text-xl"
+              >
+                Select The Menu Of Your Choice
+              </h2>
+
+              <p
+                className="text-shadow mt-8 text-center text-lg text-white
+          max-2xl:leading-8 max-xl:text-lg max-lg:text-base max-sm:text-xs"
+              >
+                Lorem ipsum dolor sit amet, consectetur adipi scing elit. Etiam
+                eu turpis molestie, dictum est a, mattis tellus. Sed dignissim,
+                metus nec fringilla accumsan, risus sem sollicitudin lacus,
+                utinterdum tellus elit sed risus. Maecenas eget condimentum
+                velit, sit amet feugiat lectus. Class aptent taciti sociosqu
+                Maecenas eget condimentum velit, sit amet feugiat lectus.
+                Classaptent taciti sociosqu
+              </p>
+
+              <Button
+                className="mt-8 border border-white text-lg uppercase"
+                onClick={() => setCustomOpen(true)}
+                variant={"accent"}
+              >
+                order now
+              </Button>
+            </div>
+          </section>
         </div>
       ) : (
         <>

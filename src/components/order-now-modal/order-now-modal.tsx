@@ -233,7 +233,13 @@ export function OrderNowModal({
     </Modal>
   );
 }
-function DateInputs({ control, title }: { control: any; title: string }) {
+export function DateInputs({
+  control,
+  title,
+}: {
+  control: any;
+  title: string;
+}) {
   return (
     <div className="flex flex-col justify-center">
       <FormLabel>{title}</FormLabel>

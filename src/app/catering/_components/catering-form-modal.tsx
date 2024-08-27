@@ -20,7 +20,6 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { MenuVariants } from "@/lib/types";
 import { useCatering } from "@/hooks/useCatering";
 
-const titleClass = "text-lg whitespace-nowrap font-bold text-accent-foreground";
 const cateringFormSchema = z.object({
   type: z.enum(["cheap", "standard", "expensive"]),
   personRange: z.string(),

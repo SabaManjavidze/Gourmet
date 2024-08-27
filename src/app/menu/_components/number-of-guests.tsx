@@ -10,13 +10,13 @@ import { productState } from "menu";
 export function NumberOfGuests({
   personRanges,
 }: {
-  personRanges: { next: number; def: number };
+  personRanges?: { next: number; def: number };
 }) {
   const { personCount, setPersonCount, menu, dbMenu, setMenu } = useMenu();
   const { currMenu, formData, setFormData } = useCatering();
   const utils = api.useUtils();
   const changePersonCount = async (count: number, menuSample?: string) => {
-    if (!currMenu || !formData) return;
+    if (!currMenu || !formData || !personRanges) return;
     let m;
     let menuName = "";
     if (!menuSample) {
