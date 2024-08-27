@@ -10,6 +10,7 @@ import {
   menuSampleVariants,
   orders,
   products,
+  productsToMainMenu,
   productstoOrders,
   productsToSamples,
   productsToVariants,
@@ -128,16 +129,15 @@ export const sampleMenuRouter = createTRPCRouter({
     const formatedData: Record<string, ProductWithVariants[]> = {};
     const pts = await db
       .select()
-      .from(productsToSamples)
-      .innerJoin(products, eq(products.id, productsToSamples.productId))
-      .where(eq(productsToSamples.menuId, mainMenu[0].id));
+      .from(productsToMainMenu)
+      .innerJoin(products, eq(products.id, productsToMainMenu.productId));
 
     const variant_map = {} as Record<string, string>;
 
     pts.forEach((item) => {
       if (!item) throw new Error("Product not found");
       const categoryName = item?.product?.categoryName;
-      const variantName = item?.products_to_samples?.variant_name;
+      const variantName = item?.products_to_main_menu?.variant_name;
       if (!categoryName) throw new Error("Category not found");
 
       const sample = formatedData[categoryName];
@@ -155,7 +155,7 @@ export const sampleMenuRouter = createTRPCRouter({
               id: item.product.id,
               name: item.product.name,
               price: parseFloat(item.product.price),
-              quantity: item.products_to_samples.quantity,
+              quantity: 0,
             });
             break;
           }
@@ -169,7 +169,7 @@ export const sampleMenuRouter = createTRPCRouter({
           name: item.product.name,
           price: parseFloat(item.product.price),
           variants: [],
-          quantity: item.products_to_samples.quantity,
+          quantity: 0,
         });
       } else {
         formatedData[categoryName] = [
@@ -178,7 +178,7 @@ export const sampleMenuRouter = createTRPCRouter({
             name: item.product.name,
             price: parseFloat(item.product.price),
             variants: [],
-            quantity: item.products_to_samples.quantity,
+            quantity: 0,
           },
         ];
       }

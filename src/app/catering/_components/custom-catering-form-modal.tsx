@@ -166,7 +166,7 @@ export function CustomCateringFormModal({
                   </h3>
                   <div className="">
                     <DatePickerForm
-                      className="h-8 w-32 rounded-[3px] border-accent"
+                      className="h-8 w-40 rounded-[3px] border-accent"
                       name={"dateOfEvent"}
                       control={form.control}
                     />

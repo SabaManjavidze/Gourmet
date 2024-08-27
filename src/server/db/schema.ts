@@ -70,6 +70,34 @@ export const productsToVariants = createTable(
     compoundKey: primaryKey({ columns: [t.productId, t.variantId] }),
   }),
 );
+export const productsToMainMenu = createTable(
+  "products_to_main_menu",
+  {
+    id: idtype("id").primaryKey().notNull(),
+    productId: idtype("product_id")
+      .notNull()
+      .references(() => products.id, { onDelete: "cascade" }),
+    variant_name: varchar("variant_name", { length: 255 }).references(
+      () => variants.name,
+    ),
+  },
+  // (t) => ({
+  //   compoundKey: primaryKey({ columns: [t.productId, t.menuId] }),
+  // }),
+);
+// export const productsToSamplesRelations = relations(
+//   productsToSamples,
+//   ({ one }) => ({
+//     product: one(products, {
+//       fields: [productsToSamples.productId],
+//       references: [products.id],
+//     }),
+//     sample: one(menuSampleVariants, {
+//       fields: [productsToSamples.menuId],
+//       references: [menuSampleVariants.id],
+//     }),
+//   }),
+// );
 export const productsToSamples = createTable(
   "products_to_samples",
   {
