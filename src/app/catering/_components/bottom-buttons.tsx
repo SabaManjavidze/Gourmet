@@ -22,7 +22,6 @@ export function BottomButtons({
   const [saveLoading, setSaveLoading] = useState(false);
   const { handleSaveClick, handleOrderClick, changes, menu } = useMenu();
   const { status } = useSession();
-  const [menuName] = Object.keys(menu);
   return (
     <div
       className="*:spacing flex w-[500px] justify-between *:border-2 
@@ -43,7 +42,7 @@ export function BottomButtons({
           const success = await handleSaveClick(orderId);
           setSaveLoading(false);
           if (!success) return;
-          toast.success(orderId ? `${menuName} Updated` : `${menuName} Saved`);
+          toast.success(orderId ? "Updated Menu" : "Saved Menu");
         }}
         size={size}
       >

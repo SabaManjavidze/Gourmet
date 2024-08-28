@@ -15,6 +15,7 @@ import {
 import { api, RouterOutputs } from "@/trpc/react";
 import { useSession } from "next-auth/react";
 import { UserSearchModal } from "@/app/admin/_components/user-search-modal";
+import { MenuNameModal } from "@/app/_components/menu-name-modal";
 
 type MenuContextProps = {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
@@ -80,6 +81,8 @@ export const MenuProvider = ({
   const [adminUserId, setAdminUserId] = useState<string | undefined>(userId);
   const [personCount, setPersonCount] = useState(personRanges?.def ?? 10);
   const [open, setOpen] = useState(false);
+  const [menuNameOpen, setMenuNameOpen] = useState(false);
+  const [menuName, setMenuName] = useState("");
   const [menu, setMenu] = useState<MenuState>({});
   const [removeProduct, setRemoveProduct] = useState<string[]>([]);
   const { data: session, status } = useSession();
@@ -168,18 +171,37 @@ export const MenuProvider = ({
   const handleSaveClick = async (orderId?: string) => {
     // if orderId is passed it means we are updating an existing order
     // else we are creating a new order
-    if (status !== "authenticated") return false;
-    const menuName = Object.keys(menu)[0];
-    if (!menuName) return false;
-    const prods = [];
-    for (const prod of menu[menuName] ?? []) {
-      if (removeProduct.includes(prod.id)) continue;
-      prods.push({
-        id: prod.active ?? prod.id,
-        quantity: prod.quantity,
-        variant_name: prod.variant_name,
-      });
+    if (!orderId && !menuName) {
+      setMenuNameOpen(true);
+      return false;
     }
+    if (status !== "authenticated") return false;
+    const menuKeys = Object.keys(menu);
+    const mn = menuKeys[0];
+    if (!mn) return false;
+    const prods = [];
+    if (menuKeys.length == 1) {
+      for (const prod of menu[mn] ?? []) {
+        if (removeProduct.includes(prod.id)) continue;
+        prods.push({
+          id: prod.active ?? prod.id,
+          quantity: prod.quantity,
+          variant_name: prod.variant_name,
+        });
+      }
+    } else if (menuKeys.length > 1) {
+      for (const key of menuKeys) {
+        for (const prod of menu[key] ?? []) {
+          if (removeProduct.includes(prod.id)) continue;
+          prods.push({
+            id: prod.active ?? prod.id,
+            quantity: prod.quantity,
+            variant_name: prod.variant_name,
+          });
+        }
+      }
+    }
+
     if (session?.user?.role == "user") {
       if (orderId && removeProduct.length > 0) {
         await utils.client.order.removeProductFromOrder.mutate({
@@ -215,7 +237,7 @@ export const MenuProvider = ({
       await utils.client.admin.createUserOrder.mutate({
         userId: adminUserId,
         orderId,
-        menuName,
+        menuName: mn,
         totalPrice: totalSum.toString(),
         status: "draft",
         products: prods,
@@ -290,6 +312,12 @@ export const MenuProvider = ({
         setHideZeroQt,
       }}
     >
+      <MenuNameModal
+        open={menuNameOpen}
+        closeModal={() => setMenuNameOpen(false)}
+        menuName={menuName}
+        setMenuName={setMenuName}
+      />
       {session?.user?.role == "admin" && open ? (
         <UserSearchModal
           open={open}

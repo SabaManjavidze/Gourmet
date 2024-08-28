@@ -61,7 +61,7 @@ export function MenuCardModal({
         }
         closeModal();
       }}
-      className="max-h-[80%] w-[70%] overflow-auto px-36"
+      className="max-h-[80%] w-[70%] overflow-auto px-24"
     >
       <MenuProvider
         dbMenu={{ [order.name]: order.products }}
