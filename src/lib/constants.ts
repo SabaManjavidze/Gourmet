@@ -5,3 +5,4 @@ export const LOREM = `Lorem ipsum dolor sit amet, consectetur adipiscing elit. E
             feugiat lectus. Class aptent taciti sociosqu Mae cenas eget
             condimentum velit, sit amet feugiat lectus. Class aptent taciti
             sociosqu`;
+export const MIN_PERSON_CATER = 10;

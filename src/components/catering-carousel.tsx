@@ -52,7 +52,7 @@ export function CateringCarousel() {
             key={id}
             className="hover:z-20 max-lg:basis-full lg:basis-1/2 2xl:basis-1/3"
           >
-            <Link href={`/catering?menu=${name}`}>
+            <Link href={`/catering#${name}`}>
               <CardContainer className="cursor-pointer border-4 border-white hover:z-20">
                 <CardBody
                   className="relative flex aspect-square h-96 w-96 

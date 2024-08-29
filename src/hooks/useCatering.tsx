@@ -12,6 +12,7 @@ import {
 import { api, RouterInputs, RouterOutputs } from "@/trpc/react";
 import { User } from "next-auth";
 import { MenuVariants } from "@/lib/types";
+import { useSearchParams } from "next/navigation";
 
 export interface currMenuType {
   name: string;
@@ -36,8 +37,29 @@ export const CateringContext = createContext<CateringContextProps>({
 export const useCatering = () => useContext(CateringContext);
 
 export const CateringProvider = ({ children }: { children: ReactNode }) => {
-  const [currMenu, setCurrMenu] = useState<undefined | currMenuType>();
-  const [formData, setFormData] = useState<cateringFormType | undefined>();
+  const searchParams = useSearchParams();
+  const menuIdArg = searchParams.get("menuId");
+  const menuNameArg = searchParams.get("menuName");
+  const menuTypeArg = searchParams.get("type");
+  if (
+    menuTypeArg !== null &&
+    menuTypeArg != "cheap" &&
+    menuTypeArg != "standard" &&
+    menuTypeArg != "expensive"
+  )
+    throw new Error("invalid url");
+  const personRangeArg = searchParams.get("personRange");
+  const [currMenu, setCurrMenu] = useState<undefined | currMenuType>(
+    menuIdArg && menuNameArg ? { id: menuIdArg, name: menuNameArg } : undefined,
+  );
+  const [formData, setFormData] = useState<cateringFormType | undefined>(
+    menuTypeArg && personRangeArg
+      ? {
+          menuType: menuTypeArg,
+          personRange: Number(personRangeArg),
+        }
+      : undefined,
+  );
   return (
     <CateringContext.Provider
       value={{

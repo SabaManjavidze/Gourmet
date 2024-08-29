@@ -4,8 +4,6 @@ import { v4 as uuid } from "uuid";
 import { twMerge } from "tailwind-merge";
 import { RouterOutputs } from "@/trpc/react";
 
-
-
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
@@ -26,6 +24,7 @@ export const limitTxt = (str: string, limit: number) => {
 };
 export const MenuToState = (
   menu: Record<string, (ProductWithVariants & { quantity?: number })[]>,
+  person_range: number,
 ) => {
   const state: MenuState = {};
   Object.keys(menu).forEach((key) => {
@@ -33,11 +32,14 @@ export const MenuToState = (
     state[key] =
       menu[key]?.map((prod, idx) => {
         const quantity = prod.quantity ?? 0;
+        const c_diff = person_range % 10;
+        const next_q =
+          quantity + Math.round(c_diff * Number(prod.qgroth_factor));
         return {
           ...prod,
           active: prod.id,
           totalPrice: prod.price * quantity,
-          quantity,
+          quantity: next_q,
         };
       }) ?? [];
   });

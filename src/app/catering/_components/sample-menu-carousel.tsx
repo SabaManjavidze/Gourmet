@@ -45,10 +45,11 @@ export function SampleMenuCarousel() {
       </div>
     );
   const onItemClick = (item: currMenuType) => {
-    document
-      .getElementById(item.name)
-      ?.scrollIntoView({ inline: "start", behavior: "smooth" });
+    // document
+    //   .getElementById(item.name)
+    //   ?.scrollIntoView({ inline: "start", behavior: "smooth" });
     // router.replace(pathname + `?menu=${item.name}`, { scroll: false });
+    router.replace(pathname + `#${item.name}`, { scroll: true });
     setCurrMenu(undefined);
   };
   return (

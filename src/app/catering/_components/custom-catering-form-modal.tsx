@@ -52,6 +52,9 @@ export function CustomCateringFormModal({
   >();
   const form = useForm<formType>({
     resolver: zodResolver(formSchema),
+    defaultValues: {
+      numberOfGuests: "",
+    },
   });
 
   const onSubmitForm = async (data: formType) => {

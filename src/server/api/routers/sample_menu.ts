@@ -39,6 +39,7 @@ export const sampleMenuRouter = createTRPCRouter({
     )
     .query(async ({ input }) => {
       // get menu from sample_menus
+      const new_pr = Math.floor(input.personRange / 10) * 10;
       const menu = await db
         .select()
         .from(menuSampleVariants)
@@ -46,7 +47,7 @@ export const sampleMenuRouter = createTRPCRouter({
         .where(
           and(
             eq(menuSampleVariants.menu_id, input.menuId),
-            eq(menuSampleVariants.person_range, input.personRange),
+            eq(menuSampleVariants.person_range, new_pr),
             eq(menuSampleVariants.type, input.menuType),
           ),
         );

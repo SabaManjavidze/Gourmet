@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
@@ -12,13 +12,13 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Capitalize, cn } from "@/lib/utils";
-import { useRouter } from "next/router";
 import { Modal } from "@/components/ui/modal";
 import { useMenu } from "@/hooks/useMenu";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { MenuVariants } from "@/lib/types";
 import { useCatering } from "@/hooks/useCatering";
+import { Input } from "@/components/ui/input";
+import { MIN_PERSON_CATER } from "@/lib/constants";
 
 const cateringFormSchema = z.object({
   type: z.enum(["cheap", "standard", "expensive"]),
@@ -36,6 +36,9 @@ export function CateringFormModal({
 }) {
   const form = useForm<cateringMenuFormType>({
     resolver: zodResolver(cateringFormSchema),
+    defaultValues: {
+      personRange: "10",
+    },
   });
 
   const onSubmitForm = async (data: cateringMenuFormType) => {
@@ -102,7 +105,39 @@ export function CateringFormModal({
                     </FormItem>
                   )}
                 />
+
                 <FormField
+                  control={form.control}
+                  name={"personRange"}
+                  render={({ field }) => (
+                    <FormItem className="flex w-full flex-col items-center justify-between">
+                      <div className="flex items-center justify-between">
+                        <FormLabel className="text-xl">Person Range</FormLabel>
+                        <FormMessage />
+                      </div>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          onChange={(e) => {
+                            let val = e.currentTarget.value;
+                            const q = parseInt(val);
+                            if (val == "" || q < MIN_PERSON_CATER) {
+                              val = "0";
+                            }
+                            if (isNaN(q)) return;
+                            field.onChange(q.toString());
+                          }}
+                          type="number"
+                          min={MIN_PERSON_CATER}
+                          max={50}
+                          className="h-8 w-16 rounded-[3px] border-accent text-base"
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                {/* <FormField
+
                   control={form.control}
                   name={"personRange"}
                   render={({ field }) => (
@@ -159,7 +194,7 @@ export function CateringFormModal({
                       <FormMessage />
                     </FormItem>
                   )}
-                />
+                /> */}
               </div>
             </div>
           </div>

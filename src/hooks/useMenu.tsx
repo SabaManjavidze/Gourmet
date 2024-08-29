@@ -16,6 +16,7 @@ import { api, RouterOutputs } from "@/trpc/react";
 import { useSession } from "next-auth/react";
 import { UserSearchModal } from "@/app/admin/_components/user-search-modal";
 import { MenuNameModal } from "@/app/_components/menu-name-modal";
+import { MIN_PERSON_CATER } from "@/lib/constants";
 
 type MenuContextProps = {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
@@ -79,7 +80,9 @@ export const MenuProvider = ({
   children: ReactNode;
 }) => {
   const [adminUserId, setAdminUserId] = useState<string | undefined>(userId);
-  const [personCount, setPersonCount] = useState(personRanges?.def ?? 10);
+  const [personCount, setPersonCount] = useState(
+    personRanges?.def ?? MIN_PERSON_CATER,
+  );
   const [open, setOpen] = useState(false);
   const [menuNameOpen, setMenuNameOpen] = useState(false);
   const [menuName, setMenuName] = useState("");
@@ -90,7 +93,7 @@ export const MenuProvider = ({
   const [hideZeroQt, setHideZeroQt] = useState(false);
 
   useEffect(() => {
-    const state = MenuToState(dbMenu);
+    const state = MenuToState(dbMenu, personRanges?.def ?? MIN_PERSON_CATER);
     setMenu(state);
   }, []);
   const totalSum = useMemo(() => {

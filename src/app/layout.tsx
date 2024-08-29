@@ -9,6 +9,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { Toaster } from "@/components/ui/sonner";
 import { Viewport } from "next";
+import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],

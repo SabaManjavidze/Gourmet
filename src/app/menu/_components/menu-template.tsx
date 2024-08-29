@@ -10,6 +10,7 @@ import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import { RouterOutputs } from "@/trpc/react";
 import { AddProductsSection } from "./add-products-section";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 export function MenuTemplate({
   name,
@@ -31,6 +32,7 @@ export function MenuTemplate({
   footer?: ReactNode;
 }) {
   const { menu, setHideZeroQt } = useMenu();
+  const [listRef] = useAutoAnimate();
   return (
     <div className="mt-16">
       <div className="flex w-full justify-center">
@@ -43,7 +45,7 @@ export function MenuTemplate({
         </h3>
       </div>
       {header ?? <div className="mt-10"></div>}
-      <ul id={id} className="flex w-full flex-col pt-8">
+      <ul ref={listRef} id={id} className="flex w-full flex-col pt-8">
         <li
           key="234234"
           className={twMerge(
