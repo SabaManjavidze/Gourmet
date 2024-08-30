@@ -9,6 +9,7 @@ import { db } from "../db";
 import { categories } from "../db/schema";
 import { orderRouter } from "./routers/orders";
 import { adminRouter } from "./routers/admin";
+import { ne } from "drizzle-orm";
 
 /**
  * This is the primary router for your server.
@@ -21,7 +22,10 @@ export const appRouter = createTRPCRouter({
   sampleMenu: sampleMenuRouter,
   order: orderRouter,
   getCategories: publicProcedure.query(async () => {
-    const cats = await db.select().from(categories);
+    const cats = await db
+      .select()
+      .from(categories)
+      .where(ne(categories.name, "def"));
     return cats;
   }),
 });

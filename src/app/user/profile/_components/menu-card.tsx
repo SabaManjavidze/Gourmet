@@ -28,27 +28,27 @@ export function MenuCard({
   onClick: () => void;
   products: (ProductWithVariants & { quantity: number })[];
 }) {
-  const { data: session } = useSession()
+  const { data: session } = useSession();
   const utils = api.useUtils();
-  const [adminLoading, setAdminLoading] = useState(false)
-  const { mutateAsync: deleteOrder, isPending } = api.order.deleteUserOrder.useMutation({
-    onSuccess() {
-      utils.order.getUserOrders.invalidate();
-    },
-  });
+  const [adminLoading, setAdminLoading] = useState(false);
+  const { mutateAsync: deleteOrder, isPending } =
+    api.order.deleteUserOrder.useMutation({
+      onSuccess() {
+        utils.order.getUserOrders.invalidate();
+      },
+    });
 
   const handleDeleteClick = async () => {
     if (session?.user.role == "user") {
       await deleteOrder({ orderId: id });
     } else if (session?.user.role == "admin" && userId) {
-      setAdminLoading(true)
-      await utils.client.admin.deleteUserOrder.mutate(
-        {
-          orderId: id,
-          userId,
-        })
-      await utils.admin.getUserOrders.invalidate()
-      setAdminLoading(false)
+      setAdminLoading(true);
+      await utils.client.admin.deleteUserOrder.mutate({
+        orderId: id,
+        userId,
+      });
+      await utils.admin.getUserOrders.invalidate();
+      setAdminLoading(false);
     }
   };
   return (
@@ -83,7 +83,7 @@ export function MenuCard({
                   {name}
                 </p>
                 <div className="flex w-[45%] items-center justify-between *:w-1/3 *:text-start">
-                  <p>${price}</p>
+                  <p>₾{price}</p>
                   <div
                     className="flex items-start justify-start
                   text-primary-foreground"

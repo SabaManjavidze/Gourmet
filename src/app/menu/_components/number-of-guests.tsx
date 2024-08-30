@@ -53,6 +53,10 @@ export function NumberOfGuests({
     );
     const newMenu: productState[] = [];
     for (const prod of m) {
+      if (!prod?.qgroth_factor) {
+        newMenu.push(prod);
+        continue;
+      }
       const def_quantity = dbMenu[menuName]?.find(
         (item) => item.id == prod.id,
       )?.quantity;
@@ -80,17 +84,17 @@ export function NumberOfGuests({
     setMenu({
       [menuName]: newMenu,
     });
-    console.log({ count, next: personRanges.next });
+    // console.log({ count, next: personRanges.next });
     const count_def = Math.floor(count / 10) * 10;
     const count_next = Math.ceil(count / 10) * 10;
-    console.log({ count, count_def, def: personRanges.def });
+    // console.log({ count, count_def, def: personRanges.def });
     if (count >= personRanges.next) {
       setFormData({ ...formData, personRange: personRanges.next });
     } else if (
       personRanges.def > count_def &&
       personRanges.next !== count_next
     ) {
-      console.log("hello");
+      // console.log("hello");
       setFormData({ ...formData, personRange: count });
     }
   };

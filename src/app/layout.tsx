@@ -8,7 +8,6 @@ import { Footer } from "./_components/footer";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { Toaster } from "@/components/ui/sonner";
-import { Viewport } from "next";
 import Script from "next/script";
 
 const inter = Inter({
@@ -58,6 +57,26 @@ export default async function RootLayout({
         </SessionProvider>
         <Toaster />
         <Footer />
+        {/* <Script
+          id="tbcCheckoutSdk"
+          type="text/javascript"
+          strategy="lazyOnload"
+          src="https://ecom.tbcpayments.ge/tbccheckoutbutton/script.min.js?callback=TbcCallBack"
+          defer
+        ></Script>
+        <Script defer>
+          {`
+redirectTbcCheckout=function(e){
+      console.log({e})
+return e
+          }
+    TbcCallBack = function() {TbcCheckout.Render({ type: 'large', color: 'blue' });
+    document.getElementById('tbcCheckoutButton').addEventListener('click', redirectTbcCheckout)};
+`}
+        </Script>
+        <div
+          dangerouslySetInnerHTML={{ __html: `<TbcCheckout></TbcCheckout>` }}
+        ></div> */}
       </body>
     </html>
   );

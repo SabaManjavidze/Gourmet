@@ -53,6 +53,19 @@ export function ProductsSection() {
   const [addProdOpen, setAddProdOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
+
+  const searchParams = useSearchParams();
+  const menuIdArg = searchParams.get("menuId");
+  const menuNameArg = searchParams.get("menuName");
+  const menuTypeArg = searchParams.get("type");
+  if (
+    menuTypeArg !== null &&
+    menuTypeArg != "cheap" &&
+    menuTypeArg != "standard" &&
+    menuTypeArg != "expensive"
+  )
+    throw new Error("invalid url");
+  const personRangeArg = searchParams.get("personRange");
   const {
     data: dbMenu,
     isLoading,
@@ -125,17 +138,23 @@ export function ProductsSection() {
         open={!!selectedMenu}
         closeModal={closeSelectedMenu}
       />
-      {!formData || !dbMenu || !currMenu ? (
+      {!menuTypeArg ||
+      !personRangeArg ||
+      !menuIdArg ||
+      !menuNameArg ||
+      !formData ||
+      !dbMenu ||
+      !currMenu ? (
         <>
           <MenuPreviews orderClick={orderClick} />
           <section
-            className="relative flex h-[470px] w-full 
-      bg-dishes-banner bg-cover bg-center bg-no-repeat py-12"
+            className="relative flex h-[470px] w-full bg-dishes-banner
+      bg-cover bg-center bg-no-repeat py-12 max-lg:mt-12"
           >
             <div className="absolute inset-12 bg-black opacity-20 max-sm:inset-3"></div>
             <div
               className="z-10 flex h-full w-full flex-col items-center 
-        justify-center px-40 max-md:px-20 max-sm:px-5"
+        justify-center px-40 max-lg:px-20 max-sm:px-5"
             >
               <h2
                 className="text-shadow text-center text-4xl font-normal tracking-wide

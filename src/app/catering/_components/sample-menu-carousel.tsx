@@ -75,6 +75,7 @@ export function SampleMenuCarousel() {
                       : "https://i0.wp.com/www.glennhager.com/wp-content/uploads/2018/03/table.jpg"
                   }
                   alt=""
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   fill
                   className="rounded-lg object-cover object-center"
                 />
