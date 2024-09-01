@@ -35,6 +35,7 @@ export function DatePickerForm({
       name={name}
       render={({ field }) => (
         <FormItem className="flex w-full flex-col">
+          <FormMessage />
           <Popover>
             <PopoverTrigger asChild className="border-border">
               <FormControl>
@@ -60,9 +61,7 @@ export function DatePickerForm({
                 mode="single"
                 selected={field.value}
                 onSelect={field.onChange}
-                disabled={(date) =>
-                  date > new Date() || date < new Date("1900-01-01")
-                }
+                disabled={(date) => date < new Date()}
                 initialFocus
               />
             </PopoverContent>
@@ -70,7 +69,6 @@ export function DatePickerForm({
           {/* <FormDescription>
             Your date of birth is used to calculate your age.
           </FormDescription> */}
-          <FormMessage />
         </FormItem>
       )}
     />

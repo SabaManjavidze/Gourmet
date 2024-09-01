@@ -77,7 +77,12 @@ export function MenuTemplate({
           </div>
         </li>
         {menu[name]?.map((product, idx) => (
-          <MenuProduct key={product.id} product={product} menuSample={name} />
+          <MenuProduct
+            enabled={addable}
+            key={product.id}
+            product={product}
+            menuSample={name}
+          />
         ))}
       </ul>
       {footer ?? null}

@@ -5,20 +5,38 @@ import { Tab, Tabs } from "@/components/ui/tabs";
 import { MenuCardModal } from "./_components/menu-card-modal";
 import { useSession } from "next-auth/react";
 import { OrderList } from "./_components/order-list";
+import { Status } from "@/server/api/routers/orders";
 
 export default function ProfilePage() {
-  const [open, setOpen] = useState<string | null>(null);
+  const [open, setOpen] = useState<{ id: string; status: Status } | null>(null);
   const { data: session } = useSession();
   const tabs = [
     {
       title: "My Drafts",
       value: "My Drafts",
-      content: <OrderList setOpen={setOpen} />,
+      content: (
+        <OrderList setOpen={(id: string) => setOpen({ id, status: "draft" })} />
+      ),
+    },
+    {
+      title: "Submitted",
+      value: "Submitted",
+      content: (
+        <OrderList
+          setOpen={(id: string) => setOpen({ id, status: "submitted" })}
+          status="submitted"
+        />
+      ),
     },
     {
       title: "Order History",
       value: "Order History",
-      content: <h2 className="text-mted">You have no orders</h2>,
+      content: (
+        <OrderList
+          setOpen={(id: string) => setOpen({ id, status: "completed" })}
+          status="completed"
+        />
+      ),
     },
   ];
 
@@ -27,14 +45,21 @@ export default function ProfilePage() {
   };
 
   return (
-    <div className="container flex min-h-screen flex-col justify-between
-      pb-[40rem] max-xl:pb-[65rem] max-lg:pb-[130rem] pt-28 max-md:pt-14">
+    <div
+      className="container flex min-h-screen flex-col justify-between
+      pb-[40rem] pt-28 max-xl:pb-[65rem] max-lg:pb-[130rem] max-md:pt-14"
+    >
       <div
         className="flex w-full flex-col 
       items-center bg-background px-3 max-md:px-0 md:flex-row md:items-start lg:px-5"
       >
-        {!!open ? (
-          <MenuCardModal open={!!open} orderId={open} closeModal={closeModal} />
+        {open !== null ? (
+          <MenuCardModal
+            addable={open.status == "draft"}
+            open={true}
+            orderId={open.id}
+            closeModal={closeModal}
+          />
         ) : null}
         <div className="flex w-full flex-col items-center md:w-1/4 md:items-start">
           <div className="flex h-auto w-full flex-col items-center justify-start">

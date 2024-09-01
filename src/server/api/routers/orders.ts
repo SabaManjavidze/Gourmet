@@ -12,6 +12,8 @@ interface Order {
   name: string;
   created_at: string;
   totalPrice: string;
+  adminInvoice: boolean;
+  userInvoice: boolean;
   status: Status;
   products: (Product & { variant_name?: string; quantity: number })[];
 }
@@ -95,6 +97,8 @@ export async function getUserOrdersWithPaging(
     result.push({
       id: ord.id,
       name: ord.name,
+      userInvoice: ord.userInvoice,
+      adminInvoice: ord.adminInvoice,
       created_at,
       totalPrice: ord.totalPrice,
       status: ord.status,
@@ -138,23 +142,32 @@ export async function createUserOrder(
   totalPrice: string,
   status: Status,
   userId: string,
+  invoiceReqeusted: boolean,
+  invoiceConfirmed?: boolean,
 ) {
   let order;
   if (!orderId) {
-    order = await db
-      .insert(orders)
-      .values({
-        id: uuid(),
-        userId: userId,
-        name: menuName,
-        status: "draft",
-        totalPrice,
-      })
-      .returning();
+    const values = {
+      id: uuid(),
+      userId: userId,
+      name: menuName,
+      status,
+      totalPrice,
+      userInvoice: invoiceReqeusted ?? false,
+      adminInvoice: invoiceConfirmed ?? false,
+    };
+    console.log({ values });
+    order = await db.insert(orders).values(values).returning();
   } else {
     order = await db
       .update(orders)
-      .set({ status, name: menuName, totalPrice })
+      .set({
+        status,
+        name: menuName,
+        totalPrice,
+        userInvoice: invoiceReqeusted ?? false,
+        adminInvoice: invoiceConfirmed ?? false,
+      })
       .where(eq(orders.id, orderId))
       .returning();
   }
@@ -246,6 +259,7 @@ export const orderRouter = createTRPCRouter({
         menuName: z.string(),
         totalPrice: z.string(),
         orderId: z.string().uuid().optional(),
+        invoiceRequested: z.boolean(),
         status: z.enum(["draft", "submitted", "completed"]),
         products: z.array(
           z.object({
@@ -258,7 +272,14 @@ export const orderRouter = createTRPCRouter({
     )
     .mutation(
       async ({
-        input: { products, menuName, totalPrice, orderId, status },
+        input: {
+          products,
+          menuName,
+          totalPrice,
+          orderId,
+          status,
+          invoiceRequested,
+        },
         ctx: { session },
       }) => {
         return await createUserOrder(
@@ -268,6 +289,7 @@ export const orderRouter = createTRPCRouter({
           totalPrice,
           status,
           session.user.id,
+          invoiceRequested,
         );
       },
     ),

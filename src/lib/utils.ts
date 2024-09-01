@@ -24,22 +24,24 @@ export const limitTxt = (str: string, limit: number) => {
 };
 export const MenuToState = (
   menu: Record<string, (ProductWithVariants & { quantity?: number })[]>,
-  person_range: number,
+  person_range?: number,
 ) => {
   const state: MenuState = {};
   Object.keys(menu).forEach((key) => {
     if (!menu[key]) throw new Error("Menu not found");
     state[key] =
       menu[key]?.map((prod, idx) => {
+        let next_q;
         const quantity = prod.quantity ?? 0;
-        const c_diff = person_range % 10;
-        const next_q =
-          quantity + Math.round(c_diff * Number(prod.qgroth_factor));
+        if (person_range) {
+          const c_diff = person_range % 10;
+          next_q = quantity + Math.round(c_diff * Number(prod.qgroth_factor));
+        }
         return {
           ...prod,
           active: prod.id,
           totalPrice: prod.price * quantity,
-          quantity: next_q,
+          quantity: person_range !== undefined ? (next_q as number) : quantity,
         };
       }) ?? [];
   });

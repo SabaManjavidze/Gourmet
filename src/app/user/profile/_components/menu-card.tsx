@@ -110,7 +110,7 @@ export function MenuCard({
               className="overflow-hidden text-ellipsis whitespace-nowrap text-lg font-semibold"
             />
             <h4 className="text-lg font-semibold">
-              $
+              ₾
               {Number(totalPrice) < 2 ? (
                 totalPrice
               ) : (

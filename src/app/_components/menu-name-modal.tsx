@@ -4,6 +4,7 @@ import { Dispatch, SetStateAction, useCallback, useState } from "react";
 import { api } from "@/trpc/react";
 import { User } from "next-auth";
 import { Input } from "@/components/ui/input";
+import { useMenu } from "@/hooks/useMenu";
 
 export function MenuNameModal({
   open,
@@ -16,6 +17,7 @@ export function MenuNameModal({
   menuName: string;
   setMenuName: Dispatch<SetStateAction<string>>;
 }) {
+  const { handleSaveClick } = useMenu();
   return (
     <Modal
       isOpen={open}
@@ -33,6 +35,8 @@ export function MenuNameModal({
           onKeyDown={(e) => {
             if (e.key == "Enter" && menuName.length > 2) {
               closeModal();
+              handleSaveClick();
+              setMenuName("");
             }
           }}
           onChange={(e) => {

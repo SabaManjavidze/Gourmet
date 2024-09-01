@@ -55,6 +55,8 @@ export const adminRouter = createTRPCRouter({
         menuName: z.string(),
         totalPrice: z.string(),
         orderId: z.string().uuid().optional(),
+        userInvoice: z.boolean(),
+        adminInvoice: z.boolean(),
         status: z.enum(["draft", "submitted", "completed"]),
         products: z.array(
           z.object({
@@ -67,7 +69,16 @@ export const adminRouter = createTRPCRouter({
     )
     .mutation(
       async ({
-        input: { menuName, totalPrice, orderId, status, products, userId },
+        input: {
+          menuName,
+          totalPrice,
+          orderId,
+          status,
+          products,
+          userId,
+          userInvoice,
+          adminInvoice,
+        },
       }) => {
         return await createUserOrder(
           orderId,
@@ -76,6 +87,8 @@ export const adminRouter = createTRPCRouter({
           totalPrice,
           status,
           userId,
+          userInvoice,
+          adminInvoice,
         );
       },
     ),

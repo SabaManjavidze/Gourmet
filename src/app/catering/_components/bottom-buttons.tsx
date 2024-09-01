@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useMenu } from "@/hooks/useMenu";
+import { api } from "@/trpc/react";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -19,8 +20,7 @@ export function BottomButtons({
   orderText?: string;
   size?: "sm" | "lg" | "xl";
 }) {
-  const [saveLoading, setSaveLoading] = useState(false);
-  const { handleSaveClick, handleOrderClick, changes, menu } = useMenu();
+  const { handleSaveClick, handleOrderClick, changes, saveLoading } = useMenu();
   const { status } = useSession();
   return (
     <div
@@ -37,12 +37,8 @@ export function BottomButtons({
             toast.error("You need to authenticate");
             return;
           }
-          setSaveLoading(true);
           saveClick?.();
-          const success = await handleSaveClick(orderId);
-          setSaveLoading(false);
-          if (!success) return;
-          toast.success(orderId ? "Updated Menu" : "Saved Menu");
+          await handleSaveClick(orderId);
         }}
         size={size}
       >

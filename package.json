@@ -33,6 +33,7 @@
     "@trpc/client": "next",
     "@trpc/react-query": "^11.0.0-rc.402",
     "@trpc/server": "next",
+    "@vercel/blob": "^0.23.4",
     "axios": "^1.7.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",

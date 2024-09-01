@@ -26,7 +26,7 @@ export const InputSchema = {
       title: "Email Address (For sending BOL PDF)",
       placeholder: "email address",
       name: "companyEmail",
-      type: "email",
+      // type: "email",
     },
   ],
 } satisfies Record<string, inputType[]>;
@@ -34,19 +34,20 @@ export type InputSchema = {
   [key in keyof typeof InputSchema]: inputType[];
 };
 export const orderNowSchema = z.object({
-  firstname: z.string(),
+  firstname: z.string().min(2),
   lastname: z.string(),
-  phone: z.number(),
+  invoiceRequested: z.boolean().optional().default(false),
+  phone: z.string().min(9),
   firstname2: z.string().optional(),
   lastname2: z.string().optional(),
-  phone2: z.number().optional(),
+  phone2: z.string().optional(),
   address: z.string(),
   date: z.date(),
-  time: z.string().time(),
+  time: z.date(),
   companyName: z.string().optional(),
-  dotNumber: z.number().optional(),
-  extraInfo: z.number().optional(),
-  companyEmail: z.string().email().optional(),
+  dotNumber: z.string().optional(),
+  extraInfo: z.string().optional(),
+  companyEmail: z.string().optional(),
 });
 const orderKeys = orderNowSchema.keyof();
 export type OrderFormType = z.infer<typeof orderNowSchema>;

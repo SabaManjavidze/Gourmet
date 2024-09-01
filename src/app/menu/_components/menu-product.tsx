@@ -12,9 +12,11 @@ const cls = "border border-t-0 border-l-0 w-full p-5";
 export function MenuProduct({
   product,
   menuSample,
+  enabled = true,
 }: {
   menuSample: string;
   product: productState;
+  enabled?: boolean;
 }) {
   const { changeQuantity, hideZeroQt, changeVariant, handleRemoveProduct } =
     useMenu();
@@ -45,7 +47,7 @@ export function MenuProduct({
             ? product?.variants?.find((v) => v.id == product.active)?.name
             : product.name}
         </p>
-        {product?.variants?.length ? (
+        {enabled && product?.variants?.length ? (
           <ul className="flex gap-x-3 overflow-x-auto border border-t-0 px-4 pb-2">
             <li key={product.id}>
               <Button
@@ -87,6 +89,7 @@ export function MenuProduct({
         </p>
         <Input
           type="number"
+          disabled={!enabled}
           min={0}
           onChange={(e) => {
             let val = e.currentTarget.value;

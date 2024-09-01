@@ -17,6 +17,7 @@ import { useSession } from "next-auth/react";
 import { UserSearchModal } from "@/app/admin/_components/user-search-modal";
 import { MenuNameModal } from "@/app/_components/menu-name-modal";
 import { MIN_PERSON_CATER } from "@/lib/constants";
+import { toast } from "sonner";
 
 type MenuContextProps = {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
@@ -32,6 +33,7 @@ type MenuContextProps = {
   handleSaveClick: (orderId?: string) => Promise<boolean>;
   handleRemoveProduct: (productId: string) => void;
   handleOrderClick: () => void;
+  saveLoading: boolean;
   addProduct: (menuSample: string, product: ProductWithVariants[]) => void;
   changeVariant: (
     menuSample: string,
@@ -51,6 +53,7 @@ export const MenuContext = createContext<MenuContextProps>({
   personCount: 0,
   setMenu: () => null,
   setPersonCount: () => null,
+  saveLoading: false,
   hideZeroQt: false,
   changes: false,
   setHideZeroQt: () => false,
@@ -79,6 +82,7 @@ export const MenuProvider = ({
   changes?: boolean;
   children: ReactNode;
 }) => {
+  const [saveLoading, setSaveLoading] = useState(false);
   const [adminUserId, setAdminUserId] = useState<string | undefined>(userId);
   const [personCount, setPersonCount] = useState(
     personRanges?.def ?? MIN_PERSON_CATER,
@@ -93,7 +97,7 @@ export const MenuProvider = ({
   const [hideZeroQt, setHideZeroQt] = useState(false);
 
   useEffect(() => {
-    const state = MenuToState(dbMenu, personRanges?.def ?? MIN_PERSON_CATER);
+    const state = MenuToState(dbMenu, personRanges?.def);
     setMenu(state);
   }, []);
   const totalSum = useMemo(() => {
@@ -178,10 +182,14 @@ export const MenuProvider = ({
       setMenuNameOpen(true);
       return false;
     }
-    if (status !== "authenticated") return false;
+    if (status !== "authenticated") {
+      toast.error("Please log in");
+      return false;
+    }
     const menuKeys = Object.keys(menu);
     const mn = menuKeys[0];
     if (!mn) return false;
+    setSaveLoading(true);
     const prods = [];
     if (menuKeys.length == 1) {
       for (const prod of menu[mn] ?? []) {
@@ -218,17 +226,24 @@ export const MenuProvider = ({
         totalPrice: totalSum.toString(),
         status: "draft",
         products: prods,
+        invoiceRequested: false,
       });
-      await utils.order.getUserOrders.invalidate();
+      await utils.order.getUserOrders.refetch();
       if (orderId) {
         await utils.order.getUserOrder.invalidate({ orderId });
       }
     } else if (session?.user?.role == "admin") {
       if (!orderId && !adminUserId) {
         setOpen(true);
+        setSaveLoading(false);
+        toast.error("Something went wrong.");
         return false;
       }
-      if (!adminUserId) return false;
+      if (!adminUserId) {
+        setSaveLoading(false);
+        toast.error("Something went wrong.");
+        return false;
+      }
 
       if (orderId && removeProduct.length > 0) {
         await utils.client.admin.removeProductFromUserOrder.mutate({
@@ -244,6 +259,8 @@ export const MenuProvider = ({
         totalPrice: totalSum.toString(),
         status: "draft",
         products: prods,
+        adminInvoice: false,
+        userInvoice: false,
       });
       await utils.admin.getUserOrders.invalidate();
       if (orderId) {
@@ -251,11 +268,13 @@ export const MenuProvider = ({
       }
     }
     setChanges?.(false);
+    setSaveLoading(false);
+    toast.success(orderId ? "Updated Menu" : "Saved Menu");
     return true;
   };
   const handleOrderClick = () => {
     if (status !== "authenticated") return;
-    console.log("order clicked");
+    // console.log("order clicked");
   };
   const clearQuantities = () => {
     const newMenu: MenuState = {};
@@ -298,6 +317,7 @@ export const MenuProvider = ({
     <MenuContext.Provider
       value={{
         personCount,
+        saveLoading,
         setPersonCount,
         setMenu,
         menu,

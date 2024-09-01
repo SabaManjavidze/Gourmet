@@ -70,34 +70,16 @@ export const productsToVariants = createTable(
     compoundKey: primaryKey({ columns: [t.productId, t.variantId] }),
   }),
 );
-export const productsToMainMenu = createTable(
-  "products_to_main_menu",
-  {
-    id: idtype("id").primaryKey().notNull(),
-    productId: idtype("product_id")
-      .notNull()
-      .references(() => products.id, { onDelete: "cascade" }),
-    variant_name: varchar("variant_name", { length: 255 }).references(
-      () => variants.name,
-    ),
-  },
-  // (t) => ({
-  //   compoundKey: primaryKey({ columns: [t.productId, t.menuId] }),
-  // }),
-);
-// export const productsToSamplesRelations = relations(
-//   productsToSamples,
-//   ({ one }) => ({
-//     product: one(products, {
-//       fields: [productsToSamples.productId],
-//       references: [products.id],
-//     }),
-//     sample: one(menuSampleVariants, {
-//       fields: [productsToSamples.menuId],
-//       references: [menuSampleVariants.id],
-//     }),
-//   }),
-// );
+export const productsToMainMenu = createTable("products_to_main_menu", {
+  id: idtype("id").primaryKey().notNull(),
+  productId: idtype("product_id")
+    .notNull()
+    .references(() => products.id, { onDelete: "cascade" }),
+  variant_name: varchar("variant_name", { length: 255 }).references(
+    () => variants.name,
+  ),
+});
+
 export const productsToSamples = createTable(
   "products_to_samples",
   {
@@ -166,12 +148,46 @@ export const menuSamplesRelations = relations(menuSamples, ({ many }) => ({
   variants: many(menuSampleVariants),
 }));
 export const statusEnum = pgEnum("status", ["draft", "submitted", "completed"]);
+
+export const orderDetails = createTable(
+  "order_details",
+  {
+    id: idtype("id").primaryKey().notNull(),
+    firstName: varchar("first_name").notNull(),
+    lastName: varchar("last_name").notNull(),
+    firstName2: varchar("first_name2"),
+    lastName2: varchar("last_name2"),
+    phoneNumber: varchar("phone_number").notNull(),
+    phoneNumber2: varchar("phone_number2"),
+    address: varchar("address").notNull(),
+    date: date("date").notNull(),
+    time: varchar("time").notNull(),
+    companyName: varchar("company_name"),
+    dotNumber: varchar("dot_number"),
+    extraInfo: text("extra_info"),
+    companyEmail: text("company_email"),
+    orderId: idtype("orderId")
+      .references(() => orders.id, { onDelete: "cascade" })
+      .notNull(),
+  },
+  (order) => ({
+    userIdIdx: index("detail_orderId_idx").on(order.id),
+  }),
+);
+export const orderDetailRelationships = relations(orderDetails, ({ one }) => ({
+  order: one(orders, {
+    fields: [orderDetails.orderId],
+    references: [orders.id],
+  }),
+}));
 export const orders = createTable(
   "order",
   {
     id: idtype("id").primaryKey().notNull(),
     name: varchar("name").notNull(),
     totalPrice: decimal("total_price").notNull(),
+    userInvoice: boolean("user_invoice").notNull().default(false),
+    adminInvoice: boolean("admin_invoice").notNull().default(false),
     status: statusEnum("status").notNull(),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     userId: idtype("userId")

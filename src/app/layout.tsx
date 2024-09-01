@@ -12,7 +12,8 @@ import Script from "next/script";
 
 const inter = Inter({
   subsets: ["latin"],
-  variable: "--font-sans",
+  display: "swap",
+  // variable: "--font-sans",
 });
 
 export const metadata = {
@@ -28,7 +29,11 @@ export default async function RootLayout({
 }) {
   const session = await getServerSession(authOptions);
   return (
-    <html lang="en" style={{ scrollBehavior: "smooth" }}>
+    <html
+      lang="en"
+      // className={inter.className}
+      style={{ scrollBehavior: "smooth" }}
+    >
       <head>
         <link
           rel="apple-touch-icon"
@@ -49,7 +54,7 @@ export default async function RootLayout({
         />
         <link rel="manifest" href="/site.webmanifest" />
       </head>
-      <body className={`font ${inter.variable}`}>
+      <body>
         <SessionProvider session={session}>
           <NextTopLoader color="orange" showSpinner={false} />
           <Navbar />

@@ -20,8 +20,10 @@ export function MenuCardModal({
   orderId,
   open,
   closeModal,
+  addable = true,
 }: {
   orderId: string;
+  addable?: boolean;
   open: boolean;
   closeModal: () => void;
 }) {
@@ -68,7 +70,7 @@ export function MenuCardModal({
         setChanges={setChanges}
         changes={changes}
       >
-        {addOpen ? (
+        {addable && addOpen ? (
           <AddProductModal
             open={addOpen}
             closeModal={() => setAddOpen(false)}
@@ -76,20 +78,25 @@ export function MenuCardModal({
           ></AddProductModal>
         ) : null}
 
-        <OrderNowModal
-          open={orderNow}
-          closeModal={() => setOrderNow(false)}
-        ></OrderNowModal>
+        {addable ? (
+          <OrderNowModal
+            open={orderNow}
+            closeModal={() => setOrderNow(false)}
+          ></OrderNowModal>
+        ) : null}
 
         <MenuTemplate
+          addable={addable}
           addClick={() => setAddOpen(true)}
           className="text-sm"
           name={order.name}
         />
 
-        <div className={`sticky bottom-0 mt-8 flex w-full justify-center`}>
-          <BottomButtons orderId={order.id} saveText="save" />
-        </div>
+        {addable ? (
+          <div className={`sticky bottom-0 mt-8 flex w-full justify-center`}>
+            <BottomButtons orderId={order.id} saveText="save" />
+          </div>
+        ) : null}
       </MenuProvider>
     </Modal>
   );

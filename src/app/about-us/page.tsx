@@ -1,10 +1,11 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
+import { Video } from "../_components/video";
 
 export default function AboutUsPage() {
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   return (
     <div className="*:mt-20">
@@ -32,7 +33,7 @@ export default function AboutUsPage() {
         >
           {/* hidden on mobile */}
           <div
-            className="h-full w-full bg-video1 bg-contain bg-center bg-no-repeat
+            className="bg-about-us-1 h-full w-full bg-cover bg-center bg-no-repeat
           max-md:hidden"
           ></div>
           <div className="flex !flex-[2] flex-col items-center gap-y-3 max-md:!flex-1">
@@ -60,11 +61,11 @@ export default function AboutUsPage() {
           </div>
           <div className="flex h-full w-full">
             <div
-              className="h-full w-full bg-video1 bg-contain bg-center bg-no-repeat
+              className="bg-about-us-1 h-full w-full bg-cover bg-center bg-no-repeat
           md:hidden"
             ></div>
             <div
-              className="h-full w-full bg-video2 bg-contain bg-center bg-no-repeat
+              className="bg-about-us-2 h-full w-full bg-cover bg-center bg-no-repeat
             max-xs:hidden"
             ></div>
           </div>
@@ -72,27 +73,28 @@ export default function AboutUsPage() {
       </section>
       <section className="flex flex-col items-center">
         <div
-          className="mt-10 flex h-[500px] w-full items-center 
-        justify-center px-10 max-xl:flex-col max-lg:h-[700px] max-md:h-[800px]"
+          className="mt-10 flex h-[500px] w-full items-center justify-center 
+        px-10 max-xl:flex-col max-lg:h-[700px] max-md:h-[550px] max-sm:h-[850px]"
         >
-          <div className="flex h-full w-full justify-center">
-            <div className="flex h-full justify-center *:mr-14 max-xl:flex-col *:max-md:mr-0">
+          <div className="flex h-full w-full justify-between max-sm:flex-col max-sm:items-center max-sm:justify-center">
+            <div className="*:mr-13 flex h-full justify-center max-xl:flex-col *:max-md:mr-0">
               <div
                 className="h-full w-full bg-round-dish1 bg-contain bg-top bg-no-repeat
-            max-xl:w-3/4 max-md:w-full max-md:bg-center"
+            max-xl:w-3/4 max-md:w-full max-md:bg-center max-sm:h-72"
               ></div>
               <p
-                className="menu-title-gradient w-72 text-left text-4xl font-bold 
-            leading-[55px] max-xl:text-3xl max-xl:leading-[58px] max-lg:h-full
-            max-md:h-auto max-md:text-center max-md:text-2xl"
+                className="menu-title-gradient flex w-72 items-end text-left 
+            text-4xl font-bold leading-[55px] max-xl:text-3xl
+            max-xl:leading-[58px] max-lg:h-full max-md:h-auto max-md:text-center max-md:text-2xl"
               >
                 Make a wish & you will get the dish..!
               </p>
             </div>
-            <div
-              className="h-full w-full bg-video2 bg-contain bg-center 
-          bg-no-repeat max-lg:hidden"
-            ></div>
+            <div className="max-sm:mt-5">
+              <Suspense fallback={<p>Loading video...</p>}>
+                <Video src="/videos/1.mp4" />
+              </Suspense>
+            </div>
             <div
               className="flex h-full justify-center *:ml-14 max-xl:flex-col 
             max-lg:items-center max-md:hidden max-md:flex-col-reverse *:max-md:ml-0"
@@ -110,10 +112,10 @@ export default function AboutUsPage() {
               ></div>
             </div>
           </div>
-          <div
-            className="h-full w-full bg-video2 bg-contain bg-center 
+          {/* <div
+            className="bg-about-us-2 h-full w-full bg-contain bg-center 
           bg-no-repeat max-lg:mt-10 lg:hidden"
-          ></div>
+          ></div> */}
         </div>
       </section>
       <section
