@@ -3,13 +3,11 @@ import { OrderList } from "@/app/user/profile/_components/order-list";
 import { Tab, Tabs } from "@/components/ui/tabs";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
-import { useEffect, useMemo, useState } from "react";
-import { UserSearch } from "./_components/user-search";
-import { User } from "next-auth";
 import { AdminProvider } from "@/hooks/useAdmin";
 import { AdminOrderList } from "./_components/admin-order-list";
 import { UserSearchTab } from "./_components/user-search-tab";
 import { OrderHistoryTab } from "./_components/order-history-tab";
+import { InvoiceHistoryTab } from "./_components/invoice-history-tab";
 
 const tabs = [
   {
@@ -26,6 +24,11 @@ const tabs = [
     title: "Order History",
     value: "Order History",
     content: <OrderHistoryTab />,
+  },
+  {
+    title: "Invoices",
+    value: "Invoices",
+    content: <InvoiceHistoryTab />,
   },
 ];
 export default function AdminProfilePage() {

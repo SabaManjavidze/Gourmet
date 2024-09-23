@@ -68,41 +68,40 @@ export const sampleMenuRouter = createTRPCRouter({
       };
       const sample = formatedData[categoryName] as ProductWithVariants[];
       for (const item of pts) {
-        const variantName = item?.products_to_samples?.variant_name;
-        const in_vars = variantName ? variant_map[variantName] : undefined;
-        if (!variantName || in_vars === undefined) {
-          sample.push({
-            id: item.product.id,
-            name: item.product.name,
-            price: parseFloat(item.product.price),
-            quantity: item.products_to_samples.quantity,
-            qgroth_factor: item.products_to_samples.qgrowth_factor,
-            variants: [],
-          });
-        }
+        // const variantName = item?.products_to_samples?.variant_name;
+        // const in_vars = variantName ? variant_map[variantName] : undefined;
+        // if (!variantName || in_vars === undefined) {
+        sample.push({
+          id: item.product.id,
+          name: item.product.name,
+          price: parseFloat(item.product.price),
+          quantity: item.products_to_samples.quantity,
+          qgroth_factor: item.products_to_samples.qgrowth_factor,
+          variants: [],
+        });
+        // }
 
-        if (variantName) {
-          if (in_vars === undefined) {
-            variant_map[variantName] = item.product.id;
-            continue;
-          }
-          for (const defVar of sample) {
-            if (defVar.id === variant_map[variantName]) {
-              if (!defVar.variant_name) {
-                defVar.variant_name = variantName;
-              }
-              defVar.variants?.push({
-                id: item.product.id,
-                name: item.product.name,
-                price: parseFloat(item.product.price),
-                qgroth_factor: item.products_to_samples.qgrowth_factor,
-                quantity: item.products_to_samples.quantity,
-              });
-              break;
-            }
-          }
-          continue;
-        }
+        // if (variantName) {
+        //   if (in_vars === undefined) {
+        //     variant_map[variantName] = item.product.id;
+        //     continue;
+        //   }
+        //   for (const defVar of sample) {
+        //     if (defVar.id === variant_map[variantName]) {
+        //       if (!defVar.variant_name) {
+        //         defVar.variant_name = variantName;
+        //       }
+        //       defVar.variants?.push({
+        //         id: item.product.id,
+        //         name: item.product.name,
+        //         price: parseFloat(item.product.price),
+        //         qgroth_factor: item.products_to_samples.qgrowth_factor,
+        //         quantity: item.products_to_samples.quantity,
+        //       });
+        //       break;
+        //     }
+        //   }
+        // }
       }
       const nextPersonRange = await db
         .select()

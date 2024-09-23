@@ -20,6 +20,51 @@ import {
 } from "./orders";
 
 export const adminRouter = createTRPCRouter({
+  confirmInvoice: adminProcedure
+    .input(
+      z.object({
+        orderId: z.string().uuid(),
+      }),
+    )
+    .mutation(async ({ input: { orderId } }) => {
+      await db
+        .update(orders)
+        .set({ adminInvoice: true })
+        .where(eq(orders.id, orderId));
+    }),
+  getInvoiceHistory: adminProcedure
+    .input(
+      z.object({
+        page: z.number().min(1).optional().default(1),
+        limit: z.number().min(1).max(20).optional().default(20),
+      }),
+    )
+    .query(async ({ input: { page, limit } }) => {
+      const offset = (page - 1) * limit;
+      // const status: Status = "draft";
+      const filter = and(
+        eq(orders.status, "submitted"),
+        eq(orders.userInvoice, true),
+        eq(orders.adminInvoice, false),
+      );
+      const invoiceHistory = await db
+        .select()
+        .from(orders)
+        .limit(limit)
+        .offset(offset)
+        .innerJoin(
+          users,
+          and(eq(orders.userId, users.id), eq(users.role, "user")),
+        )
+        .where(filter);
+      const [totalItems] = await db
+        .select({ count: count() })
+        .from(orders)
+        .where(filter);
+      if (!totalItems) return { invoices: [], totalPages: 0 };
+      const totalPages = Math.ceil(totalItems.count / limit);
+      return { invoices: invoiceHistory, totalPages };
+    }),
   getOrderHistory: adminProcedure
     .input(
       z.object({

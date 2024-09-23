@@ -32,6 +32,8 @@ import { useCatering } from "@/hooks/useCatering";
 import { productState } from "menu";
 import { toast } from "sonner";
 import { Textarea } from "../ui/textarea";
+import { OrderMadeEmail } from "@/server/api/nodemailer";
+import { useSession } from "next-auth/react";
 
 const titleClass =
   "text-lg whitespace-nowrap font-bold text-accent-foreground max-sm:text-base";
@@ -43,6 +45,7 @@ export function OrderNowModal({
   closeModal: () => void;
 }) {
   const { currMenu } = useCatering();
+  const { data: session } = useSession();
   const { menu, totalSum } = useMenu();
   const { isPending: detailsPending, mutateAsync: createOrderDetails } =
     api.orderDetails.createOrderDetails.useMutation();
@@ -65,26 +68,44 @@ export function OrderNowModal({
   });
 
   const onSubmit = async (data: OrderFormType) => {
-    if (!data || !currMenu || menu[currMenu.name] == undefined) return;
+    if (
+      !data ||
+      !currMenu ||
+      menu[currMenu.name] == undefined ||
+      !session?.user?.name ||
+      !session.user.email
+    )
+      return;
     const order = await createOrder({
       invoiceRequested: data.invoiceRequested ?? false,
       menuName: currMenu.name,
       products: menu[currMenu.name] as productState[],
       status: data.invoiceRequested ? "submitted" : "completed",
       totalPrice: totalSum.toString(),
+      detailsString: (
+        Object.entries(data) as unknown as [
+          key: keyof typeof data,
+          value: string,
+        ][]
+      )
+        .map(([key, value]) => {
+          if (key == "time") {
+            const time = new Date(value.toString());
+            return `${key} - ${time.getHours()}:${time.getMinutes()}`;
+          } else if (key == "date") {
+            const date = new Date(value.toString());
+            return `${key} - ${new Intl.DateTimeFormat("en-GB").format(date)}`;
+          } else if (key != "invoiceRequested") {
+            return `${key} - ${value}`;
+          }
+        })
+        .join("<br>"),
     });
     await createOrderDetails({
       ...data,
       orderId: order.id,
     });
     toast.success("Order was successful");
-    // console.log({
-    //   data: {
-    //     ...data,
-    //     time: data.time.getHours() + ":" + data.time.getMinutes(),
-    //   },
-    // });
-    // closeModal();
   };
   return (
     <Modal

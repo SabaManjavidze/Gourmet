@@ -27,7 +27,6 @@ export function MenuCardModal({
   open: boolean;
   closeModal: () => void;
 }) {
-  const [orderNow, setOrderNow] = useState(false);
   const [addOpen, setAddOpen] = useState(false);
   const [changes, setChanges] = useState(false);
   const {
@@ -63,12 +62,13 @@ export function MenuCardModal({
         }
         closeModal();
       }}
-      className="max-h-[80%] w-[70%] overflow-auto px-24"
+      className="max-h-[80%] w-[90%] overflow-auto px-24"
     >
       <MenuProvider
         dbMenu={{ [order.name]: order.products }}
         setChanges={setChanges}
         changes={changes}
+        addable={addable}
       >
         {addable && addOpen ? (
           <AddProductModal
@@ -76,13 +76,6 @@ export function MenuCardModal({
             closeModal={() => setAddOpen(false)}
             menuSample={order.name}
           ></AddProductModal>
-        ) : null}
-
-        {addable ? (
-          <OrderNowModal
-            open={orderNow}
-            closeModal={() => setOrderNow(false)}
-          ></OrderNowModal>
         ) : null}
 
         <MenuTemplate

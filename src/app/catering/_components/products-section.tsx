@@ -22,31 +22,8 @@ import { cateringFormType, useCatering } from "@/hooks/useCatering";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CustomCateringFormModal } from "./custom-catering-form-modal";
 import { MenuPreviews } from "./product-section/menu-previews";
-
-// const MenuPreviews: MenuPreview[] = [
-//   {
-//     title: "Drinks",
-//     desc: LOREM,
-//     imgSide: "left",
-//   },
-//   {
-//     title: "Coffee Break",
-//     desc: LOREM,
-//     imgSide: "right",
-//   },
-//   {
-//     title: "Corporate Catering",
-//     desc: LOREM,
-//     imgSide: "left",
-//   },
-//   {
-//     title: "Party",
-//     desc: LOREM,
-//     imgSide: "right",
-//   },
-// ];
+import PartnersSlider from "@/app/_components/partners-slider";
 export function ProductsSection() {
-  const [orderOpen, setOrderOpen] = useState(false);
   const [customOpen, setCustomOpen] = useState(false);
   const { currMenu, setCurrMenu, formData, setFormData } = useCatering();
   const [selectedMenu, setSelectedMenu] = useState<undefined | string>();
@@ -93,17 +70,11 @@ export function ProductsSection() {
       </div>
     );
   }
-  const handleOrderNowClick = () => {
-    setOrderOpen(true);
-  };
   const closeModal = () => {
     setAddProdOpen(false);
   };
   const addProductsClick = () => {
     setAddProdOpen(true);
-  };
-  const closeOrderModal = () => {
-    setOrderOpen(false);
   };
   const closeSelectedMenu = () => {
     setSelectedMenu(undefined);
@@ -196,7 +167,6 @@ export function ProductsSection() {
               next: Number(dbMenu.nextPersonRange),
             }}
           >
-            <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
             {currMenu && addProdOpen ? (
               <AddProductModal
                 menuSample={currMenu.name}
@@ -229,7 +199,7 @@ export function ProductsSection() {
               <SumSection />
             </div>
             <div className={`sticky bottom-8 mt-8 flex w-full justify-center`}>
-              <BottomButtons orderClick={handleOrderNowClick} />
+              <BottomButtons />
             </div>
           </MenuProvider>
         </>

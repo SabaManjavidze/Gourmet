@@ -20,7 +20,13 @@ export function BottomButtons({
   orderText?: string;
   size?: "sm" | "lg" | "xl";
 }) {
-  const { handleSaveClick, handleOrderClick, changes, saveLoading } = useMenu();
+  const {
+    handleSaveClick,
+    handleOrderClick,
+    changes,
+    saveLoading,
+    setOrderOpen,
+  } = useMenu();
   const { status } = useSession();
   return (
     <div
@@ -51,8 +57,12 @@ export function BottomButtons({
             toast.error("You need to authenticate");
             return;
           }
+          const result = handleOrderClick();
+          if (!result) {
+            return;
+          }
           orderClick?.();
-          handleOrderClick();
+          setOrderOpen(true);
         }}
         size={size}
         className="border-accent max-md:w-40 max-md:py-0 max-md:text-base 

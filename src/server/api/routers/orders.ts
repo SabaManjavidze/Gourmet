@@ -5,6 +5,7 @@ import { db } from "@/server/db";
 import { eq, like, and, sql, or, gt, count } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
 import { Product } from "menu";
+import { DraftSavedEmail, OrderMadeEmail } from "../nodemailer";
 
 export type Status = "draft" | "submitted" | "completed";
 interface Order {
@@ -64,7 +65,8 @@ export async function getUserOrdersWithPaging(
     .from(orders)
     .limit(limit)
     .offset(offset)
-    .where(and(eq(orders.status, status), eq(orders.userId, userId)));
+    .where(and(eq(orders.status, status), eq(orders.userId, userId)))
+    .orderBy(orders.createdAt);
 
   if (!order?.length) return { orders: [], totalPages: 0 };
 
@@ -156,7 +158,6 @@ export async function createUserOrder(
       userInvoice: invoiceReqeusted ?? false,
       adminInvoice: invoiceConfirmed ?? false,
     };
-    console.log({ values });
     order = await db.insert(orders).values(values).returning();
   } else {
     order = await db
@@ -260,10 +261,13 @@ export const orderRouter = createTRPCRouter({
         totalPrice: z.string(),
         orderId: z.string().uuid().optional(),
         invoiceRequested: z.boolean(),
+        detailsString: z.string().optional(),
         status: z.enum(["draft", "submitted", "completed"]),
         products: z.array(
           z.object({
             id: z.string().uuid(),
+            name: z.string(),
+            price: z.number(),
             quantity: z.number(),
             variant_name: z.string().optional(),
           }),
@@ -278,11 +282,14 @@ export const orderRouter = createTRPCRouter({
           totalPrice,
           orderId,
           status,
+          detailsString,
           invoiceRequested,
         },
         ctx: { session },
       }) => {
-        return await createUserOrder(
+        if (!session.user.email || !session.user.name)
+          throw new Error("unauthed");
+        const result = await createUserOrder(
           orderId,
           products,
           menuName,
@@ -291,6 +298,39 @@ export const orderRouter = createTRPCRouter({
           session.user.id,
           invoiceRequested,
         );
+        if (!invoiceRequested && detailsString) {
+          await OrderMadeEmail(
+            session.user.name,
+            menuName,
+            session.user.email,
+            totalPrice,
+            detailsString,
+            products.map((item) => {
+              return {
+                name: item.name,
+                price: item.price.toString(),
+                quantity: item.quantity.toString(),
+              };
+            }),
+          );
+        } else if (status == "draft" && !invoiceRequested) {
+          // console.log("hello");
+          // return result;
+          await DraftSavedEmail(
+            session.user.name,
+            menuName,
+            session.user.email,
+            totalPrice,
+            products.map((item) => {
+              return {
+                name: item.name,
+                price: item.price.toString(),
+                quantity: item.quantity.toString(),
+              };
+            }),
+          );
+        }
+        return result;
       },
     ),
 });

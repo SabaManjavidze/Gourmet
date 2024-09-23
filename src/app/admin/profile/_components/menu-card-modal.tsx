@@ -19,15 +19,18 @@ export function MenuCardModal({
 }) {
   const [addOpen, setAddOpen] = useState(false);
   const [changes, setChanges] = useState(false);
-  const { selected } = useAdmin()
+  const { selected } = useAdmin();
   const {
     data: order,
     isLoading,
     error,
-  } = api.admin.getUserOrder.useQuery({
-    orderId,
-    userId: selected?.id ?? ""
-  }, { enabled: !!selected });
+  } = api.admin.getUserOrder.useQuery(
+    {
+      orderId,
+      userId: selected?.id ?? "",
+    },
+    { enabled: !!selected },
+  );
   if (error) throw error;
   if (isLoading || !order)
     return (
@@ -69,11 +72,6 @@ export function MenuCardModal({
             menuSample={order.name}
           ></AddProductModal>
         ) : null}
-
-        {/* <OrderNowModal */}
-        {/*   open={orderNow} */}
-        {/*   closeModal={() => setOrderNow(false)} */}
-        {/* ></OrderNowModal> */}
 
         <MenuTemplate
           addClick={() => setAddOpen(true)}

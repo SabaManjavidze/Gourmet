@@ -41,7 +41,7 @@ export function OrderList({
     }
   }, [data]);
   if (error) throw error;
-  if (isLoading || isFetching || !data)
+  if (isLoading || !data)
     return (
       <div className="flex min-h-[50vh] w-full items-center justify-center bg-background">
         <Loader2 size={50} color={"black"} />

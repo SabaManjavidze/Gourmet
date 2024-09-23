@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { useSession } from "next-auth/react";
 import React, { Suspense, useEffect, useState } from "react";
 import { Video } from "../_components/video";
+import PartnersSlider from "../_components/partners-slider";
 
 export default function AboutUsPage() {
   // const { data: session } = useSession();
@@ -33,7 +34,7 @@ export default function AboutUsPage() {
         >
           {/* hidden on mobile */}
           <div
-            className="bg-about-us-1 h-full w-full bg-cover bg-center bg-no-repeat
+            className="h-full w-full bg-about-us-1 bg-cover bg-center bg-no-repeat
           max-md:hidden"
           ></div>
           <div className="flex !flex-[2] flex-col items-center gap-y-3 max-md:!flex-1">
@@ -61,11 +62,11 @@ export default function AboutUsPage() {
           </div>
           <div className="flex h-full w-full">
             <div
-              className="bg-about-us-1 h-full w-full bg-cover bg-center bg-no-repeat
+              className="h-full w-full bg-about-us-1 bg-cover bg-center bg-no-repeat
           md:hidden"
             ></div>
             <div
-              className="bg-about-us-2 h-full w-full bg-cover bg-center bg-no-repeat
+              className="h-full w-full bg-about-us-2 bg-cover bg-center bg-no-repeat
             max-xs:hidden"
             ></div>
           </div>
@@ -91,9 +92,9 @@ export default function AboutUsPage() {
               </p>
             </div>
             <div className="max-sm:mt-5">
-              <Suspense fallback={<p>Loading video...</p>}>
-                <Video src="/videos/1.mp4" />
-              </Suspense>
+              {/* <Suspense fallback={<p>Loading video...</p>}> */}
+              <Video src="/videos/1.mp4" />
+              {/* </Suspense> */}
             </div>
             <div
               className="flex h-full justify-center *:ml-14 max-xl:flex-col 
@@ -191,6 +192,7 @@ export default function AboutUsPage() {
           </Button>
         </div>
       </section>
+      <PartnersSlider />
     </div>
   );
 }

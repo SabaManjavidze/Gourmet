@@ -36,6 +36,7 @@ const formSchema = z.object({
   eventDetails: z.string(),
   numberOfGuests: z.string(),
   dateOfEvent: z.date(),
+  priceRange: z.number(),
 });
 type formType = z.infer<typeof formSchema>;
 export function CustomCateringFormModal({
@@ -133,6 +134,49 @@ export function CustomCateringFormModal({
                     </li>
                   ))}
                 </ul>
+
+                <FormField
+                  control={form.control}
+                  name={"type"}
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col items-center space-y-8 py-8">
+                      <FormLabel className="text-lg">Menu Type</FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex items-center"
+                        >
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="cheap" />
+                            </FormControl>
+                            <FormLabel className="text-lg font-normal">
+                              Cheap
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="standard" />
+                            </FormControl>
+                            <FormLabel className="text-lg font-normal">
+                              Standard
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-3 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="expensive" />
+                            </FormControl>
+                            <FormLabel className="text-lg font-normal">
+                              Expensive
+                            </FormLabel>
+                          </FormItem>
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
 
                 <div className="flex w-full items-center justify-center">
                   <FormField

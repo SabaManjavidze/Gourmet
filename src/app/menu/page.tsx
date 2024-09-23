@@ -18,16 +18,6 @@ import { NumberOfGuests } from "./_components/number-of-guests";
 export default function MenuPage() {
   const { data, isLoading, error } = api.sampleMenu.getMainMenu.useQuery();
 
-  const [orderOpen, setOrderOpen] = useState(false);
-  const handleSaveClick = () => {
-    console.log("saved");
-  };
-  const handleOrderNowClick = () => {
-    setOrderOpen(true);
-  };
-  const closeOrderModal = () => {
-    setOrderOpen(false);
-  };
   if (error) throw error;
   if (isLoading || !data)
     return (
@@ -51,7 +41,6 @@ export default function MenuPage() {
       <div className="flex justify-center pb-20">
         <div className="w-3/4 max-md:w-[90%]">
           <MenuProvider dbMenu={data} changes={true}>
-            <OrderNowModal open={orderOpen} closeModal={closeOrderModal} />
             {Object.keys(data).map((item, idx) => (
               <MenuTemplate
                 key={uuid()}

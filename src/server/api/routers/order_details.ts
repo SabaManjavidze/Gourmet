@@ -39,7 +39,7 @@ export const orderDetailsRouter = createTRPCRouter({
         //   .where(eq(orders.id, orderId));
         await db.insert(orderDetails).values({
           id: v4(),
-          time: time.getHours() + ":" + time.getMinutes,
+          time: `${time.getHours()}:${time.getMinutes()}`,
           address,
           date: date.toISOString(),
           firstName,

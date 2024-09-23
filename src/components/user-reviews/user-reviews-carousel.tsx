@@ -1,5 +1,4 @@
 import { cn, limitTxt } from "@/lib/utils";
-import Marquee from "@/components/magicui/marquee";
 import { Star, StarOff } from "lucide-react";
 import { v4 as uuid } from "uuid";
 import { sampleMenus } from "menu";

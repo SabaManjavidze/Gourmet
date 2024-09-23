@@ -11,18 +11,20 @@ export function MenuNameModal({
   closeModal,
   menuName,
   setMenuName,
+  onSubmit,
 }: {
   open: boolean;
   closeModal: () => void;
   menuName: string;
   setMenuName: Dispatch<SetStateAction<string>>;
+  onSubmit: () => void;
 }) {
   const { handleSaveClick } = useMenu();
   return (
     <Modal
       isOpen={open}
       closeModal={closeModal}
-      title="What should the menu name"
+      title="Name Your Menu"
       className="h-[120px] w-[700px]"
     >
       <div
@@ -34,9 +36,10 @@ export function MenuNameModal({
           autoFocus
           onKeyDown={(e) => {
             if (e.key == "Enter" && menuName.length > 2) {
-              closeModal();
-              handleSaveClick();
-              setMenuName("");
+              // closeModal();
+              // handleSaveClick();
+              // setMenuName("");
+              onSubmit();
             }
           }}
           onChange={(e) => {

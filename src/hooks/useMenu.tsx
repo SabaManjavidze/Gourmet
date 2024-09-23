@@ -18,6 +18,7 @@ import { UserSearchModal } from "@/app/admin/_components/user-search-modal";
 import { MenuNameModal } from "@/app/_components/menu-name-modal";
 import { MIN_PERSON_CATER } from "@/lib/constants";
 import { toast } from "sonner";
+import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 
 type MenuContextProps = {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
@@ -27,12 +28,14 @@ type MenuContextProps = {
   hideZeroQt: boolean;
   personCount: number;
   setPersonCount: Dispatch<SetStateAction<number>>;
+  orderOpen: boolean;
+  setOrderOpen: Dispatch<SetStateAction<boolean>>;
   changes: boolean;
   setHideZeroQt: Dispatch<SetStateAction<boolean>>;
   clearQuantities: () => void;
   handleSaveClick: (orderId?: string) => Promise<boolean>;
   handleRemoveProduct: (productId: string) => void;
-  handleOrderClick: () => void;
+  handleOrderClick: () => boolean;
   saveLoading: boolean;
   addProduct: (menuSample: string, product: ProductWithVariants[]) => void;
   changeVariant: (
@@ -52,6 +55,8 @@ export const MenuContext = createContext<MenuContextProps>({
   totalSum: 0,
   personCount: 0,
   setMenu: () => null,
+  setOrderOpen: () => null,
+  orderOpen: false,
   setPersonCount: () => null,
   saveLoading: false,
   hideZeroQt: false,
@@ -59,7 +64,7 @@ export const MenuContext = createContext<MenuContextProps>({
   setHideZeroQt: () => false,
   clearQuantities: () => null,
   changeQuantity: () => null,
-  handleOrderClick: () => null,
+  handleOrderClick: () => false,
   handleRemoveProduct: () => null,
   handleSaveClick: async (orderId?: string) => false,
   changeVariant: () => null,
@@ -74,15 +79,18 @@ export const MenuProvider = ({
   setChanges,
   children,
   changes,
+  addable = true,
 }: {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
   userId?: string;
+  addable?: boolean;
   personRanges?: { def: number; next: number };
   setChanges?: Dispatch<SetStateAction<boolean>>;
   changes?: boolean;
   children: ReactNode;
 }) => {
   const [saveLoading, setSaveLoading] = useState(false);
+  const [orderOpen, setOrderOpen] = useState(false);
   const [adminUserId, setAdminUserId] = useState<string | undefined>(userId);
   const [personCount, setPersonCount] = useState(
     personRanges?.def ?? MIN_PERSON_CATER,
@@ -196,6 +204,8 @@ export const MenuProvider = ({
         if (removeProduct.includes(prod.id)) continue;
         prods.push({
           id: prod.active ?? prod.id,
+          name: prod.name,
+          price: prod.price,
           quantity: prod.quantity,
           variant_name: prod.variant_name,
         });
@@ -206,6 +216,8 @@ export const MenuProvider = ({
           if (removeProduct.includes(prod.id)) continue;
           prods.push({
             id: prod.active ?? prod.id,
+            name: prod.name,
+            price: prod.price,
             quantity: prod.quantity,
             variant_name: prod.variant_name,
           });
@@ -233,7 +245,7 @@ export const MenuProvider = ({
         await utils.order.getUserOrder.invalidate({ orderId });
       }
     } else if (session?.user?.role == "admin") {
-      if (!orderId && !adminUserId) {
+      if (!orderId && !adminUserId && !menuName) {
         setOpen(true);
         setSaveLoading(false);
         toast.error("Something went wrong.");
@@ -255,7 +267,7 @@ export const MenuProvider = ({
       await utils.client.admin.createUserOrder.mutate({
         userId: adminUserId,
         orderId,
-        menuName: mn,
+        menuName,
         totalPrice: totalSum.toString(),
         status: "draft",
         products: prods,
@@ -273,7 +285,12 @@ export const MenuProvider = ({
     return true;
   };
   const handleOrderClick = () => {
-    if (status !== "authenticated") return;
+    if (status !== "authenticated") return false;
+    if (!menuName) {
+      setMenuNameOpen(true);
+      return false;
+    }
+    return true;
     // console.log("order clicked");
   };
   const clearQuantities = () => {
@@ -319,6 +336,8 @@ export const MenuProvider = ({
         personCount,
         saveLoading,
         setPersonCount,
+        orderOpen,
+        setOrderOpen,
         setMenu,
         menu,
         dbMenu,
@@ -335,11 +354,22 @@ export const MenuProvider = ({
         setHideZeroQt,
       }}
     >
+      {addable && orderOpen ? (
+        <OrderNowModal
+          open={orderOpen}
+          closeModal={() => setOrderOpen(false)}
+        />
+      ) : null}
       <MenuNameModal
         open={menuNameOpen}
         closeModal={() => setMenuNameOpen(false)}
         menuName={menuName}
         setMenuName={setMenuName}
+        onSubmit={async () => {
+          await handleSaveClick();
+          setMenuNameOpen(false);
+          setMenuName("");
+        }}
       />
       {session?.user?.role == "admin" && open ? (
         <UserSearchModal

@@ -26,7 +26,6 @@ export function OrderHistoryTab() {
   const closeModal = () => {
     setOpen(null);
   };
-  const { switchTab } = useTabs();
 
   useEffect(() => {
     if (ordersData && Number(ordersData?.totalPages) + 1 < page) {

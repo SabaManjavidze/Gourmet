@@ -1,4 +1,4 @@
-// import { list } from "@vercel/blob";
+"use client";
 export function Video({
   width,
   height,
@@ -22,7 +22,7 @@ export function Video({
         autoPlay
         muted
         loop
-        preload="none"
+        // preload="auto"
       >
         <source src={src} type="video/mp4" />
         Your browser doesn't support video
