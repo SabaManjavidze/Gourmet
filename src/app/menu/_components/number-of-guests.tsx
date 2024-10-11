@@ -53,7 +53,8 @@ export function NumberOfGuests({
     );
     const newMenu: productState[] = [];
     for (const prod of m) {
-      if (!prod?.qgroth_factor) {
+      if (prod?.qgrowth_factor == undefined) {
+        console.log(prod.qgrowth_factor);
         newMenu.push(prod);
         continue;
       }
@@ -64,16 +65,16 @@ export function NumberOfGuests({
       const def = Math.floor(personRanges?.def / 10) * 10;
       const prev_c_diff = personCount - Number(def);
       const prev_q =
-        def_quantity + Math.round(prev_c_diff * Number(prod.qgroth_factor));
+        def_quantity + Math.round(prev_c_diff * Number(prod.qgrowth_factor));
       const c_diff = count - Number(def);
       let new_q =
-        def_quantity + Math.round(c_diff * Number(prod.qgroth_factor));
+        def_quantity + Math.round(c_diff * Number(prod.qgrowth_factor));
       if (prod.quantity !== prev_q) {
         new_q =
           def_quantity +
           prod.quantity -
           prev_q +
-          Math.round(c_diff * Number(prod.qgroth_factor));
+          Math.round(c_diff * Number(prod.qgrowth_factor));
       }
       newMenu.push({
         ...prod,

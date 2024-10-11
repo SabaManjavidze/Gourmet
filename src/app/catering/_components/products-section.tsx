@@ -1,40 +1,28 @@
-import { ClearButton } from "@/app/menu/_components/clear-button";
-import { HideZeroCheckbox } from "@/app/menu/_components/hidezero-checkbox";
-import { MenuTemplate } from "@/app/menu/_components/menu-template";
-import { SumSection } from "@/app/menu/_components/sum-section";
-import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
-import { MenuProvider } from "@/hooks/useMenu";
 import { api } from "@/trpc/react";
 import { Loader2, PlusCircle } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Suspense, useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
-import { AddProductModal } from "./add-product-modal";
-import { BottomButtons } from "./bottom-buttons";
-import { NumberOfGuests } from "@/app/menu/_components/number-of-guests";
-import Image from "next/image";
-import { MenuPreview, MenuPreviewSection } from "./menu-preview-section";
-import { LOREM } from "@/lib/constants";
-import { MenuVariants } from "@/lib/types";
 import { CateringFormModal } from "./catering-form-modal";
-import { ProductWithVariants } from "menu";
 import { cateringFormType, useCatering } from "@/hooks/useCatering";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { CustomCateringFormModal } from "./custom-catering-form-modal";
 import { MenuPreviews } from "./product-section/menu-previews";
-import PartnersSlider from "@/app/_components/partners-slider";
+import { MenuTable } from "./menu-table";
+import { CustomCatering } from "@/app/_components/custom-catering";
 export function ProductsSection() {
   const [customOpen, setCustomOpen] = useState(false);
   const { currMenu, setCurrMenu, formData, setFormData } = useCatering();
   const [selectedMenu, setSelectedMenu] = useState<undefined | string>();
-  const [addProdOpen, setAddProdOpen] = useState(false);
   const router = useRouter();
   const pathname = usePathname();
-
+  const utils = api.useUtils();
   const searchParams = useSearchParams();
-  const menuIdArg = searchParams.get("menuId");
-  const menuNameArg = searchParams.get("menuName");
-  const menuTypeArg = searchParams.get("type");
+  const menuIdArg = useMemo(() => searchParams.get("menuId"), [searchParams]);
+  const menuNameArg = useMemo(
+    () => searchParams.get("menuName"),
+    [searchParams],
+  );
+  const menuTypeArg = useMemo(() => searchParams.get("type"), [searchParams]);
   if (
     menuTypeArg !== null &&
     menuTypeArg != "cheap" &&
@@ -44,38 +32,19 @@ export function ProductsSection() {
     throw new Error("invalid url");
   const personRangeArg = searchParams.get("personRange");
   const {
-    data: dbMenu,
-    isLoading,
-    isFetching,
-    refetch: getMenuProducts,
+    data: sampleMenus,
     error,
-  } = api.sampleMenu.getMenuProducts.useQuery(
-    {
-      menuId: currMenu?.id as string,
-      menuType: formData?.menuType as MenuVariants,
-      personRange: formData?.personRange as number,
-    },
-    {
-      enabled: !!currMenu?.id && !!formData?.menuType,
-    },
-  );
-  const { data: sampleMenus, isLoading: menusLoading } =
-    api.sampleMenu.getMenus.useQuery();
+    isLoading: menusLoading,
+  } = api.sampleMenu.getMenus.useQuery();
 
   if (error) throw error;
-  if (isFetching || isLoading || menusLoading) {
+  if (menusLoading) {
     return (
       <div className="flex min-h-screen w-full items-center justify-center bg-background">
         <Loader2 size={50} color={"black"} />
       </div>
     );
   }
-  const closeModal = () => {
-    setAddProdOpen(false);
-  };
-  const addProductsClick = () => {
-    setAddProdOpen(true);
-  };
   const closeSelectedMenu = () => {
     setSelectedMenu(undefined);
     setCurrMenu(undefined);
@@ -89,12 +58,18 @@ export function ProductsSection() {
     const m = sampleMenus.find((item) => item.id == selectedMenu);
     if (!m) return;
     setCurrMenu({ id: m.id, name: m.name });
+    // await utils.sampleMenu.getMenuProducts.fetch({
+    //   menuId: m.id,
+    //   menuName: m.name,
+    //   menuType: data.menuType,
+    //   personRange: data.personRange,
+    // });
     router.push(
       pathname +
         `?menuId=${m.id}&menuName=${m.name}&personRange=${data.personRange}&type=${data.menuType}`,
       { scroll: true },
     );
-    await getMenuProducts();
+    // await getMenuProducts();
   };
 
   return (
@@ -114,15 +89,12 @@ export function ProductsSection() {
       !menuIdArg ||
       !menuNameArg ||
       !formData ||
-      !dbMenu ||
       !currMenu ? (
         <>
           <MenuPreviews orderClick={orderClick} />
-          <section
-            className="relative flex h-[470px] w-full bg-dishes-banner
-      bg-cover bg-center bg-no-repeat py-12 max-lg:mt-12"
-          >
-            <div className="absolute inset-12 bg-black opacity-20 max-sm:inset-3"></div>
+          <section className="relative flex w-full max-lg:mt-12">
+            <CustomCatering />
+            {/* <div className="absolute inset-12 bg-black opacity-20 max-sm:inset-3"></div>
             <div
               className="z-10 flex h-full w-full flex-col items-center 
         justify-center px-40 max-lg:px-20 max-sm:px-5"
@@ -153,56 +125,13 @@ export function ProductsSection() {
                 variant={"accent"}
               >
                 order now
-              </Button>
+              </Button> 
             </div>
+*/}
           </section>
         </>
       ) : (
-        <>
-          <MenuProvider
-            dbMenu={dbMenu?.data ?? {}}
-            changes={true}
-            personRanges={{
-              def: formData.personRange,
-              next: Number(dbMenu.nextPersonRange),
-            }}
-          >
-            {currMenu && addProdOpen ? (
-              <AddProductModal
-                menuSample={currMenu.name}
-                open={addProdOpen}
-                closeModal={closeModal}
-              />
-            ) : null}
-            <MenuTemplate
-              // products={dbMenu[currMenu] ?? []}
-              addClick={addProductsClick}
-              name={Object.keys(dbMenu.data)[0] ?? currMenu?.name ?? ""}
-              id="menu"
-              header={
-                <div className="mt-8">
-                  <NumberOfGuests
-                    personRanges={{
-                      def: formData.personRange,
-                      next: Number(dbMenu.nextPersonRange),
-                    }}
-                  />
-
-                  <div className="mt-8 flex items-center justify-between px-3">
-                    <HideZeroCheckbox iconSide="left" />
-                    <ClearButton />
-                  </div>
-                </div>
-              }
-            />
-            <div className="mt-8">
-              <SumSection />
-            </div>
-            <div className={`sticky bottom-8 mt-8 flex w-full justify-center`}>
-              <BottomButtons />
-            </div>
-          </MenuProvider>
-        </>
+        <MenuTable menuNameArg={menuNameArg} menuTypeArg={menuTypeArg} />
       )}
     </>
   );

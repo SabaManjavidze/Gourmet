@@ -212,5 +212,5 @@ export interface Product {
   name: string;
   price: number;
   quantity?: number;
-  qgroth_factor?: string;
+  qgrowth_factor?: string;
 }

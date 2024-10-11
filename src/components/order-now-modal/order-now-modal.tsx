@@ -301,7 +301,7 @@ export function OrderNowModal({
             <h2 className="text-lg font-bold">Total Price</h2>
             <div className="flex items-center gap-x-4">
               <h3 className="text-lg font-bold text-muted-foreground">
-                ${totalSum}
+                ₾{totalSum}
               </h3>
               <FormField
                 control={form.control}

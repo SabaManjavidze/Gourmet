@@ -11,7 +11,7 @@ export function SumSection() {
     max-xs:text-xs"
     >
       <h3>Sum</h3>
-      <h3>${totalSum}</h3>
+      <h3>₾{totalSum}</h3>
     </div>
   );
 }

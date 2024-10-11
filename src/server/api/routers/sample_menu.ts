@@ -17,7 +17,7 @@ import {
   variants,
 } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { and, eq, gt, like, ne } from "drizzle-orm";
+import { and, eq, gt, like, ne, sql } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
 import { ProductWithVariants } from "menu";
 export const menuTypeEnum = z.enum(["cheap", "standard", "expensive"]);
@@ -33,89 +33,120 @@ export const sampleMenuRouter = createTRPCRouter({
     .input(
       z.object({
         menuId: z.string().uuid(),
+        menuName: z.string(),
         menuType: menuTypeEnum,
         personRange: z.number(),
       }),
     )
-    .query(async ({ input }) => {
-      // get menu from sample_menus
-      const new_pr = Math.floor(input.personRange / 10) * 10;
+    .query(async ({ input: { menuId, menuType, personRange, menuName } }) => {
+      const productsWithVariants = await db.execute(
+        sql<{ data: ProductWithVariants }>`
+ select
+  p.id,
+  p.name,
+  p.price,
+  pts.quantity,
+  pts.qgrowth_factor,
+  coalesce(
+    array_agg(
+      jsonb_build_object(
+        'id',
+        pv.id,
+        'name',
+        pv.name,
+        'price',
+        pv.price,
+        'qgrowth_factor',
+        pts.qgrowth_factor,
+        'quantity',
+        pts.quantity
+      )
+      order by
+        pv.id
+    ) filter (
+      where
+        pv.id is not null
+    ),
+    '{}'
+  ) as "variants"
+from
+  menu_samples as ms
+  left join menu_sample_variants as m on ms.id = m.menu_id
+  and m.type = ${menuType}
+  and m.person_range = ${personRange}
+  left join products_to_samples as pts on pts.menu_id = m.id
+  left join product as p on p.id = pts.product_id
+  left join lateral (
+    select
+      pv.id,
+      pv.name,
+      pv.price
+    from
+      product pv
+      join products_to_variants ptv on pv.id = ptv.product_id
+    where
+      ptv.variant_id = (
+        select
+          ptv2.variant_id from
+          products_to_variants as ptv2
+        where
+          ptv2.product_id = p.id
+        limit
+          1 -- Ensure only one row is returned
+      )
+      and pv.id != p.id -- Exclude the current product
+      AND pv.id NOT IN (
+        SELECT
+          pts2.product_id
+        FROM
+          products_to_samples AS pts2
+        WHERE
+          pts2.menu_id = m.id
+          -- Ensure we are filtering based on the same menu_id
+      )
+  ) pv on true -- Join using LATERAL subquery
+
+where
+  ms.id = ${menuId}
+    -- Filter out products that are themselves variants in this menu
+group by
+  p.id,
+  p.name,
+  p.price,
+  pts.qgrowth_factor,
+  pts.quantity; 
+  `,
+      );
+      console.log({ data: productsWithVariants });
+      const new_pr = Math.floor(personRange / 10) * 10;
       const menu = await db
         .select()
         .from(menuSampleVariants)
         .innerJoin(menuSamples, eq(menuSamples.id, menuSampleVariants.menu_id))
         .where(
           and(
-            eq(menuSampleVariants.menu_id, input.menuId),
+            eq(menuSampleVariants.menu_id, menuId),
             eq(menuSampleVariants.person_range, new_pr),
-            eq(menuSampleVariants.type, input.menuType),
+            eq(menuSampleVariants.type, menuType),
           ),
         );
       if (!menu[0]) throw new Error("Menu not found");
 
-      const pts = await db
-        .select()
-        .from(productsToSamples)
-        .innerJoin(products, eq(products.id, productsToSamples.productId))
-        .where(eq(productsToSamples.menuId, menu[0].menu_sample_variants.id));
-
-      const variant_map = {} as Record<string, string>;
-
-      const categoryName = menu[0]?.menu_samples.name;
-      if (!categoryName) throw new Error("Category not found");
-      const formatedData: Record<string, ProductWithVariants[]> = {
-        [categoryName]: [],
-      };
-      const sample = formatedData[categoryName] as ProductWithVariants[];
-      for (const item of pts) {
-        // const variantName = item?.products_to_samples?.variant_name;
-        // const in_vars = variantName ? variant_map[variantName] : undefined;
-        // if (!variantName || in_vars === undefined) {
-        sample.push({
-          id: item.product.id,
-          name: item.product.name,
-          price: parseFloat(item.product.price),
-          quantity: item.products_to_samples.quantity,
-          qgroth_factor: item.products_to_samples.qgrowth_factor,
-          variants: [],
-        });
-        // }
-
-        // if (variantName) {
-        //   if (in_vars === undefined) {
-        //     variant_map[variantName] = item.product.id;
-        //     continue;
-        //   }
-        //   for (const defVar of sample) {
-        //     if (defVar.id === variant_map[variantName]) {
-        //       if (!defVar.variant_name) {
-        //         defVar.variant_name = variantName;
-        //       }
-        //       defVar.variants?.push({
-        //         id: item.product.id,
-        //         name: item.product.name,
-        //         price: parseFloat(item.product.price),
-        //         qgroth_factor: item.products_to_samples.qgrowth_factor,
-        //         quantity: item.products_to_samples.quantity,
-        //       });
-        //       break;
-        //     }
-        //   }
-        // }
-      }
       const nextPersonRange = await db
         .select()
         .from(menuSampleVariants)
         .where(
           and(
-            eq(menuSampleVariants.menu_id, input.menuId),
-            eq(menuSampleVariants.type, input.menuType),
-            gt(menuSampleVariants.person_range, input.personRange),
+            eq(menuSampleVariants.menu_id, menuId),
+            eq(menuSampleVariants.type, menuType),
+            gt(menuSampleVariants.person_range, personRange),
           ),
         )
         .limit(1);
       return {
-        data: formatedData,
+        data: {
+          [menuName]: productsWithVariants as unknown as ProductWithVariants[],
+        },
         nextPersonRange: nextPersonRange?.[0]?.person_range ?? undefined,
       };
     }),

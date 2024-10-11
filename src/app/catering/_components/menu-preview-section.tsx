@@ -31,6 +31,7 @@ export function MenuPreviewSection({
           ></div>
           <Image
             src={data.picture}
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
             alt="pic"
             fill
             className="yellow-gradient border-8 object-cover shadow-2xl"
@@ -69,6 +70,7 @@ export function MenuPreviewSection({
               <Image
                 src={`/imgs/menu-previews/${data.title}/${data.title.toLowerCase()}${idx + 1}.png`}
                 fill
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 className="object-cover"
                 alt=""
               />

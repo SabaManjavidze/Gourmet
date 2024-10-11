@@ -1,11 +1,7 @@
 "use client";
 import { Menu, menuKey, productsState } from "menu";
 import { MenuProduct } from "./menu-product";
-
 import { useMenu } from "@/hooks/useMenu";
-import { v4 as uuid } from "uuid";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
 import { ReactNode } from "react";
 import { twMerge } from "tailwind-merge";
 import { RouterOutputs } from "@/trpc/react";

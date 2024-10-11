@@ -22,13 +22,16 @@ export default async function Home() {
           Where Culinary Excellence Meets Unparalleled Hospitality
         </h2>
       </section>
-      <section className="flex flex-col items-center bg-rectangle bg-cover bg-center bg-no-repeat">
+      <section className="flex flex-col items-center bg-cover bg-center bg-no-repeat">
         <h2 className="text-4xl font-bold uppercase">Catering</h2>
 
         <p className="mt-2 text-secondary-foreground max-sm:px-6 max-sm:text-center">
           indulge in a symphony of flavors, where every dish is a masterpiece
         </p>
-        <div className="flex w-full justify-center max-lg:px-20 max-sm:px-16">
+        <div
+          className="bg-ornament flex w-full justify-center bg-cover bg-top 
+        max-lg:px-20 max-sm:px-16"
+        >
           <CateringCarousel />
         </div>
       </section>

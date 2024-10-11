@@ -23,7 +23,10 @@ export const limitTxt = (str: string, limit: number) => {
   return news;
 };
 export const MenuToState = (
-  menu: Record<string, (ProductWithVariants & { quantity?: number })[]>,
+  menu: Record<
+    string,
+    (ProductWithVariants & { quantity?: number | string })[]
+  >,
   person_range?: number,
 ) => {
   const state: MenuState = {};
@@ -32,16 +35,16 @@ export const MenuToState = (
     state[key] =
       menu[key]?.map((prod, idx) => {
         let next_q;
-        const quantity = prod.quantity ?? 0;
+        const quantity = Number(prod.quantity) ?? 0;
         if (person_range) {
           const c_diff = person_range % 10;
-          next_q = quantity + Math.round(c_diff * Number(prod.qgroth_factor));
+          next_q = quantity + Math.round(c_diff * Number(prod.qgrowth_factor));
         }
         return {
           ...prod,
           active: prod.id,
           totalPrice: prod.price * quantity,
-          quantity: person_range !== undefined ? (next_q as number) : quantity,
+          quantity: person_range !== undefined && next_q ? next_q : quantity,
         };
       }) ?? [];
   });
