@@ -90,13 +90,13 @@ export function NumberOfGuests({
     const count_next = Math.ceil(count / 10) * 10;
     // console.log({ count, count_def, def: personRanges.def });
     if (count >= personRanges.next) {
-      setFormData({ ...formData, personRange: personRanges.next });
+      setFormData({ ...formData, personRange: personRanges.next.toString() });
     } else if (
       personRanges.def > count_def &&
       personRanges.next !== count_next
     ) {
       // console.log("hello");
-      setFormData({ ...formData, personRange: count });
+      setFormData({ ...formData, personRange: count.toString() });
     }
   };
 

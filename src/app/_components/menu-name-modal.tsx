@@ -17,7 +17,7 @@ export function MenuNameModal({
   closeModal: () => void;
   menuName: string;
   setMenuName: Dispatch<SetStateAction<string>>;
-  onSubmit: () => void;
+  onSubmit?: () => void;
 }) {
   const { handleSaveClick } = useMenu();
   return (
@@ -36,10 +36,10 @@ export function MenuNameModal({
           autoFocus
           onKeyDown={(e) => {
             if (e.key == "Enter" && menuName.length > 2) {
-              // closeModal();
+              closeModal();
               // handleSaveClick();
               // setMenuName("");
-              onSubmit();
+              onSubmit?.();
             }
           }}
           onChange={(e) => {

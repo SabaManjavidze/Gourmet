@@ -39,17 +39,17 @@ export function MenuPreviewSection({
         </div>
         <div className="flex w-full flex-col items-start justify-start max-md:mt-12">
           <h3 className="text-xl font-bold">{data.title}</h3>
-          <p className="text-base leading-7 text-muted-foreground">
+          <p className="mt-5 text-base leading-7 text-muted-foreground">
             {data.desc}
           </p>
           <Button
-            disabled={data.title != "Coffee Break"}
+            disabled={data.title != "ყავის შესვენება"}
             onClick={() => onOrderClick(data.id, data.title)}
             className="mt-8 px-4 uppercase max-lg:hidden max-md:mt-3"
             size={"lg"}
             variant={"accent"}
           >
-            order now
+            შეუკვეთე
           </Button>
         </div>
       </div>
@@ -80,12 +80,12 @@ export function MenuPreviewSection({
       <div>
         <Button
           onClick={() => onOrderClick(data.id, data.title)}
-          disabled={data.title != "Coffee Break"}
+          disabled={data.title != "ყავის შესვენება"}
           className="mt-8 px-4 uppercase max-lg:mt-0 max-md:mt-3 lg:hidden"
           size={"lg"}
           variant={"accent"}
         >
-          order now
+          შეუკვეთე
         </Button>
       </div>
     </div>

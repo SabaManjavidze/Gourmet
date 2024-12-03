@@ -57,7 +57,7 @@ export default function AboutUsPage() {
               size={"lg"}
               variant={"accent"}
             >
-              order now
+              შეუკვეთე
             </Button>
           </div>
           <div className="flex h-full w-full">
@@ -147,7 +147,7 @@ export default function AboutUsPage() {
             size={"lg"}
             variant={"accent"}
           >
-            order now
+            შეუკვეთე
           </Button>
         </div>
         <div
@@ -188,7 +188,7 @@ export default function AboutUsPage() {
             className="mt-8 border border-white text-lg uppercase"
             variant={"accent"}
           >
-            order now
+            შეუკვეთე
           </Button>
         </div>
       </section>

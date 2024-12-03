@@ -10,11 +10,11 @@ export function CustomCatering() {
     >
       <div className="">
         <Button
-          className="z-20 whitespace-pre-wrap rounded-2xl bg-accent/70 py-10 text-7xl
-        font-semibold leading-none text-accent-light hover:bg-accent/80 active:bg-accent
-        max-sm:text-6xl"
+          className="z-20 whitespace-pre-wrap rounded-2xl bg-accent/70 py-10 text-6xl
+        font-semibold leading-none text-accent-light hover:bg-accent/80
+        active:bg-accent max-sm:text-5xl"
         >
-          Create Your Own
+          შექმენი შენით
         </Button>
       </div>
 

@@ -111,6 +111,10 @@
     background: #555;
   }
   @font-face {
+    font-family: gugeshashvili;
+    src: url("../../public/fonts/gugeshashvili2.ttf");
+  }
+  @font-face {
     font-family: Georgia;
     src: url("../../public/fonts/georgia.ttf");
   }

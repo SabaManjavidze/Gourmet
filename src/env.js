@@ -10,6 +10,9 @@ export const env = createEnv({
     PUBLIC_EMAIL: z.string().email(),
     EMAIL_PASSWORD: z.string(),
     DATABASE_URL: z.string().url(),
+    TBC_CLIENT_ID: z.string(),
+    TBC_CLIENT_SECRET: z.string(),
+    TBC_API_KEY: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -48,6 +51,9 @@ export const env = createEnv({
     NODE_ENV: process.env.NODE_ENV,
     NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET,
     NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+    TBC_CLIENT_ID: process.env.TBC_CLIENT_ID,
+    TBC_CLIENT_SECRET: process.env.TBC_CLIENT_SECRET,
+    TBC_API_KEY: process.env.TBC_API_KEY,
     // DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     // DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   },

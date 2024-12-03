@@ -5,6 +5,7 @@ export const InputSchema = {
   "Primary Contact Information": [
     { title: "Name" },
     { title: "Phone Number", type: "number", name: "phone" },
+    { title: "Email", type: "email", name: "email" },
   ],
   "Secondary Contact Information (Optional)": [
     { title: "Name" },
@@ -36,6 +37,7 @@ export type InputSchema = {
 export const orderNowSchema = z.object({
   firstname: z.string().min(2),
   lastname: z.string(),
+  email: z.string().email().optional(),
   invoiceRequested: z.boolean().optional().default(false),
   phone: z.string().min(9),
   firstname2: z.string().optional(),

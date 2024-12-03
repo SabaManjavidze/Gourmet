@@ -1,5 +1,9 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { orderDetails, orders } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { orderNowSchema } from "@/components/order-now-modal/utils";
@@ -7,7 +11,7 @@ import { v4 } from "uuid";
 import { eq } from "drizzle-orm";
 
 export const orderDetailsRouter = createTRPCRouter({
-  createOrderDetails: protectedProcedure
+  createOrderDetails: publicProcedure
     .input(
       orderNowSchema
         .omit({ invoiceRequested: true })

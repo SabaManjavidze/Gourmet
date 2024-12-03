@@ -19,7 +19,7 @@ export function MenuPreviews({
         <div className="w-full" key={idx}>
           <MenuPreviewSection
             data={{
-              desc: LOREM,
+              desc: item.desc ?? "hello",
               id: item.id,
               picture: item.picture ?? "",
               title: item.name,

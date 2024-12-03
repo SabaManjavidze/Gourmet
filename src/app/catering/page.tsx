@@ -18,14 +18,14 @@ export default function Catering() {
         text-6xl text-primary-foreground max-md:text-5xl max-sm:text-3xl
         "
         >
-          Create Your Perfect Menu
+          აირჩიე, მოირგე, შეუკვეთე
         </h1>
-        <p
+        {/* <p
           className="text-shadow-sm z-10 mt-2 text-center text-xl font-normal 
         text-gray-50 max-sm:text-base max-xs:px-12"
         >
           Select, Customize, and Order Delicious Catering for Any Occasion
-        </p>
+        </p> */}
       </div>
       <CateringProvider>
         <div className="mt-16 flex w-full justify-center">
@@ -35,7 +35,7 @@ export default function Catering() {
           <div className="w-3/4 rounded-xl pb-20 max-xl:w-5/6">
             <ProductsSection />
           </div>
-          <div className="mt-12 w-full overflow-hidden">
+          <div className="mt-0 w-full overflow-hidden">
             <PartnersSlider />
           </div>
         </div>

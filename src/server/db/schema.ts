@@ -143,12 +143,17 @@ export const menuSamples = createTable("menu_samples", {
   id: idtype("id").primaryKey().notNull(),
   name: varchar("name", { length: 50 }).unique().notNull(),
   picture: varchar("picture", { length: 255 }),
+  desc: text("desc"),
 });
 export const menuSamplesRelations = relations(menuSamples, ({ many }) => ({
   variants: many(menuSampleVariants),
 }));
-export const statusEnum = pgEnum("status", ["draft", "submitted", "completed"]);
-
+export const statusEnum = pgEnum("status", [
+  "draft",
+  "loading",
+  "submitted",
+  "completed",
+]);
 export const orderDetails = createTable(
   "order_details",
   {
@@ -189,10 +194,11 @@ export const orders = createTable(
     userInvoice: boolean("user_invoice").notNull().default(false),
     adminInvoice: boolean("admin_invoice").notNull().default(false),
     status: statusEnum("status").notNull(),
+    payId: text("payId"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
-    userId: idtype("userId")
-      .references(() => users.id, { onDelete: "cascade" })
-      .notNull(),
+    userId: idtype("userId").references(() => users.id, {
+      onDelete: "cascade",
+    }),
   },
   (order) => ({
     userIdIdx: index("order_userId_idx").on(order.userId),
@@ -222,7 +228,7 @@ export const productstoOrders = createTable(
     }),
   }),
 );
-export const roleEnum = pgEnum("role", ["user", "admin"]);
+export const roleEnum = pgEnum("role", ["user", "admin", "token"]);
 export const users = createTable("user", {
   id: idtype("id").notNull().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
@@ -231,7 +237,8 @@ export const users = createTable("user", {
   emailVerified: timestamp("emailVerified", {
     mode: "date",
   }).default(sql`CURRENT_TIMESTAMP`),
-  image: varchar("image", { length: 255 }).notNull(),
+  image: text("image").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
 export const usersRelations = relations(users, ({ many }) => ({
@@ -290,14 +297,8 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
   user: one(users, { fields: [sessions.userId], references: [users.id] }),
 }));
 
-export const verificationTokens = createTable(
-  "verificationToken",
-  {
-    identifier: varchar("identifier", { length: 255 }).notNull(),
-    token: varchar("token", { length: 255 }).notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
-  },
-  (vt) => ({
-    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  }),
-);
+export const verificationTokens = createTable("verificationToken", {
+  identifier: varchar("identifier", { length: 255 }).notNull().primaryKey(),
+  token: text("token").notNull(),
+  expires: timestamp("expires", { mode: "date" }).notNull(),
+});

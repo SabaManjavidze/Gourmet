@@ -16,20 +16,20 @@ export default async function Home() {
          blur-3xl max-lg:w-[600px] max-md:w-[400px] max-xs:w-[300px]"
         ></div>
         <h1 className="z-10 font-lucida-bold text-7xl italic text-white max-md:text-5xl max-sm:text-3xl">
-          Welcome to Gourmet
+          გურმე - სივრცე გემრიელი
         </h1>
-        <h2 className="text-shadow z-10 text-2xl italic text-gray-200 max-md:text-xl max-sm:w-4/5 max-sm:text-base">
+        {/* <h2 className="text-shadow z-10 text-2xl italic text-gray-200 max-md:text-xl max-sm:w-4/5 max-sm:text-base">
           Where Culinary Excellence Meets Unparalleled Hospitality
-        </h2>
+        </h2> */}
       </section>
       <section className="flex flex-col items-center bg-cover bg-center bg-no-repeat">
-        <h2 className="text-4xl font-bold uppercase">Catering</h2>
+        <h2 className="text-4xl font-bold uppercase">ფურშეტი</h2>
 
-        <p className="mt-2 text-secondary-foreground max-sm:px-6 max-sm:text-center">
+        {/* <p className="mt-2 text-secondary-foreground max-sm:px-6 max-sm:text-center">
           indulge in a symphony of flavors, where every dish is a masterpiece
-        </p>
+        </p> */}
         <div
-          className="bg-ornament flex w-full justify-center bg-cover bg-top 
+          className="flex w-full justify-center bg-rectangle bg-cover bg-center bg-no-repeat 
         max-lg:px-20 max-sm:px-16"
         >
           <CateringCarousel />
@@ -37,10 +37,19 @@ export default async function Home() {
       </section>
       <section className="flex flex-col items-center justify-center">
         <h2 className="text-4xl font-bold uppercase max-md:text-xl max-sm:w-4/5 max-sm:text-base">
-          about us
+          ჩვენს შესახებ
+          {/* about us */}
         </h2>
         <p className="mt-5 w-[70%] text-center text-lg leading-8 text-muted-foreground ">
-          Welcome to Gourmet, where culinary excellence meets unparalleled
+          “გურმე” საქართველოს ბაზარზე 2012 წლიდან ოპერირებს და მომხმარებელს
+          სრულყოფილ სერვისს სთავაზობს. დაარსების დღიდან, კომპანიას აქვს უცვლელი
+          კონცეფცია - უმაღლესი ხარისხის ნედლეული, გემრიელი პროდუქტი და მისაღები
+          ფასი. სწორედ ამიტომ, “გურმეს” ჰყავს უამრავი ერთგული მომხმარებელი.
+          აუდიტის შედეგად, „გურმემ“ ISO 22000:2018 საერთაშორისო სერტიფიკატი
+          აიღო. აღნიშნული სერტიფიკატი მომხმარებლისთვის გარანტიაა, რომ კომპანიაში
+          წარმოებული პროდუქცია და მომსახურება არის მაღალი ხარისხის და
+          ჯანმრთელობისთვის უსაფრთხო.
+          {/* Welcome to Gourmet, where culinary excellence meets unparalleled
           hospitality. Nestled in the heart of Georgia, our restaurant offers a
           feast for the senses, blending innovative flavors with timeless
           classics. Step into a world of gastronomic delight, where every dish
@@ -48,10 +57,10 @@ export default async function Home() {
           you're seeking an intimate dining experience or celebrating a special
           occasion with loved ones, our team is dedicated to creating
           unforgettable moments. Come join us and savor the essence of fine
-          dining redefined.
+          dining redefined. */}
         </p>
         <Button className="mt-8 uppercase" variant={"accent"}>
-          Read More
+          სრულად ნახვა
         </Button>
       </section>
 
@@ -59,20 +68,19 @@ export default async function Home() {
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="z-10 flex h-full w-full flex-col items-center justify-center">
           <h2 className="text-shadow text-4xl font-semibold text-white">
-            CONTACT US
+            ჩვენი საკონტაქტო და სოც-მედიები
           </h2>
-
-          <p className="text-shadow mt-1 text-lg text-white">
-            indulge in a symphony of flavors
-          </p>
-
-          <Button className="mt-8 text-lg uppercase" variant={"accent"}>
-            Contact Now
-          </Button>
+          <Link href="#footer">
+            <Button className="mt-8 text-lg uppercase" variant={"accent"}>
+              დაგვიკავშირდით
+            </Button>
+          </Link>
         </div>
       </section>
       <section className="flex flex-col items-center justify-center">
-        <h2 className="text-4xl font-semibold uppercase">User Reviews</h2>
+        <h2 className="text-4xl font-semibold uppercase">
+          მომხმარებლების შეფასებები
+        </h2>
         <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
           <UserReviewsCarousel />
         </div>

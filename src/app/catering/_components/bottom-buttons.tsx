@@ -53,10 +53,10 @@ export function BottomButtons({
       <Button
         variant={"accent"}
         onClick={() => {
-          if (status !== "authenticated") {
-            toast.error("You need to authenticate");
-            return;
-          }
+          // if (status !== "authenticated") {
+          //   toast.error("You need to authenticate");
+          //   return;
+          // }
           const result = handleOrderClick();
           if (!result) {
             return;
@@ -68,7 +68,7 @@ export function BottomButtons({
         className="border-accent max-md:w-40 max-md:py-0 max-md:text-base 
           max-xs:w-32 max-xs:text-xs"
       >
-        {orderText ?? "Order Now"}
+        {orderText ?? "შეუკვეთე"}
       </Button>
     </div>
   );

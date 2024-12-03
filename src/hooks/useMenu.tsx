@@ -285,11 +285,11 @@ export const MenuProvider = ({
     return true;
   };
   const handleOrderClick = () => {
-    if (status !== "authenticated") return false;
-    if (!menuName) {
-      setMenuNameOpen(true);
-      return false;
-    }
+    // if (status !== "authenticated") return false;
+    // if (!menuName) {
+    //   setMenuNameOpen(true);
+    //   return false;
+    // }
     return true;
     // console.log("order clicked");
   };
@@ -311,9 +311,9 @@ export const MenuProvider = ({
     const addedProds = [];
     for (const product of products) {
       const found = prods.find(
-        (prod) =>
-          prod.id == product.id ||
-          product?.variants?.find((varp) => varp.id == prod.id),
+        (prod) => prod.id == product.id,
+        // prod.id == product.id ||
+        // product?.variants?.find((varp) => varp.id == prod.id),
       );
       if (found) continue;
       addedProds.push({
@@ -365,11 +365,10 @@ export const MenuProvider = ({
         closeModal={() => setMenuNameOpen(false)}
         menuName={menuName}
         setMenuName={setMenuName}
-        onSubmit={async () => {
-          await handleSaveClick();
-          setMenuNameOpen(false);
-          setMenuName("");
-        }}
+        // onSubmit={async () => {
+        //   setMenuNameOpen(false);
+        //   setMenuName("");
+        // }}
       />
       {session?.user?.role == "admin" && open ? (
         <UserSearchModal

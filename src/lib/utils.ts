@@ -43,6 +43,7 @@ export const MenuToState = (
         return {
           ...prod,
           active: prod.id,
+          price: Number(prod.price),
           totalPrice: prod.price * quantity,
           quantity: person_range !== undefined && next_q ? next_q : quantity,
         };

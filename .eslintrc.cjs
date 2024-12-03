@@ -12,6 +12,7 @@ const config = {
   ],
   rules: {
     "@typescript-eslint/array-type": "off",
+    "@typescript-eslint/no-unsafe-enum-comparison": "off",
     "@typescript-eslint/no-unsafe-call": "off",
     "@typescript-eslint/non-nullable-type-assertion-style": "off",
     "@typescript-eslint/no-floating-promises": "off",

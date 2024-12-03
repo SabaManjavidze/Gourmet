@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import { useAdmin } from "@/hooks/useAdmin";
+import { UserRole } from "@/lib/types";
 import { limitTxt } from "@/lib/utils";
 import { api, RouterOutputs } from "@/trpc/react";
 import { Mail } from "lucide-react";

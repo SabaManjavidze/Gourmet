@@ -125,16 +125,16 @@ export const adminRouter = createTRPCRouter({
           adminInvoice,
         },
       }) => {
-        return await createUserOrder(
+        return await createUserOrder({
           orderId,
           products,
           menuName,
           totalPrice,
           status,
           userId,
-          userInvoice,
-          adminInvoice,
-        );
+          invoiceRequested: userInvoice,
+          invoiceConfirmed: adminInvoice,
+        });
       },
     ),
   deleteUserOrder: adminProcedure

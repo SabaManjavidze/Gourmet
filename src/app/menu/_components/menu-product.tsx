@@ -7,6 +7,8 @@ import { twMerge } from "tailwind-merge";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DeleteIcon, XCircleIcon } from "lucide-react";
+import { VariantAccordion } from "./variant-accordion";
+// import { VariantAccordion } from "./variant-accordion";
 
 const cls = "border border-t-0 border-l-0 w-full p-5";
 export function MenuProduct({
@@ -35,50 +37,19 @@ export function MenuProduct({
       >
         <DeleteIcon className="z-20 ml-1 max-md:h-4 max-md:w-4" size={20} />
       </Button>
-      <div className="menu-table-items flex-col overflow-x-hidden">
-        <p
-          className={twMerge(
-            cls,
-            `${product.variants?.length ? "border-b-0 pb-2" : "h-full"} 
-            overflow-hidden whitespace-nowrap border-l text-start`,
-          )}
-        >
-          {product.active !== product.id
-            ? product?.variants?.find((v) => v.id == product.active)?.name
-            : product.name}
-        </p>
+      <div className="menu-table-items flex overflow-x-hidden">
         {enabled && product?.variants?.length ? (
-          <ul className="flex gap-x-3 overflow-x-auto border border-t-0 px-4 pb-2">
-            <li key={product.id}>
-              <Button
-                variant={"outline-accent"}
-                onClick={() =>
-                  changeVariant(menuSample, product.id, product.id)
-                }
-                className={`${product.active == product.id ? "bg-accent/30" : ""} 
-                  menu-table-variants h-8 rounded-xl 
-                  text-foreground`}
-              >
-                {product.name}
-              </Button>
-            </li>
-            {product.variants?.map((variant) => (
-              <li key={variant.id}>
-                <Button
-                  variant={"outline-accent"}
-                  onClick={() =>
-                    changeVariant(menuSample, product.id, variant.id)
-                  }
-                  className={`${product.active == variant.id ? "bg-accent/30" : ""} 
-                  menu-table-variants h-8 rounded-xl text-foreground 
-                  `}
-                >
-                  {variant.name}
-                </Button>
-              </li>
-            ))}
-          </ul>
-        ) : null}
+          <VariantAccordion product={product} menuSample={menuSample} />
+        ) : (
+          <p
+            className={twMerge(
+              cls,
+              "overflow-hidden whitespace-nowrap border-l text-start",
+            )}
+          >
+            {product.name}
+          </p>
+        )}
       </div>
       <div
         className="menu-table-other-fields flex justify-between whitespace-nowrap 
@@ -107,7 +78,7 @@ export function MenuProduct({
           )}
         />
         <p className={twMerge(cls, "flex items-center justify-center")}>
-          {product.totalPrice}
+          {Math.round(100 * product.totalPrice) / 100}
         </p>
       </div>
     </li>

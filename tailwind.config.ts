@@ -54,6 +54,7 @@ const config = {
       },
       fontFamily: {
         georgia: ["Georgia", "sans"],
+        gugeshashvili: ["gugeshashvili", "sans"],
         "lucida-bold": ["Lucida Handwriting Std", "sans"],
         "lucida-light": ["Lucida Handwriting Std Light", "sans"],
         "lucida-rg": ["Lucida Handwriting Std Rg", "sans"],

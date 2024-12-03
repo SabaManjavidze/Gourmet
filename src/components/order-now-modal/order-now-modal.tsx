@@ -34,6 +34,7 @@ import { toast } from "sonner";
 import { Textarea } from "../ui/textarea";
 import { OrderMadeEmail } from "@/server/api/nodemailer";
 import { useSession } from "next-auth/react";
+import { PaymentModal } from "../payment-modal/payment-modal";
 
 const titleClass =
   "text-lg whitespace-nowrap font-bold text-accent-foreground max-sm:text-base";
@@ -45,8 +46,9 @@ export function OrderNowModal({
   closeModal: () => void;
 }) {
   const { currMenu } = useCatering();
-  const { data: session } = useSession();
+  const { status } = useSession();
   const { menu, totalSum } = useMenu();
+  const [data, setData] = useState<OrderFormType>();
   const { isPending: detailsPending, mutateAsync: createOrderDetails } =
     api.orderDetails.createOrderDetails.useMutation();
   const { isPending: orderPending, mutateAsync: createOrder } =
@@ -56,6 +58,7 @@ export function OrderNowModal({
     defaultValues: {
       firstname: "",
       firstname2: "",
+      email: "",
       phone: "",
       phone2: "",
       lastname: "",
@@ -66,47 +69,42 @@ export function OrderNowModal({
       extraInfo: "",
     },
   });
-
-  const onSubmit = async (data: OrderFormType) => {
+  const saveToDB = async (payId: string) => {
     if (
       !data ||
       !currMenu ||
-      menu[currMenu.name] == undefined ||
-      !session?.user?.name ||
-      !session.user.email
-    )
+      menu[currMenu.name] == undefined
+      // || !session?.user?.name ||
+      // !session.user.email
+    ) {
+      console.log({ currMenu: data });
       return;
+    }
     const order = await createOrder({
       invoiceRequested: data.invoiceRequested ?? false,
       menuName: currMenu.name,
       products: menu[currMenu.name] as productState[],
-      status: data.invoiceRequested ? "submitted" : "completed",
+      status: data.invoiceRequested ? "submitted" : "loading",
       totalPrice: totalSum.toString(),
-      detailsString: (
-        Object.entries(data) as unknown as [
-          key: keyof typeof data,
-          value: string,
-        ][]
-      )
-        .map(([key, value]) => {
-          if (key == "time") {
-            const time = new Date(value.toString());
-            return `${key} - ${time.getHours()}:${time.getMinutes()}`;
-          } else if (key == "date") {
-            const date = new Date(value.toString());
-            return `${key} - ${new Intl.DateTimeFormat("en-GB").format(date)}`;
-          } else if (key != "invoiceRequested") {
-            return `${key} - ${value}`;
-          }
-        })
-        .join("<br>"),
+      orderDetails: data,
+      payId,
     });
+    // if (status == "authenticated") {
     await createOrderDetails({
       ...data,
       orderId: order.id,
     });
+    // }
     toast.success("Order was successful");
   };
+  const onSubmit = async (data: OrderFormType) => {
+    setData(data);
+  };
+  if (data) {
+    return (
+      <PaymentModal closeModal={closeModal} open={open} saveToDB={saveToDB} />
+    );
+  }
   return (
     <Modal
       isOpen={open}
@@ -137,7 +135,8 @@ export function OrderNowModal({
             max-xl:gap-y-12"
             >
               <div className="flex w-full flex-col items-center justify-center gap-y-7">
-                <h3 className={titleClass}>Primary Contact Information</h3>
+                <h3 className={titleClass}>მთავარი საკონტაქტო ინფორმაცია</h3>
+                {/* <h3 className={titleClass}>Primary Contact Information</h3> */}
                 {InputSchema["Primary Contact Information"].map((item) => {
                   if (!item?.name) {
                     return (
@@ -174,7 +173,7 @@ export function OrderNowModal({
                 })}
               </div>
               <div className="flex w-full flex-col gap-y-7">
-                <h3 className={titleClass}>Delivery Information</h3>
+                <h3 className={titleClass}>მიწოდების ინფორმაცია</h3>
                 {InputSchema["Delivery Information"].map((item) => {
                   if (!item?.name) {
                     return (
@@ -225,7 +224,7 @@ export function OrderNowModal({
             >
               <div className="flex w-full flex-col items-center justify-center gap-y-7">
                 <h3 className={titleClass}>
-                  Secondary Contact Information (Optional)
+                  მეორე საკონტაქტო ინფორმაცია (სურვილისამებრ)
                 </h3>
                 {InputSchema["Secondary Contact Information (Optional)"].map(
                   (item) => {
@@ -266,7 +265,9 @@ export function OrderNowModal({
                 )}
               </div>
               <div className="flex w-full flex-col items-center justify-center gap-y-7">
-                <h3 className={titleClass}>Company Information (Optional)</h3>
+                <h3 className={titleClass}>
+                  კომპანიის ინფორმაცია (სურვილისამებრ)
+                </h3>
                 {InputSchema["Company Information (Optional)"].map((item) => {
                   return (
                     <FormField
@@ -298,7 +299,7 @@ export function OrderNowModal({
             </div>
           </div>
           <div className="mt-10 flex flex-col items-center justify-center gap-y-1">
-            <h2 className="text-lg font-bold">Total Price</h2>
+            <h2 className="text-lg font-bold">მთლიანი ფასი</h2>
             <div className="flex items-center gap-x-4">
               <h3 className="text-lg font-bold text-muted-foreground">
                 ₾{totalSum}
@@ -318,7 +319,7 @@ export function OrderNowModal({
                       />
                     </FormControl>
                     <div className="space-y-1 leading-none">
-                      <FormLabel>Pay Later</FormLabel>
+                      <FormLabel>მოგვიანებით გადახდა</FormLabel>
                     </div>
                   </FormItem>
                 )}
@@ -334,7 +335,7 @@ export function OrderNowModal({
               size={"lg"}
               className="text-base"
             >
-              Confirm Order
+              გადახდაზე გადასვლა
             </Button>
           </div>
         </form>

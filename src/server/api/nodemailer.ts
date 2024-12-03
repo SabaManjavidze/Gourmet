@@ -1,3 +1,4 @@
+import { OrderFormType } from "@/components/order-now-modal/utils";
 import { env } from "@/env";
 import nodemailer from "nodemailer";
 import { dirname } from "path";
@@ -111,11 +112,29 @@ export async function OrderMadeEmail(
   order_name: string,
   user_email: string,
   totalPrice: string,
-  detailsText: string,
+  orderDetails: OrderFormType,
   products: { name: string; price: string; quantity: string }[],
 ) {
   //   const safe_email = await z.string().email().parseAsync(email);
   //   if (!safe_email) return;
+  const detailsText = (
+    Object.entries(orderDetails) as unknown as [
+      key: keyof typeof orderDetails,
+      value: string,
+    ][]
+  )
+    .map(([key, value]) => {
+      if (key == "time") {
+        const time = new Date(value.toString());
+        return `${key} - ${time.getHours()}:${time.getMinutes()}`;
+      } else if (key == "date") {
+        const date = new Date(value.toString());
+        return `${key} - ${new Intl.DateTimeFormat("en-GB").format(date)}`;
+      } else if (key != "invoiceRequested") {
+        return `${key} - ${value}`;
+      }
+    })
+    .join("<br>");
   const tableHTML = `
 <table class="tg"><thead>
   <tr>

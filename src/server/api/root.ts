@@ -11,6 +11,7 @@ import { orderRouter } from "./routers/orders";
 import { adminRouter } from "./routers/admin";
 import { ne } from "drizzle-orm";
 import { orderDetailsRouter } from "./routers/order_details";
+import { tbcRouter } from "./routers/tbc";
 
 /**
  * This is the primary router for your server.
@@ -23,6 +24,7 @@ export const appRouter = createTRPCRouter({
   sampleMenu: sampleMenuRouter,
   orderDetails: orderDetailsRouter,
   order: orderRouter,
+  tbc: tbcRouter,
   getCategories: publicProcedure.query(async () => {
     const cats = await db
       .select()

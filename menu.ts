@@ -116,7 +116,7 @@ const Menu = {
     { name: "services", price: 150.0 },
   ],
 
-  "Coffee Break": [
+  "ყავის შესვენება": [
     { name: "Croissant", price: 2.2 },
     { name: "Croissant chocolate", price: 2.5 },
     { name: "Croissant with vanilla", price: 2.5 },
@@ -168,7 +168,7 @@ const Menu = {
 };
 export const sampleMenus = [
   {
-    name: "Coffee Break",
+    name: "ყავის შესვენება",
     src: "/imgs/coffee-break.jpg",
   },
   {

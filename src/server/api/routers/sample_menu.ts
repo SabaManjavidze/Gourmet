@@ -26,7 +26,7 @@ export const sampleMenuRouter = createTRPCRouter({
     const menus = await db
       .select()
       .from(menuSamples)
-      .where(ne(menuSamples.name, "Main Menu"));
+      .where(ne(menuSamples.name, "მთავარი მენიუ"));
     return menus;
   }),
   getMenuProducts: publicProcedure
@@ -117,7 +117,7 @@ group by
   pts.quantity; 
   `,
       );
-      console.log({ data: productsWithVariants });
+      // console.log({ data: productsWithVariants });
       const new_pr = Math.floor(personRange / 10) * 10;
       const menu = await db
         .select()
@@ -154,7 +154,7 @@ group by
     const mainMenu = await db
       .select()
       .from(menuSamples)
-      .where(eq(menuSamples.name, "Main Menu"));
+      .where(eq(menuSamples.name, "მთავარი მენიუ"));
     if (!mainMenu[0]) throw new Error("Main Menu not found");
 
     const formatedData: Record<string, ProductWithVariants[]> = {};

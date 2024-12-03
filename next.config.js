@@ -15,6 +15,7 @@ const config = {
       { hostname: "w7.pngwing.com" },
       { hostname: "lh3.googleusercontent.com" },
       { hostname: "i0.wp.com" },
+      { hostname: "cdn.brandfetch.io" },
     ],
   },
 };

@@ -29,8 +29,8 @@ export function MenuTable({
   } = api.sampleMenu.getMenuProducts.useQuery({
     menuId: currMenu?.id as string,
     menuName: menuNameArg,
-    menuType: formData?.menuType as MenuVariants,
-    personRange: formData?.personRange as number,
+    menuType: formData?.type as MenuVariants,
+    personRange: Number(formData?.personRange),
   });
   const closeModal = () => {
     setAddProdOpen(false);
@@ -52,7 +52,7 @@ export function MenuTable({
         dbMenu={dbMenu?.data ?? {}}
         changes={true}
         personRanges={{
-          def: formData.personRange,
+          def: Number(formData.personRange),
           next: Number(dbMenu.nextPersonRange),
         }}
       >
@@ -72,7 +72,7 @@ export function MenuTable({
             <div className="mt-8">
               <NumberOfGuests
                 personRanges={{
-                  def: formData.personRange,
+                  def: Number(formData.personRange),
                   next: Number(dbMenu.nextPersonRange),
                 }}
               />

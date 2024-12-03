@@ -1,13 +1,18 @@
 import { z } from "zod";
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import {
+  createTRPCRouter,
+  protectedProcedure,
+  publicProcedure,
+} from "@/server/api/trpc";
 import { orders, products, productstoOrders } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { eq, like, and, sql, or, gt, count } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
 import { Product } from "menu";
 import { DraftSavedEmail, OrderMadeEmail } from "../nodemailer";
+import { orderNowSchema } from "@/components/order-now-modal/utils";
 
-export type Status = "draft" | "submitted" | "completed";
+export type Status = "draft" | "loading" | "submitted" | "completed";
 interface Order {
   id: string;
   name: string;
@@ -137,16 +142,27 @@ export async function removeProductFromUserOrder(
   return true;
 }
 
-export async function createUserOrder(
-  orderId: string | undefined,
-  products: { id: string; quantity: number; variant_name?: string }[],
-  menuName: string,
-  totalPrice: string,
-  status: Status,
-  userId: string,
-  invoiceReqeusted: boolean,
-  invoiceConfirmed?: boolean,
-) {
+export async function createUserOrder({
+  invoiceRequested,
+  menuName,
+  orderId,
+  products,
+  status,
+  totalPrice,
+  invoiceConfirmed,
+  userId,
+  payId,
+}: {
+  orderId: string | undefined;
+  products: { id: string; quantity: number; variant_name?: string }[];
+  menuName: string;
+  totalPrice: string;
+  status: Status;
+  userId?: string;
+  invoiceRequested: boolean;
+  invoiceConfirmed?: boolean;
+  payId?: string;
+}) {
   let order;
   if (!orderId) {
     const values = {
@@ -154,8 +170,9 @@ export async function createUserOrder(
       userId: userId,
       name: menuName,
       status,
+      payId,
       totalPrice,
-      userInvoice: invoiceReqeusted ?? false,
+      userInvoice: invoiceRequested ?? false,
       adminInvoice: invoiceConfirmed ?? false,
     };
     order = await db.insert(orders).values(values).returning();
@@ -166,8 +183,9 @@ export async function createUserOrder(
         status,
         name: menuName,
         totalPrice,
-        userInvoice: invoiceReqeusted ?? false,
+        userInvoice: invoiceRequested ?? false,
         adminInvoice: invoiceConfirmed ?? false,
+        payId,
       })
       .where(eq(orders.id, orderId))
       .returning();
@@ -254,15 +272,16 @@ export const orderRouter = createTRPCRouter({
     .query(async ({ input: { orderId }, ctx: { session } }) => {
       return await getUserOrder(orderId, session.user.id);
     }),
-  createUserOrder: protectedProcedure
+  createUserOrder: publicProcedure
     .input(
       z.object({
         menuName: z.string(),
+        payId: z.string().optional(),
         totalPrice: z.string(),
         orderId: z.string().uuid().optional(),
         invoiceRequested: z.boolean(),
-        detailsString: z.string().optional(),
-        status: z.enum(["draft", "submitted", "completed"]),
+        orderDetails: orderNowSchema.optional(),
+        status: z.enum(["draft", "loading", "submitted", "completed"]),
         products: z.array(
           z.object({
             id: z.string().uuid(),
@@ -282,29 +301,32 @@ export const orderRouter = createTRPCRouter({
           totalPrice,
           orderId,
           status,
-          detailsString,
+          orderDetails,
+          payId,
           invoiceRequested,
         },
         ctx: { session },
       }) => {
-        if (!session.user.email || !session.user.name)
-          throw new Error("unauthed");
-        const result = await createUserOrder(
+        // if (!session.user.email || !session.user.name)
+        //   throw new Error("unauthed");
+        const result = await createUserOrder({
           orderId,
           products,
           menuName,
           totalPrice,
+          payId,
           status,
-          session.user.id,
-          invoiceRequested,
-        );
-        if (!invoiceRequested && detailsString) {
+          userId: session?.user.id,
+          invoiceRequested: invoiceRequested,
+        });
+        if (!invoiceRequested && orderDetails) {
           await OrderMadeEmail(
-            session.user.name,
+            session?.user.name ??
+              `${orderDetails.firstname} ${orderDetails.lastname}`,
             menuName,
-            session.user.email,
+            session?.user.email ?? "",
             totalPrice,
-            detailsString,
+            orderDetails,
             products.map((item) => {
               return {
                 name: item.name,
@@ -313,9 +335,12 @@ export const orderRouter = createTRPCRouter({
               };
             }),
           );
-        } else if (status == "draft" && !invoiceRequested) {
-          // console.log("hello");
-          // return result;
+        }
+
+        if (!session?.user?.name || !session.user.email) {
+          return result;
+        }
+        if (status == "draft" && !invoiceRequested) {
           await DraftSavedEmail(
             session.user.name,
             menuName,
