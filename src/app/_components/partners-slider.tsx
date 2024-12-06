@@ -108,7 +108,7 @@ const PartnersSlider = () => {
       className="relative flex h-[230px] w-full flex-col items-center 
     overflow-hidden"
     >
-      <h3 className="text-2xl font-bold">Our Partners</h3>
+      <h3 className="text-2xl font-bold">ჩვენი პარტნიორები</h3>
       <Marquee
         pauseOnHover
         className="mt-10 flex h-full items-center border [--duration:20s]"

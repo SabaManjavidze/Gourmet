@@ -106,7 +106,7 @@ export function NumberOfGuests({
         className="w-4/5 text-xl font-semibold text-gray-500 
               max-xl:text-lg max-md:text-base max-sm:text-xs"
       >
-        Please Enter Number of Guests and Get Perfect Menu For You
+        გთხოვთ, შეიყვანოთ სტუმრების რაოდენობა და მიიღეთ იდეალური მენიუ თქვენთვის
       </h3>
       <Input
         type="number"

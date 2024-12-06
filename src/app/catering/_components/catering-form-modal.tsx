@@ -34,7 +34,7 @@ const drinksArr = [
   "ნატურალური წვენი",
   "არ მსურს სასმელი",
 ];
-const cateringFormSchema = z.object({
+export const cateringFormSchema = z.object({
   type: z.enum(["cheap", "standard", "expensive"]),
   personRange: z.string(),
   assistance: z.enum(["კი", "არა"]),

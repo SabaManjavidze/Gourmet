@@ -10,7 +10,6 @@ import { Loader2, XIcon } from "lucide-react";
 import { ClearButton } from "./_components/clear-button";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
-import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 import { api } from "@/trpc/react";
 import { BottomButtons } from "../catering/_components/bottom-buttons";
 import { NumberOfGuests } from "./_components/number-of-guests";

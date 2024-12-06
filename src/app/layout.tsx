@@ -56,6 +56,11 @@ export default async function RootLayout({
       </head>
       <body>
         <SessionProvider session={session}>
+          <div
+            className="logo fixed right-1/2 top-5 z-50 h-[120px] w-[145px] 
+      translate-x-1/2 border-[3px] border-t-0 border-accent-light bg-nav-logo bg-cover 
+      bg-center bg-no-repeat max-xl:hidden"
+          />
           <NextTopLoader color="orange" showSpinner={false} />
           <Navbar />
           <TRPCReactProvider>{children}</TRPCReactProvider>

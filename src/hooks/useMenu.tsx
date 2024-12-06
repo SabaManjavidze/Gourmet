@@ -19,6 +19,7 @@ import { MenuNameModal } from "@/app/_components/menu-name-modal";
 import { MIN_PERSON_CATER } from "@/lib/constants";
 import { toast } from "sonner";
 import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
+import { TermsAndConditions } from "@/components/terms-and-conditions";
 
 type MenuContextProps = {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
@@ -90,6 +91,14 @@ export const MenuProvider = ({
   children: ReactNode;
 }) => {
   const [saveLoading, setSaveLoading] = useState(false);
+  const [termsOpen, setTermsOpen] = useState(false);
+  const terms = useMemo(() => {
+    const t = localStorage.getItem("tnc");
+    if (t) {
+      return t == "true";
+    }
+    return false;
+  }, [termsOpen]);
   const [orderOpen, setOrderOpen] = useState(false);
   const [adminUserId, setAdminUserId] = useState<string | undefined>(userId);
   const [personCount, setPersonCount] = useState(
@@ -285,6 +294,10 @@ export const MenuProvider = ({
     return true;
   };
   const handleOrderClick = () => {
+    if (!terms) {
+      setTermsOpen(true);
+      return false;
+    }
     // if (status !== "authenticated") return false;
     // if (!menuName) {
     //   setMenuNameOpen(true);
@@ -354,12 +367,22 @@ export const MenuProvider = ({
         setHideZeroQt,
       }}
     >
-      {addable && orderOpen ? (
+      {addable && orderOpen && terms ? (
         <OrderNowModal
           open={orderOpen}
           closeModal={() => setOrderOpen(false)}
         />
       ) : null}
+      {!terms ? (
+        <TermsAndConditions
+          open={termsOpen}
+          closeModal={() => {
+            setTermsOpen(false);
+            setOrderOpen(true);
+          }}
+        />
+      ) : null}
+
       <MenuNameModal
         open={menuNameOpen}
         closeModal={() => setMenuNameOpen(false)}

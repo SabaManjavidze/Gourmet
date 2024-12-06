@@ -10,7 +10,6 @@ import { Modal } from "@/components/ui/modal";
 import { MenuProvider } from "@/hooks/useMenu";
 import { MenuTemplate } from "@/app/menu/_components/menu-template";
 import { Menu } from "menu";
-import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 import { api } from "@/trpc/react";
 import { Loader2 } from "lucide-react";
 import { BottomButtons } from "@/app/catering/_components/bottom-buttons";

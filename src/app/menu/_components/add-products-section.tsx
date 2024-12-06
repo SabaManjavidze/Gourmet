@@ -19,7 +19,7 @@ export function AddProductsSection({ onClick }: { onClick: () => void }) {
           onClick={onClick}
         >
           <PlusCircle className="mr-2 max-md:h-5 max-md:w-5" />
-          Add more Products
+          პროდუქტების დამატება
         </Button>
       </div>
       <div className="menu-table-other-fields flex justify-between font-bold *:w-full">

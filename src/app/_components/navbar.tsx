@@ -1,5 +1,5 @@
 "use client";
-import { LanguageDropdown } from "@/components/language-dropdown";
+// import { LanguageDropdown } from "@/components/language-dropdown";
 import { Button } from "@/components/ui/button";
 import {
   Loader2,
@@ -20,31 +20,31 @@ import ProfileButton from "./profile-button";
 
 export const navRoutes = [
   {
-    title: "Home",
+    title: "მთავარი",
     route: "/",
   },
   {
-    title: "About Us",
+    title: "ჩვენს შესახებ",
     route: "/about-us",
   },
   {
-    title: "Menu",
+    title: "მენიუ",
     route: "/menu",
   },
 
   {
-    title: "Catering",
+    title: "ფურშეტი",
     route: "/catering",
   },
   {
-    title: "Contact Us",
+    title: "კონტაქტი",
     route: "",
   },
 ] as const;
 export const mobileRoutes = [
-  "Home",
-  "Catering",
-  "Menu",
+  "მთავარი",
+  "ფურშეტი",
+  "მენიუ",
 ] as (typeof navRoutes)[number]["title"][];
 export function Navbar() {
   const [open, setOpen] = useState(false);
@@ -54,8 +54,8 @@ export function Navbar() {
   const handleCloseAuthModal = () => setAuthOpen(false);
   return (
     <nav
-      className="sticky top-0 z-40 flex h-16 items-center justify-between border-b
-    border-b-accent-light bg-accent-light px-10 max-lg:justify-center"
+      className="fixed top-0 z-40 flex h-16 w-full items-center justify-between
+    border-b border-b-accent-light bg-accent-light px-10 max-lg:justify-center"
     >
       <div className="absolute left-5 top-1/2 -translate-y-1/2 lg:hidden">
         <NavDrawer
@@ -72,11 +72,6 @@ export function Navbar() {
         />
       </div>
       <AuthModal modalOpen={authOpen} closeModal={handleCloseAuthModal} />
-      <div className="logo absolute right-1/2 top-0 z-20 h-[120px] w-[145px] translate-x-1/2 border-[3px] border-t-0 border-accent-light bg-nav-logo bg-cover bg-center bg-no-repeat max-xl:hidden">
-        {/* <h3 className="logo-text absolute bottom-0 right-1/2 translate-x-1/2 translate-y-full text-3xl font-bold uppercase ">
-          Gourmet
-        </h3> */}
-      </div>
       <div className="absolute left-5 top-1/2 -translate-y-1/2 lg:hidden"></div>
       <div>
         <ul className="flex gap-x-10 font-medium">
@@ -93,7 +88,7 @@ export function Navbar() {
                     : "",
                 )}
                 onClick={() => {
-                  if (title == "Contact Us") {
+                  if (title == "კონტაქტი") {
                     document
                       .getElementById("footer")
                       ?.scrollIntoView({ behavior: "smooth" });
@@ -121,9 +116,9 @@ export function Navbar() {
           <PhoneCall className="mr-2" size={20} />
           <h3 className="font-semibold tracking-tight">+995 597 555 266</h3>
         </span>
-        <div className="flex justify-center">
+        {/* <div className="flex justify-center">
           <LanguageDropdown />
-        </div>
+        </div> */}
         <div className="text-blue-gray-900 flex gap-2 sm:justify-center">
           {status === "loading" ? (
             <Loader2 className="text-primary-foreground" />

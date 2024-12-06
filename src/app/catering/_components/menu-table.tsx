@@ -29,7 +29,10 @@ export function MenuTable({
   } = api.sampleMenu.getMenuProducts.useQuery({
     menuId: currMenu?.id as string,
     menuName: menuNameArg,
-    menuType: formData?.type as MenuVariants,
+    assistance: formData?.assistance ?? "არა",
+    plates: formData?.plates ?? "ერთჯერადი",
+    drinks: formData?.drinks ?? [],
+    type: formData?.type as MenuVariants,
     personRange: Number(formData?.personRange),
   });
   const closeModal = () => {

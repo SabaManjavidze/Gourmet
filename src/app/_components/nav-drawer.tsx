@@ -28,7 +28,7 @@ import {
   PhoneCall,
 } from "lucide-react";
 import AuthModal from "./auth-modal";
-import { LanguageDropdown } from "@/components/language-dropdown";
+// import { LanguageDropdown } from "@/components/language-dropdown";
 
 export function NavDrawer({
   triggerButton,
@@ -39,11 +39,11 @@ export function NavDrawer({
   const routes = [
     {
       route: session?.user.role == "user" ? "/user/profile" : "/admin/profile",
-      title: "Profile",
+      title: "პროფილი",
     },
     {
       route: "/about-us",
-      title: "About Us",
+      title: "ჩვენს შესახებ",
     },
   ];
   const pathname = usePathname();
@@ -144,7 +144,7 @@ export function NavDrawer({
                       : "",
                   )}
                   onClick={() => {
-                    if (title == "Contact Us") {
+                    if (title == "კონტაქტი") {
                       document
                         .getElementById("footer")
                         ?.scrollIntoView({ behavior: "smooth" });
@@ -167,12 +167,12 @@ export function NavDrawer({
             <PhoneCall className="ml-2" size={15} />
           </span>
         </div>
-        <div className="flex items-center justify-start">
+        {/* <div className="flex items-center justify-start">
           <LanguageDropdown
             iconSize={20}
             className="mt-0 justify-start p-0 text-sm first:!w-auto"
           />
-        </div>
+        </div> */}
 
         <SheetFooter className="absolute bottom-5 left-5">
           {status == "authenticated" ? (

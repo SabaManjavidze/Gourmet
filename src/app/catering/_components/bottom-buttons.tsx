@@ -48,7 +48,7 @@ export function BottomButtons({
         }}
         size={size}
       >
-        {saveText ?? "Save For Later"}
+        {saveText ?? "შენახვა"}
       </Button>
       <Button
         variant={"accent"}

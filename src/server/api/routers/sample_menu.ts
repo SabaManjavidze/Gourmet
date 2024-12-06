@@ -20,6 +20,7 @@ import { db } from "@/server/db";
 import { and, eq, gt, like, ne, sql } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
 import { ProductWithVariants } from "menu";
+import { cateringFormSchema } from "@/app/catering/_components/catering-form-modal";
 export const menuTypeEnum = z.enum(["cheap", "standard", "expensive"]);
 export const sampleMenuRouter = createTRPCRouter({
   getMenus: publicProcedure.query(async () => {
@@ -32,15 +33,23 @@ export const sampleMenuRouter = createTRPCRouter({
   getMenuProducts: publicProcedure
     .input(
       z.object({
+        type: z.enum(["cheap", "standard", "expensive"]),
+        personRange: z.number(),
+        assistance: z.enum(["კი", "არა"]),
+        plates: z.enum(["ერთჯერადი", "ფაიფურის"]),
+        drinks: z
+          .array(z.string())
+          .refine((value) => value.some((item) => item), {
+            message: "You have to select at least one item.",
+          }),
         menuId: z.string().uuid(),
         menuName: z.string(),
-        menuType: menuTypeEnum,
-        personRange: z.number(),
       }),
     )
-    .query(async ({ input: { menuId, menuType, personRange, menuName } }) => {
-      const productsWithVariants = await db.execute(
-        sql<{ data: ProductWithVariants }>`
+    .query(
+      async ({ input: { menuId, type: menuType, personRange, menuName } }) => {
+        const productsWithVariants = await db.execute(
+          sql<{ data: ProductWithVariants }>`
  select
   p.id,
   p.name,
@@ -116,40 +125,45 @@ group by
   pts.qgrowth_factor,
   pts.quantity; 
   `,
-      );
-      // console.log({ data: productsWithVariants });
-      const new_pr = Math.floor(personRange / 10) * 10;
-      const menu = await db
-        .select()
-        .from(menuSampleVariants)
-        .innerJoin(menuSamples, eq(menuSamples.id, menuSampleVariants.menu_id))
-        .where(
-          and(
-            eq(menuSampleVariants.menu_id, menuId),
-            eq(menuSampleVariants.person_range, new_pr),
-            eq(menuSampleVariants.type, menuType),
-          ),
         );
-      if (!menu[0]) throw new Error("Menu not found");
+        // console.log({ data: productsWithVariants });
+        const new_pr = Math.floor(personRange / 10) * 10;
+        const menu = await db
+          .select()
+          .from(menuSampleVariants)
+          .innerJoin(
+            menuSamples,
+            eq(menuSamples.id, menuSampleVariants.menu_id),
+          )
+          .where(
+            and(
+              eq(menuSampleVariants.menu_id, menuId),
+              eq(menuSampleVariants.person_range, new_pr),
+              eq(menuSampleVariants.type, menuType),
+            ),
+          );
+        if (!menu[0]) throw new Error("Menu not found");
 
-      const nextPersonRange = await db
-        .select()
-        .from(menuSampleVariants)
-        .where(
-          and(
-            eq(menuSampleVariants.menu_id, menuId),
-            eq(menuSampleVariants.type, menuType),
-            gt(menuSampleVariants.person_range, personRange),
-          ),
-        )
-        .limit(1);
-      return {
-        data: {
-          [menuName]: productsWithVariants as unknown as ProductWithVariants[],
-        },
-        nextPersonRange: nextPersonRange?.[0]?.person_range ?? undefined,
-      };
-    }),
+        const nextPersonRange = await db
+          .select()
+          .from(menuSampleVariants)
+          .where(
+            and(
+              eq(menuSampleVariants.menu_id, menuId),
+              eq(menuSampleVariants.type, menuType),
+              gt(menuSampleVariants.person_range, personRange),
+            ),
+          )
+          .limit(1);
+        return {
+          data: {
+            [menuName]:
+              productsWithVariants as unknown as ProductWithVariants[],
+          },
+          nextPersonRange: nextPersonRange?.[0]?.person_range ?? undefined,
+        };
+      },
+    ),
   getMainMenu: publicProcedure.query(async () => {
     const mainMenu = await db
       .select()

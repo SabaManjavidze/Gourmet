@@ -20,14 +20,14 @@ export default function AboutUsPage() {
           bg-vignete opacity-50 blur-3xl max-lg:w-[600px] max-md:w-[400px] max-sm:w-[250px]"
         ></div>
         <h1 className="text-outline z-10 font-lucida-bold text-6xl italic text-white max-md:text-5xl max-sm:text-3xl">
-          About Us
+          ჩვენს შესახებ
         </h1>
-        <h2 className="z-10 text-2xl text-primary-foreground max-md:text-xl max-sm:w-4/5 max-sm:text-base">
+        {/* <h2 className="z-10 text-2xl text-primary-foreground max-md:text-xl max-sm:w-4/5 max-sm:text-base">
           Select, Customize, And Order Delicious Catering For Any Occasion
-        </h2>
+        </h2> */}
       </section>
       <section className="flex flex-col items-center">
-        <h2 className="text-4xl font-bold">What We Offer</h2>
+        {/* <h2 className="text-4xl font-bold">What We Offer</h2> */}
         <div
           className="flex h-[430px] items-center justify-center px-24 *:flex-1 max-lg:px-16
         max-md:mt-8 max-md:h-[500px] max-md:flex-col max-md:px-5 max-sm:h-[600px] max-xs:h-[800px]"
@@ -39,17 +39,18 @@ export default function AboutUsPage() {
           ></div>
           <div className="flex !flex-[2] flex-col items-center gap-y-3 max-md:!flex-1">
             <p
-              className="px-20 text-center text-xl leading-10 text-muted-foreground 
-            max-2xl:leading-8 max-xl:px-16 max-xl:text-lg max-lg:px-6 max-lg:text-base max-md:px-0
+              className="mt-12 h-96 overflow-scroll px-20 text-center 
+            text-xl leading-10 text-muted-sm max-2xl:leading-8 
+            max-xl:mx-16 max-xl:text-lg max-lg:mx-6 max-lg:text-base max-md:mx-0
             "
             >
-              Lorem ipsum dolor sit amet, consectetur adipi scing elit. Etiam eu
-              turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
-              nec fringilla accumsan, risus sem sollicitudin lacus, utinterdum
-              tellus elit sed risus. Maecenas eget condimentum velit, sit amet
-              feugiat lectus. Class aptent taciti sociosqu Maecenas eget
-              condimentum velit, sit amet feugiat lectus. Classaptent taciti
-              sociosqu
+              “გურმე” საქართველოს ბაზარზე 2012 წლიდან ოპერირებს და მომხმარებელს
+              სრულყოფილ სერვისს სთავაზობს. დაარსების დღიდან, კომპანიას აქვს
+              უცვლელი კონცეფცია - უმაღლესი ხარისხის ნედლეული, გემრიელი პროდუქტი
+              და მისაღები ფასი. სწორედ ამიტომ, “გურმეს” ჰყავს უამრავი ერთგული
+              მომხმარებელი, როგორც კორპორატიული, ისე - საცალო. ამ დროისთვის,
+              კომპანია ფლობს დიდ საწარმოს მირიან მეფის 70-ში, ასევე, სტუმრებს
+              თბილისის მასშტაბით მასპინძლობს “გურმეს” არაერთი კაფე.
             </p>
 
             <Button
@@ -131,16 +132,22 @@ export default function AboutUsPage() {
             Avail Our Services For All Kind Of Events
           </h2>
           <p
-            className="mt-6 text-left text-xl leading-10 text-muted-foreground
-          max-xl:text-lg max-lg:text-base max-md:text-center"
+            className="mt-6 h-72 overflow-scroll text-left text-lg
+          leading-10 text-muted-foreground max-xl:text-lg max-lg:text-base
+          max-md:text-center"
           >
-            Lorem ipsum dolor sit amet, consectetur adipi scing elit. Etiam eu
-            turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus
-            nec fringilla accumsan, risus sem sollicitudin lacus, utinterdum
-            tellus elit sed risus. Maecenas eget condimentum velit, sit amet
-            feugiat lectus. Class aptent taciti sociosqu Maecenas eget
-            condimentum velit, sit amet feugiat lectus. Classaptent taciti
-            sociosqu
+            აუდიტის შედეგად, „გურმემ“ ISO 22000:2018 საერთაშორისო სერტიფიკატი
+            აიღო. სერტიფიკატის გაცემამდე, პოლონური აუდიტორული კომპანია Grand
+            Cert რამდენიმე თვის განმავლობაში ატარებდა შემოწმებას. სერტიფიკატის
+            მიღებამდე კომპანიაში შემოწმდა ყველა დეტალი - შენობა-ნაგებობა,
+            დანადგარები, ტექნოლოგიური პროცესები და ა.შ. „გურმეს“ გუნდმა
+            გაითვალისწინა ყველა ის პირობა, რომელსაც ISO სერტიფიკატის მქონე
+            კომპანია უნდა აკმაყოფილებდეს. სპეციალურად შეირჩა პროდუქციის ყველა
+            მომწოდებელი, კონტროლდებოდა პროდუქტების ხარისხი და სერთიფიკატები. ISO
+            22000:2018 სერტიფიკატი კონკრეტულად კვებით-სამრეწველო მიმართულებას
+            ეხება. აღნიშნული სერტიფიკატი მომხმარებლისთვის გარანტიაა, რომ
+            კომპანიაში წარმოებული პროდუქცია და მომსახურება არის მაღალი ხარისხის
+            და ჯანმრთელობისთვის უსაფრთხო.
           </p>
           <Button
             className="mt-8 px-4 uppercase"
