@@ -44,13 +44,13 @@ export function Footer() {
       <div className="flex min-h-64 w-3/5 justify-between bg-black/25 p-8 text-white max-xl:w-3/4 max-lg:items-center max-lg:text-sm max-md:flex-col">
         <div className="flex flex-col items-start justify-between max-lg:w-full max-lg:items-center">
           <h4 className="text-xl font-semibold">დაგვეკონტაქტეთ</h4>
-          <span className="flex">
+          {/* <span className="flex">
             <PhoneCall className="mr-2" />
             <p>032 2 22 32 38</p>
-          </span>
+          </span> */}
           <span className="flex">
             <PhoneCall className="mr-2" />
-            <p>+995 597 555 266</p>
+            <p>+995 511 22 32 38</p>
           </span>
           <span className="flex">
             <Mail className="mr-2" />

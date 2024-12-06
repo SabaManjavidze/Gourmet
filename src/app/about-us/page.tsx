@@ -39,7 +39,7 @@ export default function AboutUsPage() {
           ></div>
           <div className="flex !flex-[2] flex-col items-center gap-y-3 max-md:!flex-1">
             <p
-              className="mt-12 h-96 overflow-scroll px-20 text-center 
+              className="mt-12 h-96 overflow-y-scroll px-20 text-center 
             text-xl leading-10 text-muted-sm max-2xl:leading-8 
             max-xl:mx-16 max-xl:text-lg max-lg:mx-6 max-lg:text-base max-md:mx-0
             "
@@ -132,7 +132,7 @@ export default function AboutUsPage() {
             Avail Our Services For All Kind Of Events
           </h2>
           <p
-            className="mt-6 h-72 overflow-scroll text-left text-lg
+            className="mt-6 h-72 overflow-y-scroll text-left text-lg
           leading-10 text-muted-foreground max-xl:text-lg max-lg:text-base
           max-md:text-center"
           >

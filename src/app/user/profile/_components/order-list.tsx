@@ -69,7 +69,7 @@ export function OrderList({
           )
         ) : (
           <div>
-            <h2 className="ml-4 text-muted-foreground">0 Results Found</h2>
+            <h2 className="ml-4 text-muted-foreground">ნაპოვნია 0 შედეგი</h2>
           </div>
         )}
       </ul>

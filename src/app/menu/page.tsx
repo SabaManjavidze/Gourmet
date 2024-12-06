@@ -28,13 +28,13 @@ export default function MenuPage() {
     <main className="mt-8">
       <div className="flex w-full flex-col items-center justify-center bg-menu-banner bg-contain bg-center bg-no-repeat py-48 max-lg:bg-none">
         <h1 className="text-shadow-sm z-10 font-lucida-bold text-8xl max-md:text-6xl">
-          Menu
+          მთავარი მენიუ
         </h1>
         <p
-          className="z-10 mt-2 text-center text-xl font-normal 
+          className="z-10 mt-7 text-center text-xl font-normal 
         text-blue-950/80 max-md:text-base"
         >
-          Explore, Customize, and Order Your Perfect Meal!
+          გაეცანით მენიუს და შეარჩიეთ თქვენთვის სასურველი კერძები
         </p>
       </div>
       <div className="flex justify-center pb-20">
@@ -43,7 +43,7 @@ export default function MenuPage() {
             {Object.keys(data).map((item, idx) => (
               <MenuTemplate
                 key={uuid()}
-                addable={false}
+                // addable={false}
                 // products={data[item] ?? []}
                 name={item}
                 header={

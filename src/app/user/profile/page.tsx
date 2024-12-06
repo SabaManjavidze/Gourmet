@@ -12,14 +12,14 @@ export default function ProfilePage() {
   const { data: session } = useSession();
   const tabs = [
     {
-      title: "My Drafts",
+      title: "შენახული მენიუები",
       value: "My Drafts",
       content: (
         <OrderList setOpen={(id: string) => setOpen({ id, status: "draft" })} />
       ),
     },
     {
-      title: "Submitted",
+      title: "აქტიური შეკვეთები",
       value: "Submitted",
       content: (
         <OrderList
@@ -29,7 +29,7 @@ export default function ProfilePage() {
       ),
     },
     {
-      title: "Order History",
+      title: "შეკვეთების ისტორია",
       value: "Order History",
       content: (
         <OrderList

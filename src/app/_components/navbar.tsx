@@ -109,12 +109,12 @@ export function Navbar() {
         </ul>
       </div>
       <h3 className="absolute right-5 max-md:text-sm max-sm:hidden lg:hidden">
-        +995 597 555 266
+        +995 511 22 32 38
       </h3>
       <div className="flex items-center gap-x-10 *:!text-sm max-lg:hidden ">
         <span className="flex items-center">
           <PhoneCall className="mr-2" size={20} />
-          <h3 className="font-semibold tracking-tight">+995 597 555 266</h3>
+          <h3 className="font-semibold tracking-tight">+995 511 22 32 38</h3>
         </span>
         {/* <div className="flex justify-center">
           <LanguageDropdown />

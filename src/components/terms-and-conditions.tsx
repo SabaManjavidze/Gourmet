@@ -29,7 +29,7 @@ export function TermsAndConditions({
          max-sm:w-[95%]`}
     >
       <h1 className="text-center text-xl font-semibold">წესები და პირობები</h1>
-      <div className="flex h-full justify-center overflow-scroll">
+      <div className="flex h-full justify-center overflow-y-scroll">
         <h3 className="w-3/4">
           <p>
             წინამდებარე წესები და პირობები წარმოადგენს თქვენსა და შპს გურმე
@@ -966,13 +966,16 @@ export function TermsAndConditions({
           </p>
         </h3>
       </div>
-      <Button
-        disabled={!!currStatus}
-        onClick={() => handleAcceptClick()}
-        className="w-auto"
-      >
-        ვეთანხმები
-      </Button>
+      <div className="flex justify-center">
+        <Button
+          disabled={!!currStatus}
+          variant={"accent"}
+          onClick={() => handleAcceptClick()}
+          className="w-1/3"
+        >
+          ვეთანხმები
+        </Button>
+      </div>
     </Modal>
   );
 }

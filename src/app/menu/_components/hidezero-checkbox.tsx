@@ -22,7 +22,7 @@ export function HideZeroCheckbox({
             htmlFor="terms"
             className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 max-md:text-sm max-xs:text-xs"
           >
-            Hide the products with zero quantity
+            დამალეთ პროდუქტები ნულოვანი რაოდენობით
           </label>
         </>
       ) : (
@@ -31,7 +31,7 @@ export function HideZeroCheckbox({
             htmlFor="terms"
             className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            Hide the products with zero quantity
+            დამალეთ პროდუქტები ნულოვანი რაოდენობით
           </label>
           <Checkbox
             size="sm"

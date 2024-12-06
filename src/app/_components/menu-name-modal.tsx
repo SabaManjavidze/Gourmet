@@ -1,10 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/ui/modal";
 import { Dispatch, SetStateAction, useCallback, useState } from "react";
-import { api } from "@/trpc/react";
-import { User } from "next-auth";
 import { Input } from "@/components/ui/input";
-import { useMenu } from "@/hooks/useMenu";
 
 export function MenuNameModal({
   open,
@@ -19,7 +16,6 @@ export function MenuNameModal({
   setMenuName: Dispatch<SetStateAction<string>>;
   onSubmit?: () => void;
 }) {
-  const { handleSaveClick } = useMenu();
   return (
     <Modal
       isOpen={open}

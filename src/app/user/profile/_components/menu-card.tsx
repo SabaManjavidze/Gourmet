@@ -95,7 +95,7 @@ export function MenuCard({
                       {quantity}
                     </p>
                   </div>
-                  <p className="text-center">${quantity * price}</p>
+                  <p className="text-center">₾{quantity * price}</p>
                 </div>
               </div>
               <div className="mt-1 h-[1px] w-4/5 bg-border" />

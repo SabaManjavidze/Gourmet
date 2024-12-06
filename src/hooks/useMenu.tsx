@@ -210,7 +210,7 @@ export const MenuProvider = ({
     const prods = [];
     if (menuKeys.length == 1) {
       for (const prod of menu[mn] ?? []) {
-        if (removeProduct.includes(prod.id)) continue;
+        if (removeProduct.includes(prod.id) || prod.quantity == 0) continue;
         prods.push({
           id: prod.active ?? prod.id,
           name: prod.name,
@@ -222,7 +222,7 @@ export const MenuProvider = ({
     } else if (menuKeys.length > 1) {
       for (const key of menuKeys) {
         for (const prod of menu[key] ?? []) {
-          if (removeProduct.includes(prod.id)) continue;
+          if (removeProduct.includes(prod.id) || prod.quantity == 0) continue;
           prods.push({
             id: prod.active ?? prod.id,
             name: prod.name,
@@ -233,7 +233,11 @@ export const MenuProvider = ({
         }
       }
     }
-
+    if (prods.length == 0) {
+      toast.error("პროდუქტებს უნდა განუსაზღვროთ რაოდენობა.");
+      setSaveLoading(false);
+      return false;
+    }
     if (session?.user?.role == "user") {
       if (orderId && removeProduct.length > 0) {
         await utils.client.order.removeProductFromOrder.mutate({
@@ -290,7 +294,7 @@ export const MenuProvider = ({
     }
     setChanges?.(false);
     setSaveLoading(false);
-    toast.success(orderId ? "Updated Menu" : "Saved Menu");
+    toast.success(orderId ? "თქვენი მენიუ განახლდა" : "თქვენი მენიუ შეინახა");
     return true;
   };
   const handleOrderClick = () => {
@@ -385,7 +389,10 @@ export const MenuProvider = ({
 
       <MenuNameModal
         open={menuNameOpen}
-        closeModal={() => setMenuNameOpen(false)}
+        closeModal={async () => {
+          setMenuNameOpen(false);
+          await handleSaveClick();
+        }}
         menuName={menuName}
         setMenuName={setMenuName}
         // onSubmit={async () => {

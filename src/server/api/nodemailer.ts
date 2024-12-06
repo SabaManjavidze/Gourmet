@@ -24,7 +24,7 @@ export async function sendEmail({ subject, text, html, to }: messageType) {
     debug: false, // include SMTP traffic in the logs
   });
   const message: messageType = {
-    from: "Gourmet Dev",
+    from: process.env.NODE_ENV == "production" ? "Gourmet" : "Gourmet Dev",
     to,
   };
   if (text) {

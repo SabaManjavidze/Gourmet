@@ -6,7 +6,7 @@ import {
 } from "@/server/api/trpc";
 import { orders, products, productstoOrders } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { eq, like, and, sql, or, gt, count } from "drizzle-orm";
+import { eq, like, and, sql, or, gt, count, desc } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
 import { Product } from "menu";
 import { DraftSavedEmail, OrderMadeEmail } from "../nodemailer";
@@ -71,7 +71,7 @@ export async function getUserOrdersWithPaging(
     .limit(limit)
     .offset(offset)
     .where(and(eq(orders.status, status), eq(orders.userId, userId)))
-    .orderBy(orders.createdAt);
+    .orderBy(desc(orders.createdAt));
 
   if (!order?.length) return { orders: [], totalPages: 0 };
 

@@ -15,8 +15,10 @@ export default async function Home() {
         {/*  h-[300px] w-[1050px] -translate-y-1/2 translate-x-1/2 rounded-[70px] bg-vignete opacity-50  */}
         {/*  blur-3xl max-lg:w-[600px] max-md:w-[400px] max-xs:w-[300px]" */}
         {/* ></div> */}
-        <h1 className="z-10 font-lucida-bold text-7xl italic text-white 
-        max-md:text-5xl max-sm:text-3xl text-shadow">
+        <h1
+          className="text-shadow z-10 font-lucida-bold text-7xl italic 
+        text-white max-md:text-5xl max-sm:text-3xl"
+        >
           გურმე - სივრცე გემრიელი
         </h1>
         {/* <h2 className="text-shadow z-10 text-2xl italic text-gray-200 max-md:text-xl max-sm:w-4/5 max-sm:text-base">
@@ -24,7 +26,7 @@ export default async function Home() {
         </h2> */}
       </section>
       <section className="flex flex-col items-center bg-cover bg-center bg-no-repeat">
-        <h2 className="text-4xl font-bold uppercase">ფურშეტი</h2>
+        <h2 className="text-4xl font-bold uppercase">ფურშეტები</h2>
 
         {/* <p className="mt-2 text-secondary-foreground max-sm:px-6 max-sm:text-center">
           indulge in a symphony of flavors, where every dish is a masterpiece
@@ -60,9 +62,11 @@ export default async function Home() {
           unforgettable moments. Come join us and savor the essence of fine
           dining redefined. */}
         </p>
-        <Button className="mt-8 uppercase" variant={"accent"}>
-          სრულად ნახვა
-        </Button>
+        <Link href="/about-us">
+          <Button className="mt-8 uppercase" variant={"accent"}>
+            სრულად ნახვა
+          </Button>
+        </Link>
       </section>
 
       <section className="relative flex h-80 bg-contact-us-banner bg-cover bg-center bg-no-repeat py-12">
@@ -71,7 +75,7 @@ export default async function Home() {
           <h2 className="text-shadow text-4xl font-semibold text-white">
             ჩვენი საკონტაქტო და სოც-მედიები
           </h2>
-          <Link href="#footer">
+          <Link href="#footer" scroll={true}>
             <Button className="mt-8 text-lg uppercase" variant={"accent"}>
               დაგვიკავშირდით
             </Button>

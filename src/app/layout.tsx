@@ -57,7 +57,7 @@ export default async function RootLayout({
       <body>
         <SessionProvider session={session}>
           <div
-            className="logo fixed right-1/2 top-5 z-50 h-[120px] w-[145px] 
+            className="logo fixed right-1/2 top-0 z-50 h-[100px] w-[125px] 
       translate-x-1/2 border-[3px] border-t-0 border-accent-light bg-nav-logo bg-cover 
       bg-center bg-no-repeat max-xl:hidden"
           />

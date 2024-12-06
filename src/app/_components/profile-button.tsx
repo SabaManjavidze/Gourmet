@@ -27,7 +27,7 @@ const ProfileButton = ({
   const { data: session } = useSession();
   const profileOptions = [
     {
-      title: "Profile",
+      title: "პროფილი",
       path: session?.user.role == "user" ? "/user/profile" : "/admin/profile",
     },
   ];
@@ -75,7 +75,7 @@ const ProfileButton = ({
               onClick={() => signOut()}
               className="m-0 flex w-full justify-start p-0"
             >
-              Logout
+              გასვლა
             </button>
           </DropdownMenuItem>
         </DropdownMenuGroup>
