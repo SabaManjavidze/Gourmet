@@ -5,12 +5,8 @@ import { Button } from "../ui/button";
 import { api } from "@/trpc/react";
 import { useMenu } from "@/hooks/useMenu";
 import { PaymentCurrency } from "@/lib/tbcTypes";
-import axios from "axios";
 import { useRouter } from "next/navigation";
 import { TBC_RETURN_URL } from "@/lib/constants";
-import { db } from "@/server/db";
-import { orders } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
 import Image from "next/image";
 import { useState } from "react";
 const loading = false;
@@ -28,6 +24,7 @@ export function PaymentModal({
   const { totalSum, menu } = useMenu();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+
   const handleTBCClick = async () => {
     setLoading(true);
     const res = await createPayment({
@@ -61,13 +58,13 @@ export function PaymentModal({
     <Modal
       isOpen={open}
       closeModal={closeModal}
-      className={`h-[80vh] w-[70%] ${loading ? "overflow-hidden" : "overflow-y-auto"}
+      className={`h-[55vh] w-[40%] ${loading ? "overflow-hidden" : "overflow-y-auto"}
          max-sm:w-[95%]`}
     >
       <div
         className={`absolute inset-0 z-10 items-center justify-center bg-gray-300/50`}
       >
-        <div className="flex h-[90%] w-full items-center justify-center">
+        <div className="flex h-4/5 w-full items-center justify-center">
           <Button
             onClick={() => handleTBCClick()}
             isLoading={loading}

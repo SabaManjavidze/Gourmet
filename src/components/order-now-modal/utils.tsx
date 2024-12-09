@@ -3,28 +3,28 @@ import { z } from "zod";
 
 export const InputSchema = {
   "Primary Contact Information": [
-    { title: "Name" },
-    { title: "Phone Number", type: "number", name: "phone" },
-    { title: "Email", type: "email", name: "email" },
+    { title: "სახელი" },
+    { title: "ტელეფონის ნომერი", type: "number", name: "phone" },
+    { title: "იმეილი", type: "email", name: "email" },
   ],
   "Secondary Contact Information (Optional)": [
-    { title: "Name" },
+    { title: "სახელი" },
     {
-      title: "Phone Number",
+      title: "ტელეფონის ნომერი",
       name: "phone2",
       type: "number",
     },
   ],
   "Delivery Information": [
-    { title: "Address", name: "address" },
-    { title: "Delivery Date and Time", type: "date" },
-    { title: "Extra Information", type: "text", name: "extraInfo" },
+    { title: "მისამართი", name: "address" },
+    { title: "მიწოდების დრო", type: "date" },
+    { title: "დამატებითი ინფორმაცია", type: "text", name: "extraInfo" },
   ],
   "Company Information (Optional)": [
-    { title: "Company Name", name: "companyName" },
+    { title: "კომპანიის სახელი", name: "companyName" },
     { title: "Dot Number", type: "number", name: "dotNumber" },
     {
-      title: "Email Address (For sending BOL PDF)",
+      title: "იმეილი (BOL და PDF ფაილებისთვის)",
       placeholder: "email address",
       name: "companyEmail",
       // type: "email",

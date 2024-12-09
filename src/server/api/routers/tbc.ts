@@ -94,6 +94,10 @@ export const tbcRouter = createTRPCRouter({
           amount,
           returnurl,
           installmentProducts,
+          callbackUrl:
+            process.env.NODE_ENV == "production"
+              ? process.env.VERCEL_URL
+              : "http://localhost:3000/api/tbc/callback",
         });
       } catch (error) {
         const typedError = error as PaymentErrorResponse;

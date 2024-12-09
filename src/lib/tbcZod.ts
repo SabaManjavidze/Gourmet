@@ -28,7 +28,7 @@ export const webPaymentPayloadSchema = z.object({
   //   expiration_minutes: z.number().optional(),
   //   methods: z.array(paymentMethodsSchema).optional(),
   installmentProducts: z.array(installmentProductSchema).optional(),
-  //   callbackUrl: z.string().optional(),
+  // callbackUrl: z.string().optional(),
   //   preAuth: z.boolean().optional(),
   //   language: pageLanguageSchema.optional(),
   //   merchantPaymentId: z.string().optional(),

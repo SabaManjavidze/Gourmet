@@ -10,7 +10,7 @@ export function SumSection() {
     text-2xl font-bold text-muted-sm max-lg:px-6 max-lg:text-lg
     max-xs:text-xs"
     >
-      <h3>Sum</h3>
+      <h3>ჯამი</h3>
       <h3>₾{totalSum}</h3>
     </div>
   );

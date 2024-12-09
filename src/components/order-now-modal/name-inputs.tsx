@@ -33,7 +33,7 @@ export function NameInputs({ control, title, version = "" }: NameInputsProps) {
                 <Input
                   {...field}
                   className="text-md w-full rounded-sm py-2"
-                  placeholder={"first name"}
+                  placeholder={"სახელი"}
                   // defaultValue={defaultFirst}
                 />
               </FormControl>
@@ -53,7 +53,7 @@ export function NameInputs({ control, title, version = "" }: NameInputsProps) {
                 <Input
                   {...field}
                   className="text-md w-full rounded-sm py-2"
-                  placeholder={"last name"}
+                  placeholder={"გვარი"}
                   // defaultValue={defaultLast}
                 />
               </FormControl>

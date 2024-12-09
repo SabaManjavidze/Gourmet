@@ -9,7 +9,7 @@ import { db } from "@/server/db";
 import { eq, like, and, sql, or, gt, count, desc } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
 import { Product } from "menu";
-import { DraftSavedEmail, OrderMadeEmail } from "../nodemailer";
+import { DraftSavedEmail, OrderMadeEmail, sendEmail } from "../nodemailer";
 import { orderNowSchema } from "@/components/order-now-modal/utils";
 
 export type Status = "draft" | "loading" | "submitted" | "completed";
@@ -307,8 +307,6 @@ export const orderRouter = createTRPCRouter({
         },
         ctx: { session },
       }) => {
-        // if (!session.user.email || !session.user.name)
-        //   throw new Error("unauthed");
         const result = await createUserOrder({
           orderId,
           products,
@@ -335,6 +333,15 @@ export const orderRouter = createTRPCRouter({
               };
             }),
           );
+        } else if (
+          (invoiceRequested && session?.user?.email) ||
+          orderDetails?.email
+        ) {
+          await sendEmail({
+            to: session?.user.email ?? (orderDetails?.email as string),
+            subject: "Gourmet: შეკვეთა მიღებულია",
+            text: "შეკვეთა მიღებულია. ჩვენი გუნდი დაგეკონთაქტებათ მალე.",
+          });
         }
 
         if (!session?.user?.name || !session.user.email) {
