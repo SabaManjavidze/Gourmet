@@ -334,7 +334,7 @@ export const orderRouter = createTRPCRouter({
             }),
           );
         } else if (
-          (invoiceRequested && session?.user?.email) ||
+          (invoiceRequested && session?.user?.email !== undefined) ||
           orderDetails?.email
         ) {
           await sendEmail({

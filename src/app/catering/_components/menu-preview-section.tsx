@@ -80,7 +80,7 @@ export function MenuPreviewSection({
       <div>
         <Button
           onClick={() => onOrderClick(data.id, data.title)}
-          disabled={data.title != "ყავის შესვენება"}
+          // disabled={data.title != "ყავის შესვენება"}
           className="mt-8 px-4 uppercase max-lg:mt-0 max-md:mt-3 lg:hidden"
           size={"lg"}
           variant={"accent"}

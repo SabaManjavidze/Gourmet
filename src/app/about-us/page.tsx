@@ -89,7 +89,7 @@ export default function AboutUsPage() {
             text-4xl font-bold leading-[55px] max-xl:text-3xl
             max-xl:leading-[58px] max-lg:h-full max-md:h-auto max-md:text-center max-md:text-2xl"
               >
-                Make a wish & you will get the dish..!
+                სივრცე გემრიელი
               </p>
             </div>
             <div className="max-sm:mt-5">
@@ -106,7 +106,7 @@ export default function AboutUsPage() {
             leading-[55px] max-xl:text-3xl max-xl:leading-[58px] max-md:text-center
             max-md:text-2xl"
               >
-                Get the delicious food on your tables
+                სივრცე გემრიელი
               </p>
               <div
                 className="h-full w-full bg-round-dish2 bg-contain bg-bottom 
@@ -129,7 +129,7 @@ export default function AboutUsPage() {
             className="text-3xl font-bold max-xl:text-2xl max-lg:text-xl
           max-md:text-center"
           >
-            Avail Our Services For All Kind Of Events
+            ISO სერთიფიცირებული
           </h2>
           <p
             className="mt-6 h-72 overflow-y-scroll text-left text-lg

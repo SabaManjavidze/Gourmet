@@ -30,6 +30,11 @@ export async function POST(request: Request) {
     });
     await db.delete(orders).where(eq(orders.payId, PaymentId));
     return Response.error();
+  } else {
+    await db
+      .update(orders)
+      .set({ status: "completed" })
+      .where(eq(orders.payId, PaymentId));
   }
-  return Response.json({ message: "hello" });
+  return Response.json({ status: 200 });
 }

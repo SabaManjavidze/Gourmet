@@ -127,7 +127,9 @@ group by
   `,
         );
         // console.log({ data: productsWithVariants });
-        const new_pr = Math.floor(personRange / 10) * 10;
+
+        const new_pr = Math.floor(personRange / 10) * 10 + 10;
+        console.log({ personRange, new_pr });
         const menu = await db
           .select()
           .from(menuSampleVariants)
@@ -151,7 +153,7 @@ group by
             and(
               eq(menuSampleVariants.menu_id, menuId),
               eq(menuSampleVariants.type, menuType),
-              gt(menuSampleVariants.person_range, personRange),
+              eq(menuSampleVariants.person_range, new_pr),
             ),
           )
           .limit(1);

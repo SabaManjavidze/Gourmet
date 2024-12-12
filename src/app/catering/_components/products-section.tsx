@@ -68,7 +68,7 @@ export function ProductsSection() {
     const dataParam = `data=${JSON.stringify(params)}`;
     router.push(
       pathname +
-        `?menuId=${m.id}&menuName=${m.name}&personRange=${data.personRange}&type=${data.type}&${dataParam}`,
+        `?menuId=${m.id}&menuName=${m.name}&type=${data.type}&${dataParam}&personRange=${data.personRange}`,
       { scroll: true },
     );
     // await getMenuProducts();

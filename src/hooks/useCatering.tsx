@@ -54,7 +54,6 @@ export const CateringProvider = ({ children }: { children: ReactNode }) => {
   )
     throw new Error("invalid url");
   if (dataArg) {
-    console.log({ dataArg });
     additional_data = JSON.parse(dataArg);
   } else {
     additional_data = undefined;

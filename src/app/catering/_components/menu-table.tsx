@@ -33,7 +33,7 @@ export function MenuTable({
     plates: formData?.plates ?? "ერთჯერადი",
     drinks: formData?.drinks ?? [],
     type: formData?.type as MenuVariants,
-    personRange: Number(formData?.personRange),
+    personRange: Math.floor(Number(formData?.personRange) / 10) * 10,
   });
   const closeModal = () => {
     setAddProdOpen(false);
