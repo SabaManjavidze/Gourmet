@@ -4,7 +4,7 @@ import { useMenu } from "@/hooks/useMenu";
 import type { ProductWithVariants, menuKey, productState } from "menu";
 import { v4 as uuid } from "uuid";
 import { twMerge } from "tailwind-merge";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DeleteIcon, XCircleIcon } from "lucide-react";
 import { VariantAccordion } from "./variant-accordion";
@@ -44,7 +44,7 @@ export function MenuProduct({
           <p
             className={twMerge(
               cls,
-              "overflow-hidden whitespace-nowrap border-l text-start",
+              "overflow-x-scroll whitespace-nowrap border-l text-start",
             )}
           >
             {product.name}

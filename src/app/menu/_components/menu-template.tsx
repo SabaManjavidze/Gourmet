@@ -33,9 +33,9 @@ export function MenuTemplate({
     <div className="mt-16">
       <div className="flex w-full justify-center">
         <h3
-          className="menu-title-gradient w-min whitespace-nowrap border-b 
-        border-b-accent font-lucida-bold text-5xl leading-[70px] 
-        max-lg:text-4xl max-md:text-3xl"
+          className="menu-title-gradient w-min max-w-full whitespace-nowrap 
+        border-b border-b-accent font-lucida-bold text-5xl 
+        leading-[70px] max-lg:text-4xl max-md:text-3xl max-sm:text-xl"
         >
           {name}
         </h3>
@@ -52,24 +52,25 @@ export function MenuTemplate({
           )}
         >
           <div className="menu-table-items border py-5 text-start font-bold">
-            <p className="ml-5">Items</p>
+            <p className="ml-5">პროდუქტები</p>
           </div>
           <div
-            className="menu-table-other-fields flex justify-between whitespace-nowrap font-bold 
-              *:h-full *:w-full"
+            className="menu-table-other-fields flex justify-between 
+            whitespace-normal font-bold *:h-full *:w-full"
           >
-            <p className="flex w-full items-center justify-center border border-l-0">
-              Price
-            </p>
-            <p className="flex w-full items-center justify-center border border-l-0">
-              Quantity
-            </p>
-            <p
-              className="flex w-full items-center justify-center border 
-            border-l-0 max-sm:!whitespace-normal"
-            >
-              Total Price
-            </p>
+            <div className="flex items-center justify-center border border-l-0">
+              <p className="max-sm:max-w-10 ">ფასი</p>
+            </div>
+            <div className="flex items-center justify-center border border-l-0">
+              <p className="overflow-hidden text-clip max-sm:max-w-9">
+                რაოდენობა
+              </p>
+            </div>
+            <div className="flex items-center justify-center border border-l-0">
+              <p className="overflow-hidden text-clip max-sm:max-w-10">
+                სრული ფასი
+              </p>
+            </div>
           </div>
         </li>
         {menu[name]?.map((product, idx) => (

@@ -1,8 +1,7 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { z } from "zod";
 import {
   Form,
   FormControl,
@@ -12,33 +11,28 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Capitalize, cn } from "@/lib/utils";
-import { useRouter } from "next/router";
 import { Modal } from "@/components/ui/modal";
-import { useMenu } from "@/hooks/useMenu";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { MenuVariants } from "@/lib/types";
-import { useCatering } from "@/hooks/useCatering";
-import { Checkbox } from "@/components/ui/checkbox";
-import { v4 } from "uuid";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { DatePickerForm } from "@/components/order-now-modal/date-picker-form";
-const eventTypes = [
-  "Corporate",
-  "Wedding",
-  "Private Party",
-  "Festival",
-  "Other",
-] as const;
-const formSchema = z.object({
-  type: z.enum(eventTypes),
-  eventDetails: z.string(),
-  numberOfGuests: z.string(),
-  dateOfEvent: z.date(),
-  priceRange: z.number(),
-});
-type formType = z.infer<typeof formSchema>;
+import {
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { Tooltip } from "@radix-ui/react-tooltip";
+import { useSession } from "next-auth/react";
+import { toast } from "sonner";
+import {
+  eventTypes,
+  customCateringFormType,
+  customCateringSchema,
+  priceTypes,
+  priceObj,
+} from "../utils";
+import { api } from "@/trpc/react";
+
 export function CustomCateringFormModal({
   open,
   closeModal,
@@ -48,18 +42,31 @@ export function CustomCateringFormModal({
   closeModal: () => void;
   // onSubmit: (data: { personRange: number; menuType: MenuVariants }) => void;
 }) {
+  const { status, data: session } = useSession();
+  const { mutateAsync: orderCustomCatering, isPending } =
+    api.order.orderCustomCatering.useMutation();
   const [selectedType, setSelecteType] = useState<
     undefined | (typeof eventTypes)[number]
   >();
-  const form = useForm<formType>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<customCateringFormType>({
+    resolver: zodResolver(customCateringSchema),
     defaultValues: {
       numberOfGuests: "",
     },
   });
 
-  const onSubmitForm = async (data: formType) => {
-    if (!data) return;
+  const onSubmitForm = async (data: customCateringFormType) => {
+    if (
+      !data ||
+      status !== "authenticated" ||
+      !session.user.email ||
+      !session.user.name
+    )
+      return;
+    await orderCustomCatering({
+      data,
+    });
+    toast.success("შეკვეთა მიღებულია. ჩვენი გუნდი მალე დაგექონტაქტებათ.");
     closeModal();
     // onSubmit({ menuType: data.type, personRange: Number(data.personRange) });
   };
@@ -68,21 +75,22 @@ export function CustomCateringFormModal({
       isOpen={open}
       closeModal={closeModal}
       title=""
-      className="max-h-[90%] w-1/2 overflow-y-auto"
+      className="max-h-[90%] w-3/5 overflow-y-auto max-xl:w-4/5 max-sm:w-[95%]"
     >
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmitForm, (err) => {
             console.log(err);
           })}
-          className="relative flex flex-col items-center justify-center px-14 py-4"
+          className="relative flex flex-col items-center justify-center px-14 py-4
+          max-lg:px-2"
         >
           <div className="flex w-full items-center justify-center gap-x-12">
-            <div className="flex h-full flex-col items-center justify-center gap-y-24">
+            <div className="flex h-full w-full flex-col items-center justify-center gap-y-24">
               <div className="flex w-full flex-col justify-center gap-y-7">
                 <div className="flex flex-col items-center justify-center">
                   <FormLabel className="text-lg font-bold">
-                    Event Details
+                    ფურშეტის დეტალები
                   </FormLabel>
                 </div>
                 <FormField
@@ -95,8 +103,10 @@ export function CustomCateringFormModal({
                       </div>
                       <FormControl>
                         <Textarea
-                          className="text-md w-full rounded-sm"
-                          placeholder={"Type Here..."}
+                          className="text-md w-full rounded-sm placeholder:text-sm"
+                          placeholder={
+                            "ფურშეტის დეტალები, დამატებითი ინფორმაცია"
+                          }
                           {...field}
                           defaultValue={""}
                         />
@@ -104,73 +114,44 @@ export function CustomCateringFormModal({
                     </FormItem>
                   )}
                 />
-
-                <div className="flex flex-col items-center justify-center">
-                  <FormLabel className="text-lg font-bold">
-                    Event Type
-                  </FormLabel>
-                </div>
-                <ul className="flex w-full items-center gap-x-10">
-                  {eventTypes.map((item) => (
-                    <li key={item} className="flex items-center gap-x-3">
-                      <Checkbox
-                        id={item}
-                        className="rounded-[3px]"
-                        checked={selectedType && selectedType == item}
-                        onCheckedChange={(checked) => {
-                          if (checked && selectedType !== item) {
-                            setSelecteType(item);
-                          } else if (!checked && selectedType == item) {
-                            setSelecteType(undefined);
-                          }
-                        }}
-                      />
-                      <label
-                        htmlFor={item}
-                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        {item}
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-
                 <FormField
                   control={form.control}
-                  name={"type"}
+                  name={"priceRange"}
                   render={({ field }) => (
                     <FormItem className="flex flex-col items-center space-y-8 py-8">
-                      <FormLabel className="text-lg">Menu Type</FormLabel>
+                      <FormLabel className="text-lg font-bold">
+                        ფურშეტის ღირებულება:
+                      </FormLabel>
                       <FormControl>
                         <RadioGroup
                           onValueChange={field.onChange}
                           defaultValue={field.value}
-                          className="flex items-center"
+                          className="flex items-center max-md:flex-col max-md:items-start"
                         >
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="cheap" />
-                            </FormControl>
-                            <FormLabel className="text-lg font-normal">
-                              Cheap
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="standard" />
-                            </FormControl>
-                            <FormLabel className="text-lg font-normal">
-                              Standard
-                            </FormLabel>
-                          </FormItem>
-                          <FormItem className="flex items-center space-x-3 space-y-0">
-                            <FormControl>
-                              <RadioGroupItem value="expensive" />
-                            </FormControl>
-                            <FormLabel className="text-lg font-normal">
-                              Expensive
-                            </FormLabel>
-                          </FormItem>
+                          {priceTypes.map((item) => (
+                            <FormItem
+                              key={item}
+                              className="flex items-center space-x-3 space-y-0"
+                            >
+                              <FormControl>
+                                <RadioGroupItem value={item} />
+                              </FormControl>
+                              <FormLabel className="font-normal">
+                                <TooltipProvider>
+                                  <Tooltip delayDuration={300}>
+                                    <TooltipTrigger asChild>
+                                      <p className="text-base">
+                                        {priceObj[item].title}
+                                      </p>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="max-w-60">
+                                      <p>{priceObj[item].desc}</p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
+                              </FormLabel>
+                            </FormItem>
+                          ))}
                         </RadioGroup>
                       </FormControl>
                       <FormMessage />
@@ -178,6 +159,95 @@ export function CustomCateringFormModal({
                   )}
                 />
 
+                {/* <div className="flex flex-col items-center justify-center">
+                  <FormLabel className="text-lg font-bold"></FormLabel>
+                </div>
+                <div className="flex w-full justify-center">
+                  <ul className="grid w-full grid-cols-2 gap-y-2 max-md:gap-x-2">
+                    {eventTypes.map((item) => (
+                      <li key={item} className="flex items-center gap-x-3">
+                        <Checkbox
+                          id={item}
+                          className="rounded-[3px]"
+                          checked={selectedType && selectedType == item}
+                          onCheckedChange={(checked) => {
+                            if (checked && selectedType !== item) {
+                              setSelecteType(item);
+                            } else if (!checked && selectedType == item) {
+                              setSelecteType(undefined);
+                            }
+                          }}
+                        />
+                        <label
+                          htmlFor={item}
+                          className="text-base leading-none peer-disabled:cursor-not-allowed 
+                          peer-disabled:opacity-70 max-md:leading-5"
+                        >
+                          {item}
+                        </label>
+                      </li>
+                    ))}
+                  </ul>
+                </div> */}
+
+                <FormField
+                  control={form.control}
+                  name={"type"}
+                  render={({ field }) => (
+                    <FormItem className="flex flex-col items-center space-y-8 py-8">
+                      <FormLabel className="text-lg font-bold">
+                        ფურშეტის ტიპი:
+                      </FormLabel>
+                      <FormControl>
+                        <RadioGroup
+                          onValueChange={field.onChange}
+                          defaultValue={field.value}
+                          className="flex items-center max-md:flex-col max-md:items-start"
+                        >
+                          {eventTypes.map((item) => (
+                            <FormItem
+                              key={item}
+                              className="flex items-center space-x-3 space-y-0"
+                            >
+                              <FormControl>
+                                <RadioGroupItem value={item} />
+                              </FormControl>
+                              <FormLabel className="text-base font-normal">
+                                {item}
+                              </FormLabel>
+                            </FormItem>
+                          ))}
+                        </RadioGroup>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                {status !== "authenticated" ? (
+                  <FormField
+                    control={form.control}
+                    name={"userEmail"}
+                    render={({ field }) => (
+                      <FormItem className="w-full">
+                        <div className="flex items-center justify-between">
+                          <FormLabel className="w-full text-base font-bold">
+                            თქვენი იმეილი
+                          </FormLabel>
+                          <FormMessage />
+                          <FormControl>
+                            <Input
+                              {...field}
+                              className="text-md w-full rounded-sm py-2"
+                              placeholder={"იმეილი"}
+                              type={"email"}
+                            />
+                          </FormControl>
+                        </div>
+                      </FormItem>
+                    )}
+                  />
+                ) : null}
                 <div className="flex w-full items-center justify-center">
                   <FormField
                     control={form.control}
@@ -187,9 +257,9 @@ export function CustomCateringFormModal({
                         <div className="flex items-center justify-between">
                           <h3
                             className="w-full text-base font-bold 
-              max-xl:text-lg max-md:text-base max-sm:text-xs"
+              max-xl:text-lg max-md:text-base max-sm:text-sm"
                           >
-                            Please Enter Number of Guests
+                            ხალხის რაოდენობა
                           </h3>
                           <FormMessage />
                         </div>
@@ -197,6 +267,7 @@ export function CustomCateringFormModal({
                           <Input
                             {...field}
                             type="number"
+                            // datatype="number"
                             className="ml-4 h-8 w-16 rounded-[3px] border-accent text-base"
                           />
                         </FormControl>
@@ -207,9 +278,9 @@ export function CustomCateringFormModal({
                 <div className="flex w-full items-center justify-between">
                   <h3
                     className="w-full text-base font-bold 
-              max-xl:text-lg max-md:text-base max-sm:text-xs"
+              max-xl:text-lg max-md:text-base max-sm:text-sm"
                   >
-                    Date Of Event
+                    ფურშეტის დღე
                   </h3>
                   <div className="">
                     <DatePickerForm
@@ -228,8 +299,10 @@ export function CustomCateringFormModal({
               variant={"accent"}
               size={"lg"}
               className="text-base"
+              isLoading={isPending}
+              disabled={isPending}
             >
-              Confirm
+              დადასტურება
             </Button>
           </div>
         </form>

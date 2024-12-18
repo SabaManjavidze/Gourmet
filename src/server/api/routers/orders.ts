@@ -9,8 +9,15 @@ import { db } from "@/server/db";
 import { eq, like, and, sql, or, gt, count, desc } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
 import { Product } from "menu";
-import { DraftSavedEmail, OrderMadeEmail, sendEmail } from "../nodemailer";
+import {
+  CustomCateringEmail,
+  DraftSavedEmail,
+  OrderMadeEmail,
+  sendEmail,
+  weWillContactYouEmail,
+} from "../nodemailer";
 import { orderNowSchema } from "@/components/order-now-modal/utils";
+import { customCateringSchema } from "@/app/catering/utils";
 
 export type Status = "draft" | "loading" | "submitted" | "completed";
 interface Order {
@@ -221,6 +228,21 @@ export async function createUserOrder({
 }
 
 export const orderRouter = createTRPCRouter({
+  orderCustomCatering: publicProcedure
+    .input(
+      z.object({
+        data: customCateringSchema,
+      }),
+    )
+    .mutation(async ({ input: { data }, ctx: { session } }) => {
+      const userEmail = session?.user.email ?? data.userEmail;
+      if (!userEmail) throw new Error("no user email");
+      await CustomCateringEmail({
+        data,
+        userName: session?.user.name ?? data?.userEmail?.split("@")[0] ?? "",
+      });
+      await weWillContactYouEmail(userEmail);
+    }),
   removeProductFromOrder: protectedProcedure
     .input(
       z.object({
@@ -337,11 +359,9 @@ export const orderRouter = createTRPCRouter({
           (invoiceRequested && session?.user?.email !== undefined) ||
           orderDetails?.email
         ) {
-          await sendEmail({
-            to: session?.user.email ?? (orderDetails?.email as string),
-            subject: "Gourmet: შეკვეთა მიღებულია",
-            text: "შეკვეთა მიღებულია. ჩვენი გუნდი დაგეკონთაქტებათ მალე.",
-          });
+          await weWillContactYouEmail(
+            session?.user.email ?? (orderDetails?.email as string),
+          );
         }
 
         if (!session?.user?.name || !session.user.email) {

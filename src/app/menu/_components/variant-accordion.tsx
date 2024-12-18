@@ -22,7 +22,7 @@ export function VariantAccordion({
     <Accordion type="single" collapsible className="h-full w-full">
       <AccordionItem value="item-1" className="h-full">
         <AccordionTrigger
-          className={`h-full overflow-hidden whitespace-nowrap border-x p-5 text-start`}
+          className={`h-full overflow-x-auto whitespace-nowrap border-x p-5 text-start`}
         >
           <div className="flex items-center gap-x-2">
             {product.active !== product.id

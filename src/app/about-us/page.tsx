@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import React, { Suspense, useEffect, useState } from "react";
 import { Video } from "../_components/video";
 import PartnersSlider from "../_components/partners-slider";
+import Link from "next/link";
 
 export default function AboutUsPage() {
   // const { data: session } = useSession();
@@ -26,11 +27,11 @@ export default function AboutUsPage() {
           Select, Customize, And Order Delicious Catering For Any Occasion
         </h2> */}
       </section>
-      <section className="flex flex-col items-center">
+      <section className="flex flex-col items-center max-md:mt-10">
         {/* <h2 className="text-4xl font-bold">What We Offer</h2> */}
         <div
-          className="flex h-[430px] items-center justify-center px-24 *:flex-1 max-lg:px-16
-        max-md:mt-8 max-md:h-[500px] max-md:flex-col max-md:px-5 max-sm:h-[600px] max-xs:h-[800px]"
+          className="flex h-[430px] items-center justify-center px-24 *:flex-1 
+        max-lg:px-16 max-md:mt-8 max-md:h-[500px] max-md:flex-col max-md:px-5 max-sm:h-[800px] max-xs:h-[800px]"
         >
           {/* hidden on mobile */}
           <div
@@ -39,9 +40,9 @@ export default function AboutUsPage() {
           ></div>
           <div className="flex !flex-[2] flex-col items-center gap-y-3 max-md:!flex-1">
             <p
-              className="mt-12 h-96 overflow-y-scroll px-20 text-center 
-            text-xl leading-10 text-muted-sm max-2xl:leading-8 
-            max-xl:mx-16 max-xl:text-lg max-lg:mx-6 max-lg:text-base max-md:mx-0
+              className="mt-12 h-96 overflow-y-scroll px-20 text-center text-xl leading-10 
+            text-muted-sm max-2xl:leading-8 max-xl:mx-16 max-xl:text-lg 
+            max-lg:mx-6 max-lg:text-base max-md:mx-0 max-md:mt-0 max-md:h-auto max-sm:px-12
             "
             >
               “გურმე” საქართველოს ბაზარზე 2012 წლიდან ოპერირებს და მომხმარებელს
@@ -61,7 +62,7 @@ export default function AboutUsPage() {
               შეუკვეთე
             </Button>
           </div>
-          <div className="flex h-full w-full">
+          <div className="flex h-full w-full max-md:mt-5">
             <div
               className="h-full w-full bg-about-us-1 bg-cover bg-center bg-no-repeat
           md:hidden"
@@ -85,7 +86,7 @@ export default function AboutUsPage() {
             max-xl:w-3/4 max-md:w-full max-md:bg-center max-sm:h-72"
               ></div>
               <p
-                className="menu-title-gradient flex w-72 items-end text-left 
+                className="menu-title-gradient flex w-full items-end text-left 
             text-4xl font-bold leading-[55px] max-xl:text-3xl
             max-xl:leading-[58px] max-lg:h-full max-md:h-auto max-md:text-center max-md:text-2xl"
               >
@@ -102,7 +103,7 @@ export default function AboutUsPage() {
             max-lg:items-center max-md:hidden max-md:flex-col-reverse *:max-md:ml-0"
             >
               <p
-                className="menu-title-gradient w-72 text-left text-4xl font-bold 
+                className="menu-title-gradient w-full text-left text-4xl font-bold 
             leading-[55px] max-xl:text-3xl max-xl:leading-[58px] max-md:text-center
             max-md:text-2xl"
               >
@@ -175,10 +176,10 @@ export default function AboutUsPage() {
             className="text-shadow text-center text-4xl font-normal tracking-wide
           text-white underline underline-offset-2 max-xl:text-2xl max-lg:text-xl"
           >
-            Select The Menu Of Your Choice
+            აირჩიეთ მენიუ
           </h2>
 
-          <p
+          {/* <p
             className="text-shadow mt-8 text-center text-lg text-white
           max-2xl:leading-8 max-xl:text-lg max-lg:text-base max-sm:text-xs"
           >
@@ -189,14 +190,15 @@ export default function AboutUsPage() {
             feugiat lectus. Class aptent taciti sociosqu Maecenas eget
             condimentum velit, sit amet feugiat lectus. Classaptent taciti
             sociosqu
-          </p>
-
-          <Button
-            className="mt-8 border border-white text-lg uppercase"
-            variant={"accent"}
-          >
-            შეუკვეთე
-          </Button>
+          </p> */}
+          <Link href="/catering">
+            <Button
+              className="mt-8 border border-white text-lg uppercase"
+              variant={"accent"}
+            >
+              შეუკვეთე
+            </Button>
+          </Link>
         </div>
       </section>
       <PartnersSlider />

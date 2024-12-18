@@ -25,7 +25,7 @@ type DatePickerFormProps = {
 };
 export function DatePickerForm({
   name,
-  placeholder = "pick a date",
+  placeholder = "აირჩიე თარიღი",
   control,
   className,
 }: DatePickerFormProps) {

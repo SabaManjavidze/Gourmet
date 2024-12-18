@@ -1,7 +1,8 @@
+// import { customCateringFormType } from "@/app/catering/utils";
+import { customCateringFormType } from "@/app/catering/utils";
 import { OrderFormType } from "@/components/order-now-modal/utils";
 import { env } from "@/env";
 import nodemailer from "nodemailer";
-import { dirname } from "path";
 
 type messageType = {
   from?: string;
@@ -40,6 +41,40 @@ export async function sendEmail({ subject, text, html, to }: messageType) {
   transporter.close();
 }
 
+export async function weWillContactYouEmail(userEmail: string) {
+  await sendEmail({
+    to: userEmail,
+    subject: "Gourmet: შეკვეთა მიღებულია",
+    text: "შეკვეთა მიღებულია. ჩვენი გუნდი დაგეკონთაქტებათ მალე.",
+  });
+}
+export async function CustomCateringEmail({
+  data,
+  userName,
+}: {
+  data: customCateringFormType;
+  userName: string;
+}) {
+  const detailsText = (
+    Object.entries(data) as unknown as [key: keyof typeof data, value: string][]
+  )
+    .map(([key, value]) => {
+      if (key == "dateOfEvent") {
+        const date = new Date(value.toString());
+        return `${key} - ${new Intl.DateTimeFormat("en-GB").format(date)}`;
+      } else if (key !== "userEmail") {
+        return `${key} - ${value}`;
+      }
+    })
+    .join("<br>");
+  await sendEmail({
+    to: "saba.manjavidze@gmail.com",
+    // to: "r.muzashvili@gurme.ge",
+    subject: `${userName}ს უნდა შეუკვეთოს დიდი ფურშეტი`,
+    html: `მომხმარებლის იმეილი: ${data.userEmail}
+    <br><br><br>${detailsText}`,
+  });
+}
 export async function DraftSavedEmail(
   fullname: string,
   order_name: string,
@@ -52,10 +87,10 @@ export async function DraftSavedEmail(
   const tableHTML = `
 <table class="tg"><thead>
   <tr>
-    <th class="tg-a3y7">Name</th>
-    <th class="tg-a3y7">Quantity</th>
-    <th class="tg-m48a">Price</th>
-    <th class="tg-m48a">TotalPrice</th>
+    <th class="tg-a3y7">სახელი</th>
+    <th class="tg-a3y7">რაოდენობა</th>
+    <th class="tg-m48a">ფასი</th>
+    <th class="tg-m48a">სრული ფასი</th>
   </tr></thead>
 <tbody>
 ${products
@@ -76,7 +111,7 @@ ${products
   await sendEmail({
     to: "saba.manjavidze@gmail.com",
     // to: "r.muzashvili@gurme.ge",
-    subject: `${fullname} saved a draft menu`,
+    subject: `${fullname} შეინახა მენიუ`,
     html: `
     <html>
     <head>
@@ -94,7 +129,7 @@ ${products
     <body>
         <div style="display:flex;align-items:center; justify-content:center">
         <h3 style="font-weight:600">${fullname}</h3>
-        <h4 style="margin-left:6px">(${user_email}) Saved a Draft Menu ${order_name}.</h4> 
+        <h4 style="margin-left:6px">(${user_email}) შეინახა მენიუ ${order_name}.</h4> 
         </div>
         <div style="display:flex;align-items:center; justify-content:center;
         margin-top:15px;font-weight:600">
@@ -138,10 +173,10 @@ export async function OrderMadeEmail(
   const tableHTML = `
 <table class="tg"><thead>
   <tr>
-    <th class="tg-a3y7">Name</th>
-    <th class="tg-a3y7">Quantity</th>
-    <th class="tg-m48a">Price</th>
-    <th class="tg-m48a">TotalPrice</th>
+    <th class="tg-a3y7">სახელი</th>
+    <th class="tg-a3y7">რაოდენობა</th>
+    <th class="tg-m48a">ფასი</th>
+    <th class="tg-m48a">სრული ფასი</th>
   </tr></thead>
 <tbody>
 ${products
@@ -162,7 +197,7 @@ ${products
   await sendEmail({
     to: "saba.manjavidze@gmail.com",
     // to: "r.muzashvili@gurme.ge",
-    subject: `${fullname} Made An Order`,
+    subject: `${fullname} შეკვეთა გააკეთა`,
     html: `
     <html>
     <head>
@@ -180,11 +215,11 @@ ${products
     <body>
         <div style="display:flex;align-items:center; justify-content:center">
         <h3 style="font-weight:600">${fullname}</h3>
-        <h4 style="margin-left:6px">(${user_email}) Made An Order ${order_name}.</h4> 
+        <h4 style="margin-left:6px">(${user_email}) შეუკვეთა ${order_name}.</h4> 
         </div>
         <div style="display:flex;align-items:center; justify-content:center;
         margin-top:15px;font-weight:600">
-        <h4>Total Price -</h4>
+        <h4>სრული ფასი -</h4>
          <h3 style="color:green;font-weight:600; margin-left:6px">₾${totalPrice}</h3>
         </div>
         ${detailsText}

@@ -14,8 +14,8 @@ export function AddProductsSection({ onClick }: { onClick: () => void }) {
       >
         <Button
           variant={"ghost"}
-          className="group h-4/5 text-accent-foreground
-          max-md:w-40 max-md:py-0"
+          className="group h-4/5 text-accent-foreground max-md:w-40
+          max-md:py-0 max-sm:text-xs"
           onClick={onClick}
         >
           <PlusCircle className="mr-2 max-md:h-5 max-md:w-5" />

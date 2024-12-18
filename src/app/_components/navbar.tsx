@@ -62,7 +62,7 @@ export function Navbar() {
           triggerButton={
             <Button
               variant={"outline"}
-              className="rounded-xl border-[1.3pt] border-black
+              className="rounded-xl border-[1.0pt] border-[#3A3A4A]
               bg-transparent p-2 duration-150 max-sm:h-8 max-sm:w-8"
               onClick={() => setOpen(true)}
             >

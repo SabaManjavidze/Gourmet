@@ -2,17 +2,18 @@ import OrbitingCircles from "@/components/magicui/orbiting-circles";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 
-export function CustomCatering() {
+export function CustomCatering({ onClick }: { onClick?: () => void }) {
   return (
     <div
       className="relative flex h-[500px] w-full flex-col items-center 
-      justify-center overflow-hidden rounded-lg bg-background max-sm:h-[350px]"
+      justify-center overflow-hidden rounded-lg bg-background max-sm:h-[400px]"
     >
       <div className="">
         <Button
+          onClick={onClick}
           className="z-20 whitespace-pre-wrap rounded-2xl bg-accent/70 py-10 text-6xl
         font-semibold leading-none text-accent-light hover:bg-accent/80
-        active:bg-accent max-sm:text-5xl"
+        active:bg-accent max-sm:py-7 max-sm:text-3xl"
         >
           შექმენი შენით
         </Button>
@@ -39,7 +40,7 @@ export function CustomCatering() {
       {/* Outer Circles (reverse) */}
       <OrbitingCircles
         className="size-[80px] border-none bg-transparent"
-        radius={190}
+        radius={170}
         duration={4}
         delay={0}
         reverse
@@ -48,7 +49,7 @@ export function CustomCatering() {
       </OrbitingCircles>
       <OrbitingCircles
         className="size-[80px] border-none bg-transparent"
-        radius={190}
+        radius={170}
         duration={4}
         delay={10}
         reverse

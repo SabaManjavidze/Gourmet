@@ -57,6 +57,7 @@ export function ProductsSection() {
     setFormData(data);
     const m = sampleMenus.find((item) => item.id == selectedMenu);
     if (!m) return;
+    console.log({ mname: m.name });
     setCurrMenu({ id: m.id, name: m.name });
     // await utils.sampleMenu.getMenuProducts.fetch({
     //   menuId: m.id,
@@ -94,8 +95,14 @@ export function ProductsSection() {
       !currMenu ? (
         <>
           <MenuPreviews orderClick={orderClick} />
-          <section className="relative flex w-full max-lg:mt-12">
-            <CustomCatering />
+          <section className="relative flex w-full flex-col text-center font-semibold max-lg:mt-12">
+            <h2>
+              თუ მასშტაბურ ღონისძიებას (ქორწილი, კორპორაციული წვეულება,
+              კონფერენცია) გეგმავთ, გირჩევთ, დაუკავშირდეთ „გურმეს“ მენეჯერს,
+              რომელიც დაგეხმარებათ ქეითერინგის მოცულობის განსაზღვრაში და სწორი
+              კერძების შერჩევაში, კონსულტაცია უფასოა.
+            </h2>
+            <CustomCatering onClick={() => setCustomOpen(true)} />
           </section>
         </>
       ) : (

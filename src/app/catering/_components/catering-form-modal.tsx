@@ -73,7 +73,7 @@ export function CateringFormModal({
       isOpen={open}
       closeModal={closeModal}
       // title="Please Tell Us What You Need"
-      className="max-h-[90%] w-3/5 overflow-y-auto"
+      className="max-h-[90%] min-h-[75%] w-3/5 overflow-y-auto max-xl:w-4/5 max-sm:w-[95%]"
     >
       <Form {...form}>
         <form
@@ -85,7 +85,7 @@ export function CateringFormModal({
           //   console.log(error);
           //   toast.error(JSON.stringify(error));
           // }}
-          className="relative flex flex-col items-center justify-center px-14 py-4"
+          className="relative flex flex-col items-center justify-center px-14 py-4 max-lg:px-10"
         >
           <div className="flex w-full items-center justify-center gap-x-12">
             <div className="flex h-full flex-col items-center justify-center gap-y-24">
@@ -103,30 +103,73 @@ export function CateringFormModal({
                           <RadioGroup
                             onValueChange={field.onChange}
                             defaultValue={field.value}
-                            className="flex items-center"
+                            className="flex items-center max-md:flex-col max-md:items-start"
                           >
                             <FormItem className="flex items-center space-x-2 space-y-0">
                               <FormControl>
                                 <RadioGroupItem value="cheap" />
                               </FormControl>
-                              <FormLabel className="text-lg font-normal">
-                                ეკონომიური
+                              <FormLabel className="text-lg font-normal max-lg:text-base">
+                                <TooltipProvider>
+                                  <Tooltip delayDuration={300}>
+                                    <TooltipTrigger asChild>
+                                      <p>ეკონომიური</p>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p className="max-w-60">
+                                        ეკონომიური მენიუ გათვლილია მცირე
+                                        ბიუჯეტზე და მოიცავს მსუბუქ
+                                        წასახემსებელს.
+                                      </p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center space-x-2 space-y-0">
                               <FormControl>
                                 <RadioGroupItem value="standard" />
                               </FormControl>
-                              <FormLabel className="text-lg font-normal">
-                                სტანდარტული
+                              <FormLabel className="text-lg font-normal max-lg:text-base">
+                                <TooltipProvider>
+                                  <Tooltip delayDuration={300}>
+                                    <TooltipTrigger asChild>
+                                      <p>სტანდარტული</p>
+                                    </TooltipTrigger>
+                                    <TooltipContent>
+                                      <p className="max-w-60">
+                                        “გურმეს” სტანდარტული მენიუ იდეალურია
+                                        ყველანაირი ღონისძიებისთვის, მათ შორის,
+                                        კორპორაციული წვეულებებისთვის, ოჯახური
+                                        დღესასწაულების ან ვორქშოფებისთვის.
+                                      </p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
                               </FormLabel>
                             </FormItem>
                             <FormItem className="flex items-center space-x-2 space-y-0">
                               <FormControl>
                                 <RadioGroupItem value="expensive" />
                               </FormControl>
-                              <FormLabel className="text-lg font-normal">
-                                საუკეთესო
+                              <FormLabel className="text-lg font-normal max-lg:text-base">
+                                <TooltipProvider>
+                                  <Tooltip delayDuration={300}>
+                                    <TooltipTrigger asChild>
+                                      <p>გასტრონომიური შედევრი</p>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="z-[200]">
+                                      <p className="max-w-60">
+                                        გამორჩეული მენიუ მოიცავს კერძებისა და
+                                        სასმელების ფართო ასორტიმენტს, თქენს
+                                        კომფორტზე კი გურმეს პროფესიონალური
+                                        მომსახურე პერსონალი იზრუნებს. აჩუქეთ
+                                        თქვენს სტუმრებს უნიკალური გასტრონომიული
+                                        გამოცდილება.
+                                      </p>
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </TooltipProvider>
                               </FormLabel>
                             </FormItem>
                           </RadioGroup>
@@ -140,10 +183,10 @@ export function CateringFormModal({
                     control={form.control}
                     name={"personRange"}
                     render={({ field }) => (
-                      <FormItem className="flex w-full flex-col items-center justify-between">
+                      <FormItem className="flex w-full items-center justify-center gap-x-4">
                         <div className="flex items-center justify-between">
-                          <FormLabel className="text-xl">
-                            ხალხის რაოდენობა
+                          <FormLabel className="text-lg max-lg:text-base">
+                            ხალხის რაოდენობა:
                           </FormLabel>
                           <FormMessage />
                         </div>
@@ -234,7 +277,7 @@ export function CateringFormModal({
                       className={`${formIdx !== 2 ? "hidden" : "flex"} flex-col items-center space-y-8
                     py-8`}
                     >
-                      <FormLabel className="text-xl">
+                      <FormLabel className="text-xl max-md:text-base">
                         შეარჩიეთ ჭურჭლის ტიპი:
                       </FormLabel>
                       <FormControl>
@@ -247,7 +290,7 @@ export function CateringFormModal({
                             <FormControl>
                               <RadioGroupItem value="ერთჯერადი" />
                             </FormControl>
-                            <FormLabel className="text-lg font-normal">
+                            <FormLabel className="text-lg font-normal max-md:text-base">
                               ერთჯერადი
                             </FormLabel>
                           </FormItem>
@@ -255,7 +298,7 @@ export function CateringFormModal({
                             <FormControl>
                               <RadioGroupItem value="ფაიფურის" />
                             </FormControl>
-                            <FormLabel className="text-lg font-normal">
+                            <FormLabel className="text-lg font-normal max-md:text-base">
                               ფაიფურის
                             </FormLabel>
                           </FormItem>
@@ -276,7 +319,7 @@ export function CateringFormModal({
                       <FormLabel className="text-xl">
                         შეარჩიეთ სასმელები:
                       </FormLabel>
-                      <div className="flex items-center gap-x-3">
+                      <div className="flex items-center gap-x-3 max-lg:flex-col max-lg:items-start">
                         {drinksArr.map((item) => (
                           <FormField
                             key={item}
@@ -314,7 +357,10 @@ export function CateringFormModal({
                                       }}
                                     />
                                   </FormControl>
-                                  <FormLabel className="text-lg font-normal">
+                                  <FormLabel
+                                    className="text-lg font-normal 
+                                  max-sm:text-base"
+                                  >
                                     {item}
                                   </FormLabel>
                                 </FormItem>
@@ -330,13 +376,13 @@ export function CateringFormModal({
               </div>
             </div>
           </div>
-          <div className="flex justify-center gap-x-7 py-5">
+          <div className="flex justify-center gap-x-7 pb-3 pt-5">
             <Button
               type="button"
               variant={"accent"}
-              size={"lg"}
+              // size={"lg"}
               disabled={formIdx == 0}
-              className="text-base"
+              className="h-10 w-20 rounded-[3px] text-base max-lg:h-9 max-lg:w-16 max-lg:text-sm"
               onClick={() => setFormIdx((prev) => (prev > 0 ? prev - 1 : prev))}
             >
               უკან
@@ -344,9 +390,9 @@ export function CateringFormModal({
             <Button
               type="button"
               variant={"accent"}
-              size={"lg"}
+              // size={"lg"}
               disabled={formIdx >= formItemLength}
-              className="text-base"
+              className="h-10 w-20 rounded-[3px] text-base max-lg:h-9 max-lg:w-16 max-lg:text-sm"
               onClick={() =>
                 setFormIdx((prev) => (prev < formItemLength ? prev + 1 : prev))
               }
@@ -357,8 +403,8 @@ export function CateringFormModal({
           <Button
             type="submit"
             variant={"accent"}
-            size={"lg"}
-            className="text-base"
+            // size={"lg"}
+            className="rounded-[3px] text-base max-lg:text-sm"
           >
             დადასტურება
           </Button>

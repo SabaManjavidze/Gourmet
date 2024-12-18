@@ -27,18 +27,18 @@ const partners = [
     name: "tegeta.png",
     className: "",
   },
-  {
-    name: "tch.png",
-    className: "",
-  },
+  // {
+  //   name: "tch.png",
+  //   className: "",
+  // },
   {
     name: "kanti.jpg",
     className: "",
   },
-  {
-    name: "parlament.jpg",
-    className: "object-cover",
-  },
+  // {
+  //   name: "parlament.jpg",
+  //   className: "object-cover",
+  // },
   {
     name: "tbc.png",
     className: "",
@@ -83,7 +83,8 @@ const PartnerCard = ({
   return (
     <div
       className={cn(
-        "relative h-32 max-h-56 w-32 cursor-pointer overflow-hidden rounded-full border p-4 duration-150 hover:scale-105",
+        `relative h-32 max-h-56 w-32 cursor-pointer overflow-hidden rounded-full 
+        border p-4 duration-150 hover:scale-105 max-sm:h-20 max-sm:w-20`,
         // light styles
         "border-gray-950/[.1] bg-gray-950/[.01] hover:bg-gray-950/[.05]",
         // dark styles
@@ -108,7 +109,7 @@ const PartnersSlider = () => {
       className="relative flex h-[230px] w-full flex-col items-center 
     overflow-hidden"
     >
-      <h3 className="text-2xl font-bold">ჩვენი პარტნიორები</h3>
+      <h3 className="text-2xl font-bold">ჩვენს ფურშეტს იყენებენ</h3>
       <Marquee
         pauseOnHover
         className="mt-10 flex h-full items-center border [--duration:20s]"
