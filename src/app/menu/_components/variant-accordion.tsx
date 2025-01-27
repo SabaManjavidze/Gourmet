@@ -8,13 +8,16 @@ import {
 import { Button } from "@/components/ui/button";
 import { useMenu } from "@/hooks/useMenu";
 import { ChevronLeft } from "lucide-react";
-import { productState } from "menu";
+import { Product, productState } from "menu";
+import { useMemo } from "react";
 
 export function VariantAccordion({
   product,
   menuSample,
+  activeProduct,
 }: {
   product: productState;
+  activeProduct: Product;
   menuSample: string;
 }) {
   const { changeVariant } = useMenu();
@@ -24,11 +27,7 @@ export function VariantAccordion({
         <AccordionTrigger
           className={`h-full overflow-x-auto whitespace-nowrap border-x p-5 text-start`}
         >
-          <div className="flex items-center gap-x-2">
-            {product.active !== product.id
-              ? product?.variants?.find((v) => v.id == product.active)?.name
-              : product.name}
-          </div>
+          <div className="flex items-center gap-x-2">{activeProduct.name}</div>
         </AccordionTrigger>
         <AccordionContent className="h-full w-full pb-0">
           <ul className="flex gap-x-3 overflow-x-auto border border-y-0 px-4 pb-4">

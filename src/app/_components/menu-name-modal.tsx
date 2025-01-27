@@ -20,7 +20,7 @@ export function MenuNameModal({
     <Modal
       isOpen={open}
       closeModal={closeModal}
-      title="Name Your Menu"
+      title="აირჩიეთ მენიუს სათაური"
       className="h-[120px] w-[700px]"
     >
       <div
@@ -41,7 +41,7 @@ export function MenuNameModal({
           onChange={(e) => {
             setMenuName(e.currentTarget.value);
           }}
-          placeholder="Type Menu Name..."
+          placeholder="ჩემი მენიუ..."
           className="w-full border-black/20 text-base 
         focus-within:!border-t-accent"
         />

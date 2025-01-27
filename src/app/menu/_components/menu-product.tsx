@@ -4,7 +4,7 @@ import { useMenu } from "@/hooks/useMenu";
 import type { ProductWithVariants, menuKey, productState } from "menu";
 import { v4 as uuid } from "uuid";
 import { twMerge } from "tailwind-merge";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DeleteIcon, XCircleIcon } from "lucide-react";
 import { VariantAccordion } from "./variant-accordion";
@@ -22,6 +22,14 @@ export function MenuProduct({
 }) {
   const { changeQuantity, hideZeroQt, changeVariant, handleRemoveProduct } =
     useMenu();
+  const activeProduct = useMemo(() => {
+    if (product.variants) {
+      const active = product?.variants?.find((v) => v.id == product.active);
+      return active ?? product;
+    } else {
+      return product;
+    }
+  }, [product]);
   return (
     <li
       // hidden={product.quantity == 0}
@@ -39,7 +47,11 @@ export function MenuProduct({
       </Button>
       <div className="menu-table-items flex overflow-x-hidden">
         {enabled && product?.variants?.length ? (
-          <VariantAccordion product={product} menuSample={menuSample} />
+          <VariantAccordion
+            activeProduct={activeProduct}
+            product={product}
+            menuSample={menuSample}
+          />
         ) : (
           <p
             className={twMerge(
@@ -56,7 +68,7 @@ export function MenuProduct({
         *:h-full *:w-full"
       >
         <p className={twMerge(cls, "flex items-center justify-center")}>
-          {product.price}
+          {activeProduct.price}
         </p>
         <Input
           type="number"

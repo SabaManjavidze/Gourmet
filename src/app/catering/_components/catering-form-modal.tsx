@@ -29,7 +29,7 @@ import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 
 const drinksArr = [
-  "წყალი",
+  "წყალი 0.5",
   "აპარატის ყავა",
   "ნატურალური წვენი",
   "არ მსურს სასმელი",

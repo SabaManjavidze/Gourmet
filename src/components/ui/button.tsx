@@ -47,7 +47,7 @@ const buttonVariants = cva(
 
 export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-  VariantProps<typeof buttonVariants> {
+    VariantProps<typeof buttonVariants> {
   asChild?: boolean;
   active?: boolean;
   isLoading?: boolean;
@@ -73,12 +73,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       <Comp
         className={cn(buttonVariants({ variant, size, className }))}
         ref={ref}
+        disabled={isLoading}
         {...props}
       >
         <div className="inline-flex w-fit items-center justify-center">
           <div
-            className={`${isLoading ? "opacity-0" : "opacity-100"
-              } flex w-full items-center justify-${contentPos}`}
+            className={`${
+              isLoading ? "opacity-0" : "opacity-100"
+            } flex w-full items-center justify-${contentPos}`}
           >
             {children}
           </div>

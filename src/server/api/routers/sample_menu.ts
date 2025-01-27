@@ -17,11 +17,100 @@ import {
   variants,
 } from "@/server/db/schema";
 import { db } from "@/server/db";
-import { and, eq, gt, like, ne, sql } from "drizzle-orm";
+import { and, eq, gt, ne, sql } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
 import { ProductWithVariants } from "menu";
 import { cateringFormSchema } from "@/app/catering/_components/catering-form-modal";
+import { product_with_variants_query } from "@/lib/utils";
 export const menuTypeEnum = z.enum(["cheap", "standard", "expensive"]);
+// refactor product with variants query function
+// and use it for getting drink and plate
+export const getProductWithVariants = async (productName: string) => {
+  const result = (await db.execute(
+    sql<{
+      data: ProductWithVariants;
+    }>`
+  SELECT
+  p.id,
+  p.name,
+  p.price,
+  COALESCE(
+    ARRAY_AGG(
+      JSONB_BUILD_OBJECT(
+        'id', pv.id,
+        'name', pv.name,
+        'price', pv.price
+      )
+      ORDER BY pv.id
+    ) FILTER (
+      WHERE pv.id IS NOT NULL
+    ),
+    '{}'
+  ) AS "variants"
+FROM
+  product p
+LEFT JOIN LATERAL (
+  SELECT
+    pv.id,
+    pv.name,
+    pv.price
+  FROM
+    product pv
+    JOIN products_to_variants ptv ON pv.id = ptv.product_id
+  WHERE
+    ptv.variant_id = (
+      SELECT
+        ptv2.variant_id
+      FROM
+        products_to_variants ptv2
+      WHERE
+        ptv2.product_id = p.id
+      LIMIT 1 -- Ensure only one row is returned
+    )
+    AND pv.id != p.id -- Exclude the product itself
+) pv ON TRUE -- Join using LATERAL subquery
+WHERE
+  p.name = ${productName}
+GROUP BY
+  p.id,
+  p.name,
+  p.price`,
+  )) as unknown as ProductWithVariants[];
+  return result;
+};
+
+export const checkPlates = async (
+  item: ProductWithVariants,
+  plateType: string,
+) => {
+  const db_plate = await getProductWithVariants(`${plateType} ჭურჭელი`);
+  console.log({ variants: db_plate[0]?.variants });
+  if (!db_plate[0]) throw new Error("Plate not found.");
+  const in_var = item.variants?.find((variant) => {
+    if (!db_plate[0]) throw new Error("Plate not found.");
+    if (variant.name == db_plate[0].name) {
+      return variant;
+    }
+  });
+
+  // if (in_var) {
+  //   const id = in_var.id;
+  //   const name = in_var.name;
+  //   in_var.name = item.name;
+  //   in_var.id = item.id;
+  //   item.name = name;
+  //   item.id = id;
+  //   item.name = db_plate[0].name;
+  //   item.id = db_plate[0].id;
+  //   item.variants = db_plate[0].variants;
+  // } else {
+  return {
+    ...db_plate[0],
+    price: Number(db_plate[0].price),
+  };
+  // }
+  // return true;
+};
 export const sampleMenuRouter = createTRPCRouter({
   getMenus: publicProcedure.query(async () => {
     const menus = await db
@@ -47,10 +136,20 @@ export const sampleMenuRouter = createTRPCRouter({
       }),
     )
     .query(
-      async ({ input: { menuId, type: menuType, personRange, menuName } }) => {
-        const productsWithVariants = await db.execute(
+      async ({
+        input: {
+          menuId,
+          type: menuType,
+          personRange,
+          menuName,
+          assistance,
+          drinks,
+          plates,
+        },
+      }) => {
+        let productsWithVariants = (await db.execute(
           sql<{ data: ProductWithVariants }>`
- select
+select
   p.id,
   p.name,
   p.price,
@@ -114,9 +213,8 @@ from
           -- Ensure we are filtering based on the same menu_id
       )
   ) pv on true -- Join using LATERAL subquery
-
 where
-  ms.id = ${menuId}
+  ms.id = ${menuId} 
     -- Filter out products that are themselves variants in this menu
 group by
   p.id,
@@ -125,11 +223,9 @@ group by
   pts.qgrowth_factor,
   pts.quantity; 
   `,
-        );
-        // console.log({ data: productsWithVariants });
-
+        )) as unknown as ProductWithVariants[];
         const new_pr = Math.floor(personRange / 10) * 10 + 10;
-        console.log({ personRange, new_pr });
+
         const menu = await db
           .select()
           .from(menuSampleVariants)
@@ -145,6 +241,97 @@ group by
             ),
           );
         if (!menu[0]) throw new Error("Menu not found");
+        // add assistance
+        const ass_in_prods = productsWithVariants.find(
+          (item) => item.name == "მომსახურება",
+        );
+        if (assistance == "კი" && !ass_in_prods) {
+          const assistance_prod = await db
+            .select()
+            .from(products)
+            .where(eq(products.name, "მომსახურება"))
+            .limit(1);
+          if (!assistance_prod[0]) throw new Error("Assistance not found.");
+          productsWithVariants.push({
+            ...assistance_prod[0],
+            price: Number(assistance_prod[0].price),
+            quantity: 1,
+          });
+        }
+        //add plates
+        const plate_in_prods = productsWithVariants.find((item) =>
+          item?.name?.endsWith?.("ჭურჭელი"),
+        );
+        if (!plate_in_prods) {
+          const plates_prod = await getProductWithVariants(`${plates} ჭურჭელი`);
+          if (!plates_prod[0]) throw new Error("Plates not found.");
+          productsWithVariants.push({
+            ...plates_prod[0],
+            price: Number(plates_prod[0].price),
+            quantity: personRange,
+          });
+        }
+        //add drinks
+        if (drinks[0] !== "არ მსურს სასმელი") {
+          for (const drink of drinks) {
+            const drink_prod = await getProductWithVariants(drink);
+            if (!drink_prod[0]) throw new Error("Drink not found.");
+            let was_in_menu = false;
+            productsWithVariants.forEach((item) => {
+              if (!drink_prod[0]) throw new Error("Drink not found.");
+              if (item.name !== drink && item.variants) {
+                const in_var = item.variants?.find((variant) => {
+                  if (variant.name == drink) {
+                    if (drink.startsWith("ყავის") && item.name == "ყავა") {
+                      return variant;
+                    } else if (!drink.startsWith("ყავის")) {
+                      return variant;
+                    }
+                  }
+                });
+                if (in_var) {
+                  was_in_menu = true;
+                  const id = in_var.id;
+                  const name = in_var.name;
+                  in_var.name = item.name;
+                  in_var.id = item.id;
+                  item.name = name;
+                  item.id = id;
+                }
+              } else if (item.name == drink) {
+                was_in_menu = true;
+              }
+            });
+            if (!was_in_menu) {
+              productsWithVariants.push({
+                ...drink_prod[0],
+                price: Number(drink_prod[0].price),
+                quantity: personRange,
+              });
+            }
+          }
+        }
+        (productsWithVariants as any) = productsWithVariants.filter((item) => {
+          if (!item.id) return false;
+          if (
+            ass_in_prods &&
+            assistance == "არა" &&
+            item.name == "მომსახურება"
+          ) {
+            return false;
+          }
+          if (
+            item.name == plate_in_prods?.name &&
+            plate_in_prods?.name !== plates
+          ) {
+            checkPlates(item, plates).then((res) => {
+              console.log({ res });
+              productsWithVariants.push({ ...res, quantity: item.quantity });
+            });
+            return false;
+          }
+          return true;
+        });
 
         const nextPersonRange = await db
           .select()
@@ -159,8 +346,7 @@ group by
           .limit(1);
         return {
           data: {
-            [menuName]:
-              productsWithVariants as unknown as ProductWithVariants[],
+            [menuName]: productsWithVariants,
           },
           nextPersonRange: nextPersonRange?.[0]?.person_range ?? undefined,
         };

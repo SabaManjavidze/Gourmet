@@ -125,8 +125,16 @@ export const MenuProvider = ({
         prev +
           Number(
             menu[curr]?.reduce((prev1, curr1) => {
+              let item_price = curr1.price;
+              if (curr1.active !== curr1.id) {
+                const active_item = curr1.variants?.find(
+                  (item) => item.id == curr1.active,
+                );
+                if (!active_item) throw new Error("active variant not found");
+                item_price = active_item.price;
+              }
               return (
-                prev1 + Math.round(100 * curr1.price * curr1.quantity) / 100
+                prev1 + Math.round(100 * item_price * curr1.quantity) / 100
               );
             }, 0),
           ) || 0

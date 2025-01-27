@@ -18,6 +18,10 @@ import {
 } from "../nodemailer";
 import { orderNowSchema } from "@/components/order-now-modal/utils";
 import { customCateringSchema } from "@/app/catering/utils";
+import {
+  DraftSavedMessageTelegram,
+  OrderMadeMessageTelegram,
+} from "../telegram_bot";
 
 export type Status = "draft" | "loading" | "submitted" | "completed";
 interface Order {
@@ -160,7 +164,7 @@ export async function createUserOrder({
   userId,
   payId,
 }: {
-  orderId: string | undefined;
+  orderId?: string;
   products: { id: string; quantity: number; variant_name?: string }[];
   menuName: string;
   totalPrice: string;
@@ -355,9 +359,24 @@ export const orderRouter = createTRPCRouter({
               };
             }),
           );
+          await OrderMadeMessageTelegram(
+            session?.user.name ??
+              `${orderDetails.firstname} ${orderDetails.lastname}`,
+            menuName,
+            session?.user.email ?? "",
+            totalPrice,
+            orderDetails,
+            products.map((item) => {
+              return {
+                name: item.name,
+                price: item.price.toString(),
+                quantity: item.quantity.toString(),
+              };
+            }),
+          );
         } else if (
-          (invoiceRequested && session?.user?.email !== undefined) ||
-          orderDetails?.email
+          invoiceRequested &&
+          (session?.user?.email || orderDetails?.email)
         ) {
           await weWillContactYouEmail(
             session?.user.email ?? (orderDetails?.email as string),
@@ -369,6 +388,19 @@ export const orderRouter = createTRPCRouter({
         }
         if (status == "draft" && !invoiceRequested) {
           await DraftSavedEmail(
+            session.user.name,
+            menuName,
+            session.user.email,
+            totalPrice,
+            products.map((item) => {
+              return {
+                name: item.name,
+                price: item.price.toString(),
+                quantity: item.quantity.toString(),
+              };
+            }),
+          );
+          await DraftSavedMessageTelegram(
             session.user.name,
             menuName,
             session.user.email,

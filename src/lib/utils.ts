@@ -51,5 +51,53 @@ export const MenuToState = (
   });
   return state;
 };
-
+export const product_with_variants_query = (productName: string) => {
+  return `
+  SELECT
+  p.id,
+  p.name,
+  p.price,
+  COALESCE(
+    ARRAY_AGG(
+      JSONB_BUILD_OBJECT(
+        'id', pv.id,
+        'name', pv.name,
+        'price', pv.price
+      )
+      ORDER BY pv.id
+    ) FILTER (
+      WHERE pv.id IS NOT NULL
+    ),
+    '{}'
+  ) AS "variants"
+FROM
+  product p
+LEFT JOIN LATERAL (
+  SELECT
+    pv.id,
+    pv.name,
+    pv.price
+  FROM
+    product pv
+    JOIN products_to_variants ptv ON pv.id = ptv.product_id
+  WHERE
+    ptv.variant_id = (
+      SELECT
+        ptv2.variant_id
+      FROM
+        products_to_variants ptv2
+      WHERE
+        ptv2.product_id = p.id
+      LIMIT 1 -- Ensure only one row is returned
+    )
+    AND pv.id != p.id -- Exclude the product itself
+) pv ON TRUE -- Join using LATERAL subquery
+WHERE
+  p.name = ${productName}
+GROUP BY
+  p.id,
+  p.name,
+  p.price;
+`;
+};
 export const PROFILE_ROUTE = "/user/profile";

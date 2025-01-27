@@ -13,6 +13,8 @@ export const env = createEnv({
     TBC_CLIENT_ID: z.string(),
     TBC_CLIENT_SECRET: z.string(),
     TBC_API_KEY: z.string(),
+    TELEGRAM_BOT_KEY: z.string(),
+    TELEGRAM_CHAT_ID: z.string(),
     NODE_ENV: z
       .enum(["development", "test", "production"])
       .default("development"),
@@ -54,6 +56,8 @@ export const env = createEnv({
     TBC_CLIENT_ID: process.env.TBC_CLIENT_ID,
     TBC_CLIENT_SECRET: process.env.TBC_CLIENT_SECRET,
     TBC_API_KEY: process.env.TBC_API_KEY,
+    TELEGRAM_BOT_KEY: process.env.TELEGRAM_BOT_KEY,
+    TELEGRAM_CHAT_ID: process.env.TELEGRAM_CHAT_ID,
     // DISCORD_CLIENT_ID: process.env.DISCORD_CLIENT_ID,
     // DISCORD_CLIENT_SECRET: process.env.DISCORD_CLIENT_SECRET,
   },
