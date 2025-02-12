@@ -10,12 +10,17 @@ import { MenuPreviews } from "./product-section/menu-previews";
 import { MenuTable } from "./menu-table";
 import { CustomCatering } from "@/app/_components/custom-catering";
 export function ProductsSection() {
-  const [customOpen, setCustomOpen] = useState(false);
-  const { currMenu, setCurrMenu, formData, setFormData } = useCatering();
+  const {
+    currMenu,
+    setCurrMenu,
+    formData,
+    setFormData,
+    customOpen,
+    setCustomOpen,
+  } = useCatering();
   const [selectedMenu, setSelectedMenu] = useState<undefined | string>();
   const router = useRouter();
   const pathname = usePathname();
-  const utils = api.useUtils();
   const searchParams = useSearchParams();
   const menuIdArg = useMemo(() => searchParams.get("menuId"), [searchParams]);
   const menuNameArg = useMemo(
@@ -59,12 +64,6 @@ export function ProductsSection() {
     if (!m) return;
     console.log({ mname: m.name });
     setCurrMenu({ id: m.id, name: m.name });
-    // await utils.sampleMenu.getMenuProducts.fetch({
-    //   menuId: m.id,
-    //   menuName: m.name,
-    //   menuType: data.menuType,
-    //   personRange: data.personRange,
-    // });
     const { personRange, type, ...params } = data;
     const dataParam = `data=${JSON.stringify(params)}`;
     router.push(
@@ -72,7 +71,6 @@ export function ProductsSection() {
         `?menuId=${m.id}&menuName=${m.name}&type=${data.type}&${dataParam}&personRange=${data.personRange}`,
       { scroll: true },
     );
-    // await getMenuProducts();
   };
 
   return (

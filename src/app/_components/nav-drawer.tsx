@@ -72,7 +72,7 @@ export function NavDrawer({
           ) : (
             <div>
               <Button variant={"accent"} onClick={() => setAuth(true)}>
-                <p className="mr-3">Login</p>
+                <p className="mr-3">ავტორიზაცია</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   x="0px"

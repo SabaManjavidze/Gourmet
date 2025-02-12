@@ -26,8 +26,11 @@ export default function MenuPage() {
     );
   return (
     <main className="mt-8">
-      <div className="flex w-full flex-col items-center justify-center bg-menu-banner bg-contain bg-center bg-no-repeat py-48 max-lg:bg-none">
-        <h1 className="text-shadow-sm z-10 font-lucida-bold text-8xl max-md:text-6xl">
+      <div
+        className="flex w-full flex-col items-center justify-center bg-menu-banner bg-contain bg-center 
+      bg-no-repeat py-48 max-lg:bg-none max-sm:pb-5 max-sm:pt-16"
+      >
+        <h1 className="text-shadow-sm z-10 font-lucida-bold text-8xl max-md:text-center max-md:text-6xl">
           მთავარი მენიუ
         </h1>
         <p
@@ -37,7 +40,7 @@ export default function MenuPage() {
           გაეცანით მენიუს და შეარჩიეთ თქვენთვის სასურველი კერძები
         </p>
       </div>
-      <div className="flex justify-center pb-20">
+      <div className="flex justify-center pb-20 ">
         <div className="w-3/4 max-md:w-[90%]">
           <MenuProvider dbMenu={data} changes={true}>
             {Object.keys(data).map((item, idx) => (

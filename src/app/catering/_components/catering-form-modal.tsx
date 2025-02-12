@@ -61,6 +61,7 @@ export function CateringFormModal({
       personRange: "10",
       drinks: [],
     },
+    mode: "onSubmit",
   });
 
   const onSubmitForm = async (data: cateringFormType) => {
@@ -85,106 +86,21 @@ export function CateringFormModal({
           //   console.log(error);
           //   toast.error(JSON.stringify(error));
           // }}
-          className="relative flex flex-col items-center justify-center px-14 py-4 max-lg:px-10"
+          className="relative flex flex-col items-center justify-center px-14 py-4 max-lg:px-5"
         >
           <div className="flex w-full items-center justify-center gap-x-12">
             <div className="flex h-full flex-col items-center justify-center gap-y-24">
               <div className="flex w-full flex-col justify-center gap-y-7">
                 <div hidden={formIdx != 0}>
-                  <FormField
-                    control={form.control}
-                    name={"type"}
-                    render={({ field }) => (
-                      <FormItem className="flex flex-col items-center space-y-8 py-8">
-                        <FormLabel className="text-xl">
-                          შეარჩიეთ სასურველი პაკეტი:
-                        </FormLabel>
-                        <FormControl>
-                          <RadioGroup
-                            onValueChange={field.onChange}
-                            defaultValue={field.value}
-                            className="flex items-center max-md:flex-col max-md:items-start"
-                          >
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="cheap" />
-                              </FormControl>
-                              <FormLabel className="text-lg font-normal max-lg:text-base">
-                                <TooltipProvider>
-                                  <Tooltip delayDuration={300}>
-                                    <TooltipTrigger asChild>
-                                      <p>ეკონომიური</p>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      <p className="max-w-60">
-                                        ეკონომიური მენიუ გათვლილია მცირე
-                                        ბიუჯეტზე და მოიცავს მსუბუქ
-                                        წასახემსებელს.
-                                      </p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              </FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="standard" />
-                              </FormControl>
-                              <FormLabel className="text-lg font-normal max-lg:text-base">
-                                <TooltipProvider>
-                                  <Tooltip delayDuration={300}>
-                                    <TooltipTrigger asChild>
-                                      <p>სტანდარტული</p>
-                                    </TooltipTrigger>
-                                    <TooltipContent>
-                                      <p className="max-w-60">
-                                        “გურმეს” სტანდარტული მენიუ იდეალურია
-                                        ყველანაირი ღონისძიებისთვის, მათ შორის,
-                                        კორპორაციული წვეულებებისთვის, ოჯახური
-                                        დღესასწაულების ან ვორქშოფებისთვის.
-                                      </p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              </FormLabel>
-                            </FormItem>
-                            <FormItem className="flex items-center space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem value="expensive" />
-                              </FormControl>
-                              <FormLabel className="text-lg font-normal max-lg:text-base">
-                                <TooltipProvider>
-                                  <Tooltip delayDuration={300}>
-                                    <TooltipTrigger asChild>
-                                      <p>გასტრონომიური შედევრი</p>
-                                    </TooltipTrigger>
-                                    <TooltipContent className="z-[200]">
-                                      <p className="max-w-60">
-                                        გამორჩეული მენიუ მოიცავს კერძებისა და
-                                        სასმელების ფართო ასორტიმენტს, თქენს
-                                        კომფორტზე კი გურმეს პროფესიონალური
-                                        მომსახურე პერსონალი იზრუნებს. აჩუქეთ
-                                        თქვენს სტუმრებს უნიკალური გასტრონომიული
-                                        გამოცდილება.
-                                      </p>
-                                    </TooltipContent>
-                                  </Tooltip>
-                                </TooltipProvider>
-                              </FormLabel>
-                            </FormItem>
-                          </RadioGroup>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-
+                  <h3 className="text-center text-xl font-semibold">
+                    შეარჩიეთ სასურველი პაკეტი:
+                  </h3>
                   <FormField
                     control={form.control}
                     name={"personRange"}
                     render={({ field }) => (
-                      <FormItem className="flex w-full items-center justify-center gap-x-4">
-                        <div className="flex items-center justify-between">
+                      <FormItem className="mt-5 flex w-full items-center justify-center gap-x-4">
+                        <div className="flex w-1/2 items-center ">
                           <FormLabel className="text-lg max-lg:text-base">
                             ხალხის რაოდენობა:
                           </FormLabel>
@@ -211,6 +127,77 @@ export function CateringFormModal({
                       </FormItem>
                     )}
                   />
+                  <FormField
+                    control={form.control}
+                    name={"type"}
+                    render={({ field }) => (
+                      <FormItem className="flex flex-col items-center space-y-8 py-8">
+                        <FormControl>
+                          <RadioGroup
+                            onValueChange={field.onChange}
+                            defaultValue={field.value}
+                            className="flex flex-col items-center space-y-5 *:w-full
+                            max-md:items-start"
+                          >
+                            <FormItem className="flex items-start space-x-2 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem
+                                  value="expensive"
+                                  className="mt-2"
+                                />
+                              </FormControl>
+                              <FormLabel className="text-lg font-normal max-lg:text-base">
+                                <p className="font-semibold">
+                                  გასტრონომიური შედევრი
+                                </p>
+                                <p className="text-base">
+                                  გამორჩეული მენიუ მოიცავს კერძებისა და
+                                  სასმელების ფართო ასორტიმენტს, თქენს კომფორტზე
+                                  კი გურმეს პროფესიონალური მომსახურე პერსონალი
+                                  იზრუნებს. აჩუქეთ თქვენს სტუმრებს უნიკალური
+                                  გასტრონომიული გამოცდილება.
+                                </p>
+                              </FormLabel>
+                            </FormItem>
+
+                            <FormItem className="flex items-start space-x-2 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem
+                                  value="standard"
+                                  className="mt-2"
+                                />
+                              </FormControl>
+                              <FormLabel className="text-lg font-normal max-lg:text-base">
+                                <p className="font-semibold">სტანდარტული</p>
+                                <p className="text-base">
+                                  “გურმეს” სტანდარტული მენიუ იდეალურია
+                                  ყველანაირი ღონისძიებისთვის, მათ შორის,
+                                  კორპორაციული წვეულებებისთვის, ოჯახური
+                                  დღესასწაულების ან ვორქშოფებისთვის.
+                                </p>
+                              </FormLabel>
+                            </FormItem>
+                            <FormItem className="flex items-start space-x-2 space-y-0">
+                              <FormControl>
+                                <RadioGroupItem
+                                  value="cheap"
+                                  className="mt-2"
+                                />
+                              </FormControl>
+                              <FormLabel className="text-lg font-normal max-lg:text-base">
+                                <p className="font-semibold">ეკონომიური</p>
+                                <p className="text-base">
+                                  ეკონომიური მენიუ გათვლილია მცირე ბიუჯეტზე და
+                                  მოიცავს მსუბუქ წასახემსებელს.
+                                </p>
+                              </FormLabel>
+                            </FormItem>
+                          </RadioGroup>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                 </div>
                 <FormField
                   control={form.control}
@@ -221,14 +208,9 @@ export function CateringFormModal({
                     py-8`}
                     >
                       <FormLabel className="text-center text-xl">
-                        {/* <TooltipProvider> */}
-                        {/* <Tooltip> */}
-                        {/* <TooltipTrigger asChild> */}
                         <p className="underline">
                           გსურთ “გურმეს” პერსონალის მომსახურეობა?
                         </p>
-                        {/* </TooltipTrigger> */}
-                        {/* <TooltipContent className="w-72"> */}
                         <p className="mt-2 text-sm">
                           „გურმეს“ პერსონალის მომსახურება გულისხმობს გუნდს,
                           რომელიც, მოიტანს კერძებსა და ინვენტარს, ლამაზად
@@ -237,9 +219,6 @@ export function CateringFormModal({
                           შეკვეთას მიიღებთ შესაფუთი ყუთებით, პერსონალისა და
                           ინვენტარის გარეშე.
                         </p>
-                        {/* </TooltipContent> */}
-                        {/* </Tooltip> */}
-                        {/* </TooltipProvider> */}
                       </FormLabel>
                       <FormControl>
                         <RadioGroup
@@ -376,7 +355,7 @@ export function CateringFormModal({
               </div>
             </div>
           </div>
-          <div className="flex justify-center gap-x-7 pb-3 pt-5">
+          <div className="absolute bottom-0 right-1/2 flex translate-x-1/2 justify-center gap-x-7 pb-3 pt-5">
             <Button
               type="button"
               variant={"accent"}
@@ -388,26 +367,27 @@ export function CateringFormModal({
               უკან
             </Button>
             <Button
-              type="button"
+              type={"button"}
               variant={"accent"}
               // size={"lg"}
-              disabled={formIdx >= formItemLength}
-              className="h-10 w-20 rounded-[3px] text-base max-lg:h-9 max-lg:w-16 max-lg:text-sm"
-              onClick={() =>
-                setFormIdx((prev) => (prev < formItemLength ? prev + 1 : prev))
-              }
+              className="h-10 w-auto rounded-[3px] text-base max-lg:h-9 max-lg:text-sm"
+              onClick={async () => {
+                if (formIdx == formItemLength) {
+                  console.log("hello");
+                  await form.handleSubmit(onSubmitForm, (err) => {
+                    toast.error("ფორმა არ არის ვალიდური.");
+                    console.log(err);
+                  })();
+                  return;
+                }
+                setFormIdx((prev) =>
+                  prev <= formItemLength ? prev + 1 : prev,
+                );
+              }}
             >
-              წინ
+              {formIdx == formItemLength ? "დადასტურება" : "წინ"}
             </Button>
           </div>
-          <Button
-            type="submit"
-            variant={"accent"}
-            // size={"lg"}
-            className="rounded-[3px] text-base max-lg:text-sm"
-          >
-            დადასტურება
-          </Button>
         </form>
       </Form>
     </Modal>

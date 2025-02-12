@@ -21,5 +21,6 @@ export default function PaymentCallBack() {
   if (error ?? data !== "Succeeded") {
     return <p>Something went wrong</p>;
   }
+  localStorage.removeItem("payId");
   return <p>Payment was succesfull</p>;
 }

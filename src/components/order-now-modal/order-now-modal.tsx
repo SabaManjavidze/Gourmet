@@ -49,7 +49,7 @@ export function OrderNowModal({
   const { status } = useSession();
   const { menu, totalSum } = useMenu();
   const [data, setData] = useState<OrderFormType>();
-  const [paymentOpen, setPaymentOpen] = useState(false);
+  // const [paymentOpen, setPaymentOpen] = useState(false);
   const { isPending: detailsPending, mutateAsync: createOrderDetails } =
     api.orderDetails.createOrderDetails.useMutation();
   const { isPending: orderPending, mutateAsync: createOrder } =
@@ -96,19 +96,19 @@ export function OrderNowModal({
       orderId: order.id,
     });
     // }
-    toast.success("Order was successful");
   };
   const onSubmit = async (data: OrderFormType) => {
-    if (data.invoiceRequested) {
-      await saveToDB();
-      toast.success("შეკვეთა მიღებულია. ჩვენი გუნდი დაგეკონთაქტებათ მალე.", {
-        duration: 2500,
-      });
-      closeModal();
-    } else {
-      setData(data);
-      setPaymentOpen(true);
-    }
+    // if (data.invoiceRequested) {
+    await saveToDB();
+    toast.success("შეკვეთა მიღებულია. ჩვენი გუნდი დაგეკონთაქტებათ მალე.", {
+      duration: 2500,
+    });
+    closeModal();
+    // } else {
+    // setData(data);
+    // setPaymentOpen(true);
+    // toast.success("შეკვეთა მიღებულია!");
+    // }
   };
   return (
     <Modal
@@ -117,11 +117,11 @@ export function OrderNowModal({
       className={`h-[80vh] w-[70%] ${orderPending || detailsPending ? "overflow-hidden" : "overflow-y-auto"}
          max-sm:w-[95%]`}
     >
-      <PaymentModal
+      {/* <PaymentModal
         closeModal={() => setPaymentOpen(false)}
         open={paymentOpen}
         saveToDB={saveToDB}
-      />
+      /> */}
       <div
         className={`absolute inset-0 z-10 items-center justify-center bg-gray-300/50
       ${orderPending || detailsPending ? "flex" : "hidden"}`}

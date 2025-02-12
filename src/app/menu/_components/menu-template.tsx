@@ -35,7 +35,7 @@ export function MenuTemplate({
         <h3
           className="menu-title-gradient w-min max-w-full whitespace-nowrap 
         border-b border-b-accent font-lucida-bold text-5xl 
-        leading-[70px] max-lg:text-4xl max-md:text-3xl max-sm:text-xl"
+        leading-[70px] max-lg:text-4xl max-md:text-3xl max-sm:text-3xl"
         >
           {name}
         </h3>

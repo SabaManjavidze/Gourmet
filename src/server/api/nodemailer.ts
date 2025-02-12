@@ -45,7 +45,7 @@ export async function weWillContactYouEmail(userEmail: string) {
   await sendEmail({
     to: userEmail,
     subject: "Gourmet: შეკვეთა მიღებულია",
-    text: "შეკვეთა მიღებულია. ჩვენი გუნდი დაგეკონთაქტებათ მალე.",
+    text: "შეკვეთა მიღებულია. ჩვენი გუნდი მალე დაგეკონთაქტებათ.",
   });
 }
 export async function CustomCateringEmail({

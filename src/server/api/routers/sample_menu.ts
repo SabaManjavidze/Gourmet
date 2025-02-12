@@ -306,7 +306,10 @@ group by
               productsWithVariants.push({
                 ...drink_prod[0],
                 price: Number(drink_prod[0].price),
-                quantity: personRange,
+                quantity:
+                  drink_prod[0].name == "ნატურალური წვენი"
+                    ? Math.round(personRange / 2)
+                    : personRange,
               });
             }
           }

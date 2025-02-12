@@ -12,6 +12,7 @@ const config = {
   images: {
     remotePatterns: [
       { hostname: "s3-alpha-sig.figma.com" },
+      { hostname: "platform-lookaside.fbsbx.com" },
       { hostname: "w7.pngwing.com" },
       { hostname: "lh3.googleusercontent.com" },
       { hostname: "i0.wp.com" },

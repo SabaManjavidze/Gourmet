@@ -302,7 +302,9 @@ export const MenuProvider = ({
     }
     setChanges?.(false);
     setSaveLoading(false);
-    toast.success(orderId ? "თქვენი მენიუ განახლდა" : "თქვენი მენიუ შეინახა");
+    toast.success(
+      orderId ? "თქვენი მენიუ განახლდა." : "თქვენი მენიუ შენახულია.",
+    );
     return true;
   };
   const handleOrderClick = () => {
@@ -398,8 +400,8 @@ export const MenuProvider = ({
       <MenuNameModal
         open={menuNameOpen}
         closeModal={async () => {
-          setMenuNameOpen(false);
           await handleSaveClick();
+          setMenuNameOpen(false);
         }}
         menuName={menuName}
         setMenuName={setMenuName}

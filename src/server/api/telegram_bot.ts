@@ -3,7 +3,7 @@ import { env } from "@/env";
 import { config } from "dotenv";
 import { OrderFormType } from "@/components/order-now-modal/utils";
 import { limitTxt } from "@/lib/utils";
-config();
+// config();
 
 export async function DraftSavedMessageTelegram(
   fullname: string,
@@ -12,10 +12,10 @@ export async function DraftSavedMessageTelegram(
   totalPrice: string,
   products: { name: string; price: string; quantity: string }[],
 ) {
-  const token = process.env.TELEGRAM_BOT_KEY;
-  const chat_id = process.env.TELEGRAM_CHAT_ID;
-  //   const token = env.TELEGRAM_BOT_KEY;
-  //   const chat_id = env.TELEGRAM_CHAT_ID;
+  //   const token = process.env.TELEGRAM_BOT_KEY;
+  //   const chat_id = process.env.TELEGRAM_CHAT_ID;
+  const token = env.TELEGRAM_BOT_KEY;
+  const chat_id = env.TELEGRAM_CHAT_ID;
   if (!token || !chat_id) throw new Error("telegram token not provided");
   const tableHTML = `\nპროდუქტები:\n\nსახელი               რაოდენობა    ფასი    სრული ფასი
 
@@ -47,10 +47,10 @@ export async function OrderMadeMessageTelegram(
   orderDetails: OrderFormType,
   products: { name: string; price: string; quantity: string }[],
 ) {
-  const token = process.env.TELEGRAM_BOT_KEY;
-  const chat_id = process.env.TELEGRAM_CHAT_ID;
-  //   const token = env.TELEGRAM_BOT_KEY;
-  //   const chat_id = env.TELEGRAM_CHAT_ID;
+  //   const token = process.env.TELEGRAM_BOT_KEY;
+  //   const chat_id = process.env.TELEGRAM_CHAT_ID;
+  const token = env.TELEGRAM_BOT_KEY;
+  const chat_id = env.TELEGRAM_CHAT_ID;
   if (!token || !chat_id) throw new Error("telegram token not provided");
   const detailsText = (
     Object.entries(orderDetails) as unknown as [
@@ -97,52 +97,3 @@ ${products
     // console.log(error);
   }
 }
-
-DraftSavedMessageTelegram(
-  "Saba Manjavidze",
-  "Gela",
-  "sabamanjavidze@gmail.com",
-  "500",
-  [
-    {
-      name: "კანაპე სალიამით",
-      price: "3",
-      quantity: "10",
-    },
-    {
-      name: "კანაპე სალიამით",
-      price: "3",
-      quantity: "10",
-    },
-    {
-      name: "კანაპე სალიამით",
-      price: "3",
-      quantity: "10",
-    },
-    {
-      name: "კანაპე სალიამით",
-      price: "3",
-      quantity: "10",
-    },
-    {
-      name: "კანაპე სალიამით",
-      price: "3",
-      quantity: "10",
-    },
-    {
-      name: "კანაპე სალიამით",
-      price: "3",
-      quantity: "10",
-    },
-    {
-      name: "კანაპე სალიამით",
-      price: "3",
-      quantity: "10",
-    },
-    {
-      name: "კანაპე სალიამით",
-      price: "3",
-      quantity: "10",
-    },
-  ],
-);

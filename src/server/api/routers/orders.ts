@@ -376,7 +376,7 @@ export const orderRouter = createTRPCRouter({
           );
         } else if (
           invoiceRequested &&
-          (session?.user?.email || orderDetails?.email)
+          (session?.user?.email ?? orderDetails?.email)
         ) {
           await weWillContactYouEmail(
             session?.user.email ?? (orderDetails?.email as string),

@@ -1,9 +1,11 @@
 "use client";
 
+import { CustomCatering } from "@/app/_components/custom-catering";
 import { Input } from "@/components/ui/input";
+import { Modal } from "@/components/ui/modal";
 import { useCatering } from "@/hooks/useCatering";
 import { useMenu } from "@/hooks/useMenu";
-import { MIN_PERSON_CATER } from "@/lib/constants";
+import { MAX_PERSON_CATER, MIN_PERSON_CATER } from "@/lib/constants";
 import { api } from "@/trpc/react";
 import { XCircleIcon } from "lucide-react";
 import { productState } from "menu";
@@ -16,8 +18,9 @@ export function NumberOfGuests({
   personRanges?: { next: number; def: number };
 }) {
   const { personCount, setPersonCount, menu, dbMenu, setMenu } = useMenu();
-  const { currMenu, formData, setFormData } = useCatering();
+  const { currMenu, formData, setFormData, setCustomOpen } = useCatering();
   const searchParams = useSearchParams();
+  const [over50, setOver50] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const createQueryString = useCallback(
@@ -32,76 +35,113 @@ export function NumberOfGuests({
   // const utils = api.useUtils();
   const changePersonCount = async (count: number, menuSample?: string) => {
     if (count < MIN_PERSON_CATER) {
+      console.log("less");
       setPersonCount(count);
+      return;
+    } else if (count >= MAX_PERSON_CATER) {
+      setPersonCount(MAX_PERSON_CATER - 1);
+      router.replace(
+        pathname +
+          "?" +
+          createQueryString("personRange", `${MAX_PERSON_CATER - 1}`),
+        { scroll: false },
+      );
+      setOver50(true);
       return;
     }
     if (!currMenu || !formData || !personRanges) return;
-    let m;
+    let menuStateProducts;
     let menuName = "";
     if (!menuSample) {
       menuName = Object.keys(dbMenu)[0] as string;
-      m = menu?.[menuName];
+      menuStateProducts = menu?.[menuName];
     } else {
-      m = menu?.[menuSample];
+      menuStateProducts = menu?.[menuSample];
       menuName = menuSample;
     }
-    if (!m || !menuName) return;
+    if (!menuStateProducts || !menuName) return;
     setPersonCount(count);
     router.replace(
       pathname + "?" + createQueryString("personRange", count.toString()),
       { scroll: false },
     );
     const newMenu: productState[] = [];
-    for (const prod of m) {
-      if (prod?.qgrowth_factor == undefined) {
-        console.log(prod.qgrowth_factor);
-        newMenu.push(prod);
+    for (const stateProduct of menuStateProducts) {
+      if (stateProduct?.qgrowth_factor == undefined) {
+        console.log({ growth_undefined: stateProduct.qgrowth_factor });
+        newMenu.push(stateProduct);
         continue;
       }
-      const def_quantity = dbMenu[menuName]?.find(
-        (item) => item.id == prod.id,
+      // quantity of product that was in db menu
+      const db_prod_quantity = dbMenu[menuName]?.find(
+        (item) => item.id == stateProduct.id,
       )?.quantity;
-      if (!def_quantity) throw new Error("no def product");
-      const def = Math.floor(personRanges?.def / 10) * 10;
-      const prev_c_diff = personCount - Number(def);
-      const prev_q =
-        def_quantity + Math.round(prev_c_diff * Number(prod.qgrowth_factor));
-      const c_diff = count - Number(def);
+      if (!db_prod_quantity) throw new Error("no def product");
+      // using personRanges.def instead of count to keep track of the particular 10th
+      // state of the menu was in before function.
+
+      // form person range rounded to nearest 10th
+      const nearest_range = Math.floor(personRanges?.def / 10) * 10;
+
+      // personCount (value of input element) - def (ex: 22-20; 14-10; 39-30)
+      // const person_count_diff = personCount - nearest_range;
+
+      // quantity calculated by personCount multiplier (qgrowth_factor)
+      // const prev_q =
+      //   db_prod_quantity +
+      //   Math.round(person_count_diff * Number(stateProduct.qgrowth_factor));
+
+      // new person count - def
+      const c_diff = count - nearest_range;
+
       let new_q =
-        def_quantity + Math.round(c_diff * Number(prod.qgrowth_factor));
-      if (prod.quantity !== prev_q) {
-        new_q =
-          def_quantity +
-          prod.quantity -
-          prev_q +
-          Math.round(c_diff * Number(prod.qgrowth_factor));
-      }
+        db_prod_quantity +
+        Math.round(c_diff * Number(stateProduct.qgrowth_factor));
+
+      // console.log({ new_q, prev_q, quantity: stateProduct.quantity });
+      // if (stateProduct.quantity !== prev_q) {
+      //   new_q =
+      //     db_prod_quantity +
+      //     stateProduct.quantity -
+      //     prev_q +
+      //     Math.round(c_diff * Number(stateProduct.qgrowth_factor));
+      // }
       newMenu.push({
-        ...prod,
+        ...stateProduct,
         quantity: new_q,
-        totalPrice: prod.price * new_q,
+        totalPrice: stateProduct.price * new_q,
       });
     }
     setMenu({
       [menuName]: newMenu,
     });
-    // console.log({ count, next: personRanges.next });
     const count_def = Math.floor(count / 10) * 10;
     const count_next = Math.ceil(count / 10) * 10;
-    // console.log({ count, count_def, def: personRanges.def });
     if (count >= personRanges.next) {
       setFormData({ ...formData, personRange: personRanges.next.toString() });
     } else if (
       personRanges.def > count_def &&
       personRanges.next !== count_next
     ) {
-      // console.log("hello");
       setFormData({ ...formData, personRange: count.toString() });
     }
   };
 
   return (
     <div className="flex w-full items-center justify-center">
+      <Modal
+        isOpen={over50}
+        closeModal={() => setOver50(false)}
+        title="50+ კაციანი ფურშეტისთვის დაგვეკონტაქტეთ"
+        className="w-3/5"
+      >
+        <CustomCatering
+          onClick={() => {
+            setOver50(false);
+            setCustomOpen(true);
+          }}
+        />
+      </Modal>
       <h3
         className="w-4/5 text-xl font-semibold text-gray-500 
               max-xl:text-lg max-md:text-base max-sm:text-xs"

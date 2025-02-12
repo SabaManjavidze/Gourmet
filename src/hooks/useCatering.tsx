@@ -22,6 +22,8 @@ export interface currMenuType {
 type CateringContextProps = {
   formData: cateringFormType | undefined;
   setFormData: Dispatch<SetStateAction<cateringFormType | undefined>>;
+  customOpen: boolean;
+  setCustomOpen: Dispatch<SetStateAction<boolean>>;
   currMenu: currMenuType | undefined;
   setCurrMenu: Dispatch<SetStateAction<currMenuType | undefined>>;
 };
@@ -32,6 +34,8 @@ type CateringContextProps = {
 export const CateringContext = createContext<CateringContextProps>({
   formData: undefined,
   setFormData: () => null,
+  customOpen: false,
+  setCustomOpen: () => null,
   currMenu: undefined,
   setCurrMenu: () => null,
 });
@@ -62,6 +66,7 @@ export const CateringProvider = ({ children }: { children: ReactNode }) => {
   const [currMenu, setCurrMenu] = useState<undefined | currMenuType>(
     menuIdArg && menuNameArg ? { id: menuIdArg, name: menuNameArg } : undefined,
   );
+  const [customOpen, setCustomOpen] = useState(false);
   const [formData, setFormData] = useState<cateringFormType | undefined>(
     menuTypeArg && personRangeArg
       ? {
@@ -78,6 +83,8 @@ export const CateringProvider = ({ children }: { children: ReactNode }) => {
       value={{
         formData,
         setFormData,
+        customOpen,
+        setCustomOpen,
         currMenu,
         setCurrMenu,
       }}

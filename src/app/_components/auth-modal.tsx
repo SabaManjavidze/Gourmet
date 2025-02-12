@@ -8,11 +8,11 @@ export default function AuthModal({
   modalOpen,
   closeModal,
 }: //   setShowModal,
-  {
-    modalOpen: boolean;
-    //   setShowModal: Dispatch<SetStateAction<boolean>>;
-    closeModal: () => void;
-  }) {
+{
+  modalOpen: boolean;
+  //   setShowModal: Dispatch<SetStateAction<boolean>>;
+  closeModal: () => void;
+}) {
   const [loading, setLoading] = useState<AuthProviders | "none">("none");
   const logIn = async (provider: AuthProviders) => {
     setLoading(provider);
@@ -20,7 +20,7 @@ export default function AuthModal({
     setLoading("none");
   };
   return (
-    <Modal isOpen={modalOpen} title="Sign In" closeModal={closeModal}>
+    <Modal isOpen={modalOpen} title="ავტორიზაცია" closeModal={closeModal}>
       <div className="flex flex-col items-center justify-center md:p-24 md:py-16">
         <Button
           onClick={() => logIn("google")}
@@ -36,11 +36,11 @@ export default function AuthModal({
           </svg>
           <span className="mr-1 block h-6 w-1 border-l border-white"></span>
           <span className="w-[90%] pl-3 font-sans text-lg">
-            Sign up with Google
+            შესვლა Google-ით
           </span>
         </Button>
 
-        <Button
+        {/* <Button
           onClick={() => logIn("facebook")}
           isLoading={loading == "facebook"}
           className="mt-2 flex h-16  w-72 cursor-pointer items-center justify-center rounded bg-indigo-600 px-4 py-3 text-sm font-bold text-gray-100 shadow hover:bg-indigo-700 hover:text-white"
@@ -54,9 +54,9 @@ export default function AuthModal({
           </svg>
           <span className="mr-1 block h-6 w-1 border-l border-white"></span>
           <span className="w-[90%] pl-3 font-sans text-lg">
-            Sign up with Facebook
+            შესვლა Facebook-ით
           </span>
-        </Button>
+        </Button> */}
       </div>
     </Modal>
   );

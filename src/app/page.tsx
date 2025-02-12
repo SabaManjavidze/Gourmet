@@ -17,7 +17,7 @@ export default async function Home() {
         {/* ></div> */}
         <h1
           className="text-shadow z-10 font-lucida-bold text-7xl italic 
-        text-white max-md:text-5xl max-sm:text-3xl"
+        text-white max-md:text-5xl max-sm:text-4xl"
         >
           გურმე - სივრცე გემრიელი
         </h1>
@@ -72,7 +72,7 @@ export default async function Home() {
       <section className="relative flex h-80 bg-contact-us-banner bg-cover bg-center bg-no-repeat py-12">
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="z-10 flex h-full w-full flex-col items-center justify-center">
-          <h2 className="text-shadow text-4xl font-semibold text-white">
+          <h2 className="text-shadow text-4xl font-semibold text-white max-sm:text-center max-sm:text-2xl">
             ჩვენი საკონტაქტო და სოც-მედიები
           </h2>
           <Link href="#footer" scroll={true}>
@@ -83,7 +83,7 @@ export default async function Home() {
         </div>
       </section>
       <section className="flex flex-col items-center justify-center">
-        <h2 className="text-4xl font-semibold uppercase">
+        <h2 className="text-4xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
           მომხმარებლების შეფასებები
         </h2>
         <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">

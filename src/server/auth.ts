@@ -47,6 +47,7 @@ export const authOptions: NextAuthOptions = {
   },
   callbacks: {
     async jwt({ token, user }) {
+      // console.log({ token, user });
       if (user?.id) {
         const dbUser = await db.query.users.findFirst({
           where(fields, operators) {
@@ -59,6 +60,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
     session: ({ session, token, user }) => {
+      // console.log({ session, token });
       return {
         ...session,
         user: token.user as User,
@@ -98,32 +100,35 @@ export const authOptions: NextAuthOptions = {
         } satisfies User;
       },
     }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID?.toString() as string,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET?.toString() as string,
-      allowDangerousEmailAccountLinking: true,
-      authorization:
-        "https://www.facebook.com/v11.0/dialog/oauth?scope=email,public_profile,user_birggthday",
-      userinfo: {
-        url: "https://graph.facebook.com/me",
-        params: {
-          fields: "first_name,last_name,id,name,email,picture,birthday",
-        },
-      },
-      profile(profile: FacebookProfile) {
-        return {
-          id: profile.id,
-          // firstName: profile.first_name,
-          // lastName: profile.last_name,
-          role: "user",
-          email: profile.email,
-          name: profile.name,
-          image: profile.picture.data.url,
-          // birthday: new Date(profile.birthday),
-          // emailVerified: new Date(),
-        } satisfies User;
-      },
-    }),
+    // FacebookProvider({
+    //   clientId: process.env.FACEBOOK_CLIENT_ID?.toString() as string,
+    //   clientSecret: process.env.FACEBOOK_CLIENT_SECRET?.toString() as string,
+    //   allowDangerousEmailAccountLinking: true,
+    //   // authorization:
+    //   //   "https://www.facebook.com/v11.0/dialog/oauth?scope=email,public_profile,user_birthday",
+    //   // userinfo: {
+    //   //   url: "https://graph.facebook.com/me",
+    //   //   params: {
+    //   //     // fields: "first_name,last_name,id,name,email,picture,birthday",
+    //   //     fields: "first_name,last_name,id,name,email,picture",
+    //   //   },
+    //   // },
+
+    //   profile(profile: FacebookProfile) {
+    //     console.log({ profile });
+    //     return {
+    //       id: profile.id,
+    //       // firstName: profile.first_name,
+    //       // lastName: profile.last_name,
+    //       role: "user",
+    //       email: profile?.email ?? "noemail",
+    //       name: profile.name,
+    //       image: profile.picture.data.url,
+    //       // birthday: new Date(profile.birthday),
+    //       // emailVerified: new Date(),
+    //     } satisfies User;
+    //   },
+    // }),
   ],
 };
 

@@ -5,6 +5,7 @@ import Image from "next/image";
 export function CustomCatering({ onClick }: { onClick?: () => void }) {
   return (
     <div
+      id="custom-catering"
       className="relative flex h-[500px] w-full flex-col items-center 
       justify-center overflow-hidden rounded-lg bg-background max-sm:h-[400px]"
     >
