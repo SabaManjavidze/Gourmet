@@ -27,10 +27,12 @@ export default async function Home() {
       </section>
       <section className="flex flex-col items-center bg-cover bg-center bg-no-repeat">
         <h2 className="text-4xl font-bold uppercase">ფურშეტები</h2>
-
-        {/* <p className="mt-2 text-secondary-foreground max-sm:px-6 max-sm:text-center">
-          indulge in a symphony of flavors, where every dish is a masterpiece
-        </p> */}
+        <p
+          className="mt-4 text-lg text-muted-foreground max-sm:px-6
+        max-sm:text-center"
+        >
+          სასურველი ფურშეტის შესარჩევად გთხოვთ დააჭირეთ შესაბამის სურათს.
+        </p>
         <div
           className="flex w-full justify-center bg-rectangle bg-cover bg-center bg-no-repeat 
         max-lg:px-20 max-sm:px-16"
@@ -39,19 +41,21 @@ export default async function Home() {
         </div>
       </section>
       <section className="flex flex-col items-center justify-center">
-        <h2 className="text-4xl font-bold uppercase max-md:text-xl max-sm:w-4/5 max-sm:text-base">
+        <h2 className="text-4xl font-bold uppercase max-md:text-xl max-sm:w-4/5 ">
           ჩვენს შესახებ
           {/* about us */}
         </h2>
-        <p className="mt-5 w-[70%] text-center text-lg leading-8 text-muted-foreground ">
-          “გურმე” საქართველოს ბაზარზე 2012 წლიდან ოპერირებს და მომხმარებელს
-          სრულყოფილ სერვისს სთავაზობს. დაარსების დღიდან, კომპანიას აქვს უცვლელი
-          კონცეფცია - უმაღლესი ხარისხის ნედლეული, გემრიელი პროდუქტი და მისაღები
-          ფასი. სწორედ ამიტომ, “გურმეს” ჰყავს უამრავი ერთგული მომხმარებელი.
-          აუდიტის შედეგად, „გურმემ“ ISO 22000:2018 საერთაშორისო სერტიფიკატი
-          აიღო. აღნიშნული სერტიფიკატი მომხმარებლისთვის გარანტიაა, რომ კომპანიაში
-          წარმოებული პროდუქცია და მომსახურება არის მაღალი ხარისხის და
-          ჯანმრთელობისთვის უსაფრთხო.
+        <p
+          className="mt-5 w-[70%] text-center text-lg leading-8 text-muted-foreground
+        max-sm:text-left "
+        >
+          “გურმე” არის კაფე საკონდიტრო რომელიც საქართველოს ბაზარზე 2012 წლიდან
+          ოპერირებს და მომხმარებელს სრულყოფილ სერვისს სთავაზობს. ჩვენ დაარსების
+          დღიდან უმაღლესი ხარისხის ნედლეულით დამზადებულ უგემრიელს პროდუქციას
+          ვთავაზობთ ჩვენს მომხმარებელს, ასევე ვთავაზობთ ქეითერინგის სერვის
+          რომელიც თქვენს სტუმრებს არ დაავიწყდებათ. ამ დროისთვის, კომპანია ფლობს
+          დიდ საწარმოს მირიან მეფის 70-ში, ასევე, სტუმრებს თბილისის მასშტაბით
+          მასპინძლობს “გურმეს” არაერთი კაფე.
           {/* Welcome to Gourmet, where culinary excellence meets unparalleled
           hospitality. Nestled in the heart of Georgia, our restaurant offers a
           feast for the senses, blending innovative flavors with timeless

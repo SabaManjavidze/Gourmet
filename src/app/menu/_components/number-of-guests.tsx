@@ -94,7 +94,7 @@ export function NumberOfGuests({
       // new person count - def
       const c_diff = count - nearest_range;
 
-      let new_q =
+      const new_q =
         db_prod_quantity +
         Math.round(c_diff * Number(stateProduct.qgrowth_factor));
 
@@ -115,16 +115,16 @@ export function NumberOfGuests({
     setMenu({
       [menuName]: newMenu,
     });
-    const count_def = Math.floor(count / 10) * 10;
-    const count_next = Math.ceil(count / 10) * 10;
-    if (count >= personRanges.next) {
-      setFormData({ ...formData, personRange: personRanges.next.toString() });
-    } else if (
-      personRanges.def > count_def &&
-      personRanges.next !== count_next
-    ) {
-      setFormData({ ...formData, personRange: count.toString() });
-    }
+    // const count_def = Math.floor(count / 10) * 10;
+    // const count_next = Math.ceil(count / 10) * 10;
+    // if (count >= personRanges.next) {
+    //   setFormData({ ...formData, personRange: personRanges.next.toString() });
+    // } else if (
+    //   personRanges.def > count_def &&
+    //   personRanges.next !== count_next
+    // ) {
+    setFormData({ ...formData, personRange: count.toString() });
+    // }
   };
 
   return (

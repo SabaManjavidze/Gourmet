@@ -8,13 +8,13 @@ export default function Catering() {
   return (
     <main className="min-h-[140vh]">
       <div className="relative flex h-[500px] flex-col items-center justify-center bg-sample-menus bg-cover bg-center bg-no-repeat">
-        <div
+        {/* <div
           className="absolute right-1/2 top-1/2 h-[200px] w-[1000px] -translate-y-1/2 
         translate-x-1/2 rounded-2xl bg-black/25 blur-2xl 
         max-lg:w-[600px] max-md:w-[400px] max-xs:w-[300px]"
-        ></div>
+        ></div> */}
         <h1
-          className="text-shadow z-10 text-center font-lucida-bold 
+          className="text-outline z-10 text-center font-lucida-bold 
         text-6xl text-primary-foreground max-md:text-5xl max-sm:text-3xl
         "
         >

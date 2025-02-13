@@ -125,7 +125,7 @@ export const sampleMenuRouter = createTRPCRouter({
         type: z.enum(["cheap", "standard", "expensive"]),
         personRange: z.number(),
         assistance: z.enum(["კი", "არა"]),
-        plates: z.enum(["ერთჯერადი", "ფაიფურის"]),
+        plates: z.enum(["ერთჯერადი", "ფაიფურის", "ჭურჭლის გარეშე"]),
         drinks: z
           .array(z.string())
           .refine((value) => value.some((item) => item), {
@@ -262,14 +262,18 @@ group by
         const plate_in_prods = productsWithVariants.find((item) =>
           item?.name?.endsWith?.("ჭურჭელი"),
         );
-        if (!plate_in_prods) {
-          const plates_prod = await getProductWithVariants(`${plates} ჭურჭელი`);
-          if (!plates_prod[0]) throw new Error("Plates not found.");
-          productsWithVariants.push({
-            ...plates_prod[0],
-            price: Number(plates_prod[0].price),
-            quantity: personRange,
-          });
+        if (plates !== "ჭურჭლის გარეშე") {
+          if (!plate_in_prods) {
+            const plates_prod = await getProductWithVariants(
+              `${plates} ჭურჭელი`,
+            );
+            if (!plates_prod[0]) throw new Error("Plates not found.");
+            productsWithVariants.push({
+              ...plates_prod[0],
+              price: Number(plates_prod[0].price),
+              quantity: personRange,
+            });
+          }
         }
         //add drinks
         if (drinks[0] !== "არ მსურს სასმელი") {
@@ -316,6 +320,9 @@ group by
         }
         (productsWithVariants as any) = productsWithVariants.filter((item) => {
           if (!item.id) return false;
+          if (plates == "ჭურჭლის გარეშე" && item.name.endsWith("ჭურჭელი")) {
+            return false;
+          }
           if (
             ass_in_prods &&
             assistance == "არა" &&

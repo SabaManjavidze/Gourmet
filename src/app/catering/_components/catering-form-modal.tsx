@@ -38,7 +38,7 @@ export const cateringFormSchema = z.object({
   type: z.enum(["cheap", "standard", "expensive"]),
   personRange: z.string(),
   assistance: z.enum(["კი", "არა"]),
-  plates: z.enum(["ერთჯერადი", "ფაიფურის"]),
+  plates: z.enum(["ერთჯერადი", "ფაიფურის", "ჭურჭლის გარეშე"]),
   drinks: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to select at least one item.",
   }),
@@ -49,8 +49,10 @@ export function CateringFormModal({
   open,
   closeModal,
   onSubmit,
+  menuName,
 }: {
   open: boolean;
+  menuName: string;
   closeModal: () => void;
   onSubmit: (data: cateringFormType) => void;
 }) {
@@ -86,12 +88,14 @@ export function CateringFormModal({
           //   console.log(error);
           //   toast.error(JSON.stringify(error));
           // }}
-          className="relative flex flex-col items-center justify-center px-14 py-4 max-lg:px-5"
+          className="relative flex flex-col items-center justify-center px-14 max-lg:px-5"
         >
           <div className="flex w-full items-center justify-center gap-x-12">
             <div className="flex h-full flex-col items-center justify-center gap-y-24">
               <div className="flex w-full flex-col justify-center gap-y-7">
-                <div hidden={formIdx != 0}>
+                <div
+                  className={`${formIdx !== 0 ? "hidden" : "flex"} flex-col justify-start`}
+                >
                   <h3 className="text-center text-xl font-semibold">
                     შეარჩიეთ სასურველი პაკეტი:
                   </h3>
@@ -99,8 +103,11 @@ export function CateringFormModal({
                     control={form.control}
                     name={"personRange"}
                     render={({ field }) => (
-                      <FormItem className="mt-5 flex w-full items-center justify-center gap-x-4">
-                        <div className="flex w-1/2 items-center ">
+                      <FormItem
+                        className="mt-5 flex w-auto items-center justify-start
+                      gap-x-4"
+                      >
+                        <div className="flex items-center">
                           <FormLabel className="text-lg max-lg:text-base">
                             ხალხის რაოდენობა:
                           </FormLabel>
@@ -131,7 +138,10 @@ export function CateringFormModal({
                     control={form.control}
                     name={"type"}
                     render={({ field }) => (
-                      <FormItem className="flex flex-col items-center space-y-8 py-8">
+                      <FormItem
+                        className="mt-3 flex flex-col items-center space-y-8
+                      pb-16"
+                      >
                         <FormControl>
                           <RadioGroup
                             onValueChange={field.onChange}
@@ -159,7 +169,6 @@ export function CateringFormModal({
                                 </p>
                               </FormLabel>
                             </FormItem>
-
                             <FormItem className="flex items-start space-x-2 space-y-0">
                               <FormControl>
                                 <RadioGroupItem
@@ -177,21 +186,23 @@ export function CateringFormModal({
                                 </p>
                               </FormLabel>
                             </FormItem>
-                            <FormItem className="flex items-start space-x-2 space-y-0">
-                              <FormControl>
-                                <RadioGroupItem
-                                  value="cheap"
-                                  className="mt-2"
-                                />
-                              </FormControl>
-                              <FormLabel className="text-lg font-normal max-lg:text-base">
-                                <p className="font-semibold">ეკონომიური</p>
-                                <p className="text-base">
-                                  ეკონომიური მენიუ გათვლილია მცირე ბიუჯეტზე და
-                                  მოიცავს მსუბუქ წასახემსებელს.
-                                </p>
-                              </FormLabel>
-                            </FormItem>
+                            {menuName !== "ყავის შესვენება" ? (
+                              <FormItem className="flex items-start space-x-2 space-y-0">
+                                <FormControl>
+                                  <RadioGroupItem
+                                    value="cheap"
+                                    className="mt-2"
+                                  />
+                                </FormControl>
+                                <FormLabel className="text-lg font-normal max-lg:text-base">
+                                  <p className="font-semibold">ეკონომიური</p>
+                                  <p className="text-base">
+                                    ეკონომიური მენიუ გათვლილია მცირე ბიუჯეტზე და
+                                    მოიცავს მსუბუქ წასახემსებელს.
+                                  </p>
+                                </FormLabel>
+                              </FormItem>
+                            ) : null}
                           </RadioGroup>
                         </FormControl>
                         <FormMessage />
@@ -279,6 +290,14 @@ export function CateringFormModal({
                             </FormControl>
                             <FormLabel className="text-lg font-normal max-md:text-base">
                               ფაიფურის
+                            </FormLabel>
+                          </FormItem>
+                          <FormItem className="flex items-center space-x-2 space-y-0">
+                            <FormControl>
+                              <RadioGroupItem value="ჭურჭლის გარეშე" />
+                            </FormControl>
+                            <FormLabel className="text-lg font-normal max-md:text-base">
+                              ჭურჭლის გარეშე
                             </FormLabel>
                           </FormItem>
                         </RadioGroup>

@@ -16,11 +16,14 @@ export default function AboutUsPage() {
       bg-about-us-banner bg-cover bg-center bg-no-repeat text-center max-md:bg-[10%]"
       >
         <div className="absolute inset-0 bg-black/10" />
-        <div
+        {/* <div
           className="absolute right-1/2 top-1/2 h-[300px] w-[1050px]  -translate-y-1/2 translate-x-1/2 rounded-[70px] 
           bg-vignete opacity-50 blur-3xl max-lg:w-[600px] max-md:w-[400px] max-sm:w-[250px]"
-        ></div>
-        <h1 className="text-outline z-10 font-lucida-bold text-6xl italic text-white max-md:text-5xl max-sm:text-3xl">
+        ></div> */}
+        <h1
+          className="text-outline z-10 font-lucida-bold text-6xl italic 
+        text-white max-md:text-5xl max-sm:text-3xl"
+        >
           ჩვენს შესახებ
         </h1>
         {/* <h2 className="z-10 text-2xl text-primary-foreground max-md:text-xl max-sm:w-4/5 max-sm:text-base">
@@ -45,13 +48,13 @@ export default function AboutUsPage() {
             max-lg:mx-6 max-lg:text-base max-md:mx-0 max-md:mt-0 max-md:h-auto max-sm:px-12
             "
             >
-              “გურმე” საქართველოს ბაზარზე 2012 წლიდან ოპერირებს და მომხმარებელს
-              სრულყოფილ სერვისს სთავაზობს. დაარსების დღიდან, კომპანიას აქვს
-              უცვლელი კონცეფცია - უმაღლესი ხარისხის ნედლეული, გემრიელი პროდუქტი
-              და მისაღები ფასი. სწორედ ამიტომ, “გურმეს” ჰყავს უამრავი ერთგული
-              მომხმარებელი, როგორც კორპორატიული, ისე - საცალო. ამ დროისთვის,
-              კომპანია ფლობს დიდ საწარმოს მირიან მეფის 70-ში, ასევე, სტუმრებს
-              თბილისის მასშტაბით მასპინძლობს “გურმეს” არაერთი კაფე.
+              “გურმე” არის კაფე საკონდიტრო რომელიც საქართველოს ბაზარზე 2012
+              წლიდან ოპერირებს და მომხმარებელს სრულყოფილ სერვისს სთავაზობს. ჩვენ
+              დაარსების დღიდან უმაღლესი ხარისხის ნედლეულით დამზადებულ უგემრიელს
+              პროდუქციას ვთავაზობთ ჩვენს მომხმარებელს, ასევე ვთავაზობთ
+              ქეითერინგის სერვის რომელიც თქვენს სტუმრებს არ დაავიწყდებათ. ამ
+              დროისთვის, კომპანია ფლობს დიდ საწარმოს მირიან მეფის 70-ში, ასევე,
+              სტუმრებს თბილისის მასშტაბით მასპინძლობს “გურმეს” არაერთი კაფე.
             </p>
 
             <Button
