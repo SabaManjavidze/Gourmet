@@ -18,7 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { MenuVariants } from "@/lib/types";
 import { useCatering } from "@/hooks/useCatering";
 import { Input } from "@/components/ui/input";
-import { MIN_PERSON_CATER } from "@/lib/constants";
+import { MAX_PERSON_CATER, MIN_PERSON_CATER } from "@/lib/constants";
 import {
   Tooltip,
   TooltipContent,
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useRouter } from "next/navigation";
 
 const drinksArr = [
   "წყალი 0.5",
@@ -36,7 +37,11 @@ const drinksArr = [
 ];
 export const cateringFormSchema = z.object({
   type: z.enum(["cheap", "standard", "expensive"]),
-  personRange: z.string(),
+  personRange: z
+    .string()
+    .transform((val) => parseInt(val))
+    .pipe(z.number().min(10).max(50))
+    .transform((year) => year.toString()),
   assistance: z.enum(["კი", "არა"]),
   plates: z.enum(["ერთჯერადი", "ფაიფურის", "ჭურჭლის გარეშე"]),
   drinks: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -57,6 +62,8 @@ export function CateringFormModal({
   onSubmit: (data: cateringFormType) => void;
 }) {
   const [formIdx, setFormIdx] = useState(0);
+  const [showOver50, setShowOver50] = useState(false);
+  const router = useRouter();
   const form = useForm<cateringFormType>({
     resolver: zodResolver(cateringFormSchema),
     defaultValues: {
@@ -103,34 +110,58 @@ export function CateringFormModal({
                     control={form.control}
                     name={"personRange"}
                     render={({ field }) => (
-                      <FormItem
-                        className="mt-5 flex w-auto items-center justify-start
-                      gap-x-4"
-                      >
-                        <div className="flex items-center">
-                          <FormLabel className="text-lg max-lg:text-base">
-                            ხალხის რაოდენობა:
-                          </FormLabel>
-                          <FormMessage />
+                      <FormItem className="mt-5 flex w-auto items-center justify-between">
+                        <div className="flex gap-x-4">
+                          <div className="flex items-center">
+                            <FormLabel className="text-lg max-lg:text-base">
+                              ხალხის რაოდენობა:
+                            </FormLabel>
+                          </div>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              onKeyDown={(e) => {
+                                if (e.key == "Enter") {
+                                  e.preventDefault();
+                                }
+                              }}
+                              onChange={(e) => {
+                                const val = e.currentTarget.value;
+                                const q = Number(val);
+                                if (q >= MAX_PERSON_CATER) {
+                                  setShowOver50(true);
+                                  return;
+                                } else {
+                                  setShowOver50(false);
+                                }
+                                // if (val == "" || q < MIN_PERSON_CATER) {
+                                //   val = "0";
+                                // }
+                                // if (isNaN(q)) return;
+                                field.onChange(val && q.toString());
+                              }}
+                              type="number"
+                              className="h-8 w-16 rounded-[3px] border-accent text-base"
+                            />
+                          </FormControl>
                         </div>
-                        <FormControl>
-                          <Input
-                            {...field}
-                            onChange={(e) => {
-                              let val = e.currentTarget.value;
-                              const q = parseInt(val);
-                              if (val == "" || q < MIN_PERSON_CATER) {
-                                val = "0";
-                              }
-                              if (isNaN(q)) return;
-                              field.onChange(q.toString());
+                        {showOver50 ? (
+                          <Button
+                            variant={"outline-accent"}
+                            type="button"
+                            onClick={() => {
+                              closeModal();
+                              form.control._reset();
+                              router.push("/catering#custom-catering", {
+                                scroll: true,
+                              });
+                              setShowOver50(false);
                             }}
-                            type="number"
-                            min={MIN_PERSON_CATER}
-                            max={50}
-                            className="h-8 w-16 rounded-[3px] border-accent text-base"
-                          />
-                        </FormControl>
+                            className="rounded-xl text-foreground"
+                          >
+                            50+ კაციანი ფურშეტისთვის დაგვეკონტაქტეთ.
+                          </Button>
+                        ) : null}
                       </FormItem>
                     )}
                   />
@@ -392,12 +423,18 @@ export function CateringFormModal({
               className="h-10 w-auto rounded-[3px] text-base max-lg:h-9 max-lg:text-sm"
               onClick={async () => {
                 if (formIdx == formItemLength) {
-                  console.log("hello");
                   await form.handleSubmit(onSubmitForm, (err) => {
                     toast.error("ფორმა არ არის ვალიდური.");
                     console.log(err);
                   })();
                   return;
+                }
+                if (formIdx == 0) {
+                  const validation = await form.trigger("personRange");
+                  if (!validation) {
+                    toast.error("ადამიანების რაოდენობა უნდა იყოს 10-ზე მეტი.");
+                    return;
+                  }
                 }
                 setFormIdx((prev) =>
                   prev <= formItemLength ? prev + 1 : prev,

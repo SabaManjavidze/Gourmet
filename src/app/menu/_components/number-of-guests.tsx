@@ -34,22 +34,14 @@ export function NumberOfGuests({
   );
   // const utils = api.useUtils();
   const changePersonCount = async (count: number, menuSample?: string) => {
+    if (!currMenu || !formData || !personRanges) return;
     if (count < MIN_PERSON_CATER) {
-      console.log("less");
       setPersonCount(count);
       return;
     } else if (count >= MAX_PERSON_CATER) {
-      setPersonCount(MAX_PERSON_CATER - 1);
-      router.replace(
-        pathname +
-          "?" +
-          createQueryString("personRange", `${MAX_PERSON_CATER - 1}`),
-        { scroll: false },
-      );
       setOver50(true);
       return;
     }
-    if (!currMenu || !formData || !personRanges) return;
     let menuStateProducts;
     let menuName = "";
     if (!menuSample) {
@@ -68,7 +60,6 @@ export function NumberOfGuests({
     const newMenu: productState[] = [];
     for (const stateProduct of menuStateProducts) {
       if (stateProduct?.qgrowth_factor == undefined) {
-        console.log({ growth_undefined: stateProduct.qgrowth_factor });
         newMenu.push(stateProduct);
         continue;
       }
@@ -83,14 +74,6 @@ export function NumberOfGuests({
       // form person range rounded to nearest 10th
       const nearest_range = Math.floor(personRanges?.def / 10) * 10;
 
-      // personCount (value of input element) - def (ex: 22-20; 14-10; 39-30)
-      // const person_count_diff = personCount - nearest_range;
-
-      // quantity calculated by personCount multiplier (qgrowth_factor)
-      // const prev_q =
-      //   db_prod_quantity +
-      //   Math.round(person_count_diff * Number(stateProduct.qgrowth_factor));
-
       // new person count - def
       const c_diff = count - nearest_range;
 
@@ -98,14 +81,6 @@ export function NumberOfGuests({
         db_prod_quantity +
         Math.round(c_diff * Number(stateProduct.qgrowth_factor));
 
-      // console.log({ new_q, prev_q, quantity: stateProduct.quantity });
-      // if (stateProduct.quantity !== prev_q) {
-      //   new_q =
-      //     db_prod_quantity +
-      //     stateProduct.quantity -
-      //     prev_q +
-      //     Math.round(c_diff * Number(stateProduct.qgrowth_factor));
-      // }
       newMenu.push({
         ...stateProduct,
         quantity: new_q,
@@ -115,16 +90,7 @@ export function NumberOfGuests({
     setMenu({
       [menuName]: newMenu,
     });
-    // const count_def = Math.floor(count / 10) * 10;
-    // const count_next = Math.ceil(count / 10) * 10;
-    // if (count >= personRanges.next) {
-    //   setFormData({ ...formData, personRange: personRanges.next.toString() });
-    // } else if (
-    //   personRanges.def > count_def &&
-    //   personRanges.next !== count_next
-    // ) {
     setFormData({ ...formData, personRange: count.toString() });
-    // }
   };
 
   return (
@@ -132,7 +98,7 @@ export function NumberOfGuests({
       <Modal
         isOpen={over50}
         closeModal={() => setOver50(false)}
-        title="50+ კაციანი ფურშეტისთვის დაგვეკონტაქტეთ"
+        title="50+ კაციანი ფურშეტისთვის დაგვეკონტაქტეთ."
         className="w-3/5"
       >
         <CustomCatering
@@ -151,14 +117,15 @@ export function NumberOfGuests({
       <Input
         type="number"
         value={personCount.toString()}
-        min={0}
         onChange={(e) => {
-          let val = e.currentTarget.value;
-          if (val == "" && personCount !== 0) {
-            val = "0";
+          const val = e.currentTarget.value;
+          const q = Number(val);
+          if (!val) {
+            e.currentTarget.style.caretColor = "black";
+            e.currentTarget.style.color = "transparent";
+          } else {
+            e.currentTarget.style.color = "black";
           }
-          const q = parseInt(val);
-          if (isNaN(q)) return;
           changePersonCount(q || 0);
         }}
         className="ml-4 w-16 rounded-xl text-center text-lg text-muted-sm
