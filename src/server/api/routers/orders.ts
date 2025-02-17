@@ -4,7 +4,7 @@ import {
   protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
-import { orders, products, productstoOrders } from "@/server/db/schema";
+import { orders, products, productstoOrders, users } from "@/server/db/schema";
 import { db } from "@/server/db";
 import { eq, like, and, sql, or, gt, count, desc } from "drizzle-orm";
 import { v4 as uuid } from "uuid";
@@ -307,6 +307,7 @@ export const orderRouter = createTRPCRouter({
         orderId: z.string().uuid().optional(),
         invoiceRequested: z.boolean(),
         orderDetails: orderNowSchema.optional(),
+        phoneNumber: z.string().optional(),
         status: z.enum(["draft", "loading", "submitted", "completed"]),
         products: z.array(
           z.object({
@@ -330,6 +331,7 @@ export const orderRouter = createTRPCRouter({
           orderDetails,
           payId,
           invoiceRequested,
+          phoneNumber,
         },
         ctx: { session },
       }) => {
@@ -387,6 +389,20 @@ export const orderRouter = createTRPCRouter({
           return result;
         }
         if (status == "draft" && !invoiceRequested) {
+          if (phoneNumber) {
+            await db
+              .update(users)
+              .set({ phoneNumber })
+              .where(eq(users.id, session.user.id));
+          } else {
+            const sm = await db
+              .select()
+              .from(users)
+              .where(eq(users.id, session.user.id));
+            if (sm[0]?.phoneNumber) {
+              phoneNumber = sm[0].phoneNumber;
+            }
+          }
           await DraftSavedEmail(
             session.user.name,
             menuName,
@@ -399,6 +415,7 @@ export const orderRouter = createTRPCRouter({
                 quantity: item.quantity.toString(),
               };
             }),
+            phoneNumber,
           );
           await DraftSavedMessageTelegram(
             session.user.name,
@@ -412,6 +429,7 @@ export const orderRouter = createTRPCRouter({
                 quantity: item.quantity.toString(),
               };
             }),
+            phoneNumber,
           );
         }
         return result;

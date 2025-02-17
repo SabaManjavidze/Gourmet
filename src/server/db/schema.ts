@@ -232,6 +232,7 @@ export const roleEnum = pgEnum("role", ["user", "admin", "token"]);
 export const users = createTable("user", {
   id: idtype("id").notNull().primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
+  phoneNumber: varchar("phoneNumber", { length: 13 }),
   role: roleEnum("role").default("user").notNull(),
   email: varchar("email", { length: 255 }).notNull(),
   emailVerified: timestamp("emailVerified", {

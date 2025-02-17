@@ -15,11 +15,17 @@ import {
 import { api, RouterOutputs } from "@/trpc/react";
 import { useSession } from "next-auth/react";
 import { UserSearchModal } from "@/app/admin/_components/user-search-modal";
-import { MenuNameModal } from "@/app/_components/menu-name-modal";
+import {
+  MenuNameFormType,
+  MenuNameModal,
+} from "@/app/_components/menu-name-modal";
 import { MIN_PERSON_CATER } from "@/lib/constants";
 import { toast } from "sonner";
 import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 import { TermsAndConditions } from "@/components/terms-and-conditions";
+import { db } from "@/server/db";
+import { users } from "@/server/db/schema";
+import { eq } from "drizzle-orm";
 
 type MenuContextProps = {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
@@ -106,7 +112,10 @@ export const MenuProvider = ({
   );
   const [open, setOpen] = useState(false);
   const [menuNameOpen, setMenuNameOpen] = useState(false);
-  const [menuName, setMenuName] = useState("");
+  const [menuNameForm, setMenuNameForm] = useState<MenuNameFormType>({
+    menuName: "",
+    phone: undefined,
+  });
   const [menu, setMenu] = useState<MenuState>({});
   const [removeProduct, setRemoveProduct] = useState<string[]>([]);
   const { data: session, status } = useSession();
@@ -203,7 +212,7 @@ export const MenuProvider = ({
   const handleSaveClick = async (orderId?: string) => {
     // if orderId is passed it means we are updating an existing order
     // else we are creating a new order
-    if (!orderId && !menuName) {
+    if (!orderId && !menuNameForm.menuName) {
       setMenuNameOpen(true);
       return false;
     }
@@ -255,8 +264,9 @@ export const MenuProvider = ({
       }
       await utils.client.order.createUserOrder.mutate({
         orderId,
-        menuName,
+        menuName: menuNameForm.menuName,
         totalPrice: totalSum.toString(),
+        phoneNumber: menuNameForm.phone,
         status: "draft",
         products: prods,
         invoiceRequested: false,
@@ -266,7 +276,7 @@ export const MenuProvider = ({
         await utils.order.getUserOrder.invalidate({ orderId });
       }
     } else if (session?.user?.role == "admin") {
-      if (!orderId && !adminUserId && !menuName) {
+      if (!orderId && !adminUserId && !menuNameForm.menuName) {
         setOpen(true);
         setSaveLoading(false);
         toast.error("Something went wrong.");
@@ -288,7 +298,7 @@ export const MenuProvider = ({
       await utils.client.admin.createUserOrder.mutate({
         userId: adminUserId,
         orderId,
-        menuName,
+        menuName: menuNameForm.menuName,
         totalPrice: totalSum.toString(),
         status: "draft",
         products: prods,
@@ -302,6 +312,9 @@ export const MenuProvider = ({
     }
     setChanges?.(false);
     setSaveLoading(false);
+    setMenuNameForm((prev) => {
+      return { ...prev, menuName: "" };
+    });
     toast.success(
       orderId ? "თქვენი მენიუ განახლდა." : "თქვენი მენიუ შენახულია.",
     );
@@ -396,20 +409,19 @@ export const MenuProvider = ({
           }}
         />
       ) : null}
-
-      <MenuNameModal
-        open={menuNameOpen}
-        closeModal={async () => {
-          await handleSaveClick();
-          setMenuNameOpen(false);
-        }}
-        menuName={menuName}
-        setMenuName={setMenuName}
-        // onSubmit={async () => {
-        //   setMenuNameOpen(false);
-        //   setMenuName("");
-        // }}
-      />
+      {menuNameOpen ? (
+        <MenuNameModal
+          open={menuNameOpen}
+          closeModal={async () => {
+            setMenuNameOpen(false);
+          }}
+          onSubmit={async (data: MenuNameFormType) => {
+            setMenuNameOpen(false);
+            setMenuNameForm(data);
+            await handleSaveClick();
+          }}
+        />
+      ) : null}
       {session?.user?.role == "admin" && open ? (
         <UserSearchModal
           open={open}

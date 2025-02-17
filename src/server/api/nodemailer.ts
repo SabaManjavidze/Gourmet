@@ -81,6 +81,7 @@ export async function DraftSavedEmail(
   user_email: string,
   totalPrice: string,
   products: { name: string; price: string; quantity: string }[],
+  phone_number?: string,
 ) {
   //   const safe_email = await z.string().email().parseAsync(email);
   //   if (!safe_email) return;
@@ -128,7 +129,7 @@ ${products
     </head>
     <body>
         <div style="display:flex;align-items:center; justify-content:center">
-        <h3 style="font-weight:600">${fullname}</h3>
+        <h3 style="font-weight:600">${fullname} - ${phone_number}</h3>
         <h4 style="margin-left:6px">(${user_email}) შეინახა მენიუ ${order_name}.</h4> 
         </div>
         <div style="display:flex;align-items:center; justify-content:center;

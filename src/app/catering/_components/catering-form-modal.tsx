@@ -13,18 +13,9 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Modal } from "@/components/ui/modal";
-import { useMenu } from "@/hooks/useMenu";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { MenuVariants } from "@/lib/types";
-import { useCatering } from "@/hooks/useCatering";
 import { Input } from "@/components/ui/input";
 import { MAX_PERSON_CATER, MIN_PERSON_CATER } from "@/lib/constants";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
@@ -82,7 +73,6 @@ export function CateringFormModal({
     <Modal
       isOpen={open}
       closeModal={closeModal}
-      // title="Please Tell Us What You Need"
       className="max-h-[90%] min-h-[75%] w-3/5 overflow-y-auto max-xl:w-4/5 max-sm:w-[95%]"
     >
       <Form {...form}>

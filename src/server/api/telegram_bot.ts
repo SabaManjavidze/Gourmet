@@ -11,6 +11,7 @@ export async function DraftSavedMessageTelegram(
   user_email: string,
   totalPrice: string,
   products: { name: string; price: string; quantity: string }[],
+  phoneNumber?: string,
 ) {
   //   const token = process.env.TELEGRAM_BOT_KEY;
   //   const chat_id = process.env.TELEGRAM_CHAT_ID;
@@ -31,7 +32,7 @@ ${products
   await bot.sendMessage(
     chat_id,
     `${fullname} 
-(${user_email}) შეინახა მენიუ ${order_name}.
+(${user_email}); (${phoneNumber}) შეინახა მენიუ ${order_name}.
 სრული ფასი: ₾${totalPrice} 
    ${tableHTML} 
     `,

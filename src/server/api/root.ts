@@ -2,14 +2,15 @@ import { productRouter } from "@/server/api/routers/product";
 import {
   createCallerFactory,
   createTRPCRouter,
+  protectedProcedure,
   publicProcedure,
 } from "@/server/api/trpc";
 import { sampleMenuRouter } from "./routers/sample_menu";
 import { db } from "../db";
-import { categories } from "../db/schema";
+import { categories, users } from "../db/schema";
 import { orderRouter } from "./routers/orders";
 import { adminRouter } from "./routers/admin";
-import { ne } from "drizzle-orm";
+import { eq, ne } from "drizzle-orm";
 import { orderDetailsRouter } from "./routers/order_details";
 import { tbcRouter } from "./routers/tbc";
 
@@ -25,6 +26,14 @@ export const appRouter = createTRPCRouter({
   orderDetails: orderDetailsRouter,
   order: orderRouter,
   tbc: tbcRouter,
+  getUserPhone: protectedProcedure.query(async ({ ctx: { session } }) => {
+    const number = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, session.user.id));
+    if (!number[0]) throw new Error("something went wrong");
+    return number[0].phoneNumber;
+  }),
   getCategories: publicProcedure.query(async () => {
     const cats = await db
       .select()

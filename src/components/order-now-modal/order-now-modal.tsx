@@ -70,7 +70,7 @@ export function OrderNowModal({
       extraInfo: "",
     },
   });
-  const saveToDB = async (payId?: string) => {
+  const saveToDB = async (data: OrderFormType, payId?: string) => {
     if (
       !data ||
       !currMenu ||
@@ -78,7 +78,7 @@ export function OrderNowModal({
       // || !session?.user?.name ||
       // !session.user.email
     ) {
-      console.log({ currMenu: data });
+      console.log({ currMenu, data, m: menu?.[currMenu?.name ?? ""] });
       return;
     }
     const order = await createOrder({
@@ -99,7 +99,7 @@ export function OrderNowModal({
   };
   const onSubmit = async (data: OrderFormType) => {
     // if (data.invoiceRequested) {
-    await saveToDB();
+    await saveToDB(data);
     toast.success("შეკვეთა მიღებულია. ჩვენი გუნდი დაგეკონთაქტებათ მალე.", {
       duration: 2500,
     });
@@ -314,7 +314,7 @@ export function OrderNowModal({
               <h3 className="text-lg font-bold text-muted-foreground">
                 ₾{totalSum}
               </h3>
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="invoiceRequested"
                 render={({ field }) => (
@@ -333,7 +333,7 @@ export function OrderNowModal({
                     </div>
                   </FormItem>
                 )}
-              />
+              /> */}
             </div>
           </div>
           <div className="flex justify-center py-5">

@@ -15,11 +15,25 @@ import Link from "next/link";
 
 const reviews = [
   {
+    name: "mariam dughadze",
+    body: "ბევრი ადგილიდან მაქვს შეკვეთილი ფურშეტი, თუმცა ისეთი კარგი მომსახურეობა და საკვები როგორიც თქვენთანაა არცერთი არ ყოფილა, ნამდვილად გამილამაზეთ და უფრო მეტად დაუვიწყარი გახადეთ ჩემი დაბადების დღე.",
+    rating: 5,
+    img: "/imgs/reviews/mariam dughadze.png",
+    url: "https://maps.app.goo.gl/3xT18JfLw9Nn5ADf7",
+  },
+  {
     name: "Tamar Gelashvili",
     body: "Great Desserts, Excellent Staff and nice indoors seating area. I have only tried their cakes and they are always new and well prepared. I hope they will continue this way.",
     rating: 5,
     img: "/imgs/reviews/Tamar Gelashvili.png",
     url: "https://maps.app.goo.gl/habwA8Lra2WRex6u6",
+  },
+  {
+    name: "Elene Khutsiani",
+    body: "უგემრიელესი ფურშეტი, შეუდარებელი საჭმელები, ძალიან მეგობრული სტაფი და უბრალოდ ძალიან კარგი მომსახურეობა გაქვთ❤️",
+    img: "/imgs/reviews/Elene Khutsiani.png",
+    rating: 5,
+    url: "https://maps.app.goo.gl/TSt81mV1paae8mjP6",
   },
   {
     name: "Julia",
@@ -36,25 +50,11 @@ const reviews = [
     url: "https://maps.app.goo.gl/4MHYc5zyRvsp38Er7",
   },
   {
-    name: "Giorgi Karkashadze",
-    rating: 4,
-    body: "Better than most places of similar style, but still lack of choice, and too many things are made with mayo",
-    img: "/imgs/reviews/Giorgi Karkashadze.png",
-    url: "https://maps.app.goo.gl/mTwXij1xqnURG1hX6",
-  },
-  {
     name: "Yahya Dalati",
     body: "It was great experience there.",
     rating: 5,
     url: "https://maps.app.goo.gl/mkoMDXYSuCAnprJTA",
     img: "/imgs/reviews/Yahya Dalati.png",
-  },
-  {
-    name: "Mainframe",
-    rating: 3,
-    body: "Not bad. Staff is very attentive.",
-    img: "/imgs/reviews/Mainframe.png",
-    url: "https://maps.app.goo.gl/yNMo9qVj77pZUeQr8",
   },
   {
     name: "Валерия Владимировна",
