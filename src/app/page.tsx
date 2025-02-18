@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { NavDrawer } from "./_components/nav-drawer";
 import UserReviewsCarousel from "@/components/user-reviews/user-reviews-carousel";
+import { useMemo } from "react";
 
 export default async function Home() {
   return (

@@ -59,11 +59,12 @@ export class TBC {
   }
 
   public async get_payment(payId: string) {
-    const { data } = await tbcClient.post(`/v1/tpay/payments/${payId}`, "", {
+    console.log({ access_token: this.access_token });
+    const { data } = await tbcClient.get(`/v1/tpay/payments/${payId}`, {
       headers: {
-        Authorization: `Bearer ${this.access_token}`,
+        "Authorization": `Bearer ${this.access_token}`,
         "Content-Type": "application/x-www-form-urlencoded",
-        apiKey: env.TBC_API_KEY,
+        "apiKey": env.TBC_API_KEY,
       },
     });
     console.log({ data });

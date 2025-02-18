@@ -59,6 +59,7 @@ export function OrderList({
               <MenuCard
                 key={id}
                 id={id}
+                showDelete={status !== "completed"}
                 title={name}
                 totalPrice={totalPrice}
                 created_at={created_at}

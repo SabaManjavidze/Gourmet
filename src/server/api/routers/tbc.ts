@@ -52,6 +52,7 @@ export const tbcRouter = createTRPCRouter({
     .input(z.object({ payId: z.string() }))
     .query(async ({ input: { payId } }) => {
       const { token } = await getTBCTokenDB();
+      console.log({ token });
       console.log(
         "------------------------------------------------------------------------\n\n",
       );
@@ -62,6 +63,7 @@ export const tbcRouter = createTRPCRouter({
       if (!token) {
         await tbc.get_access_token();
       }
+      console.log({ payId });
       const payment = await tbc.get_payment(payId);
       if (payment.status == "Succeeded") {
         await db

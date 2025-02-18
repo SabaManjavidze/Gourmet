@@ -19,12 +19,14 @@ export function MenuCard({
   created_at,
   products,
   onClick,
+  showDelete = true,
 }: {
   id: string;
   userId?: string;
   title: string;
   created_at: string;
   totalPrice: string;
+  showDelete?: boolean;
   onClick: () => void;
   products: (ProductWithVariants & { quantity: number })[];
 }) {
@@ -53,15 +55,17 @@ export function MenuCard({
   };
   return (
     <div className="relative rounded-lg bg-white">
-      <Button
-        isLoading={isPending || adminLoading}
-        onClick={handleDeleteClick}
-        className="absolute right-0 top-4 z-20 mt-1 flex 
+      {showDelete ? (
+        <Button
+          isLoading={isPending || adminLoading}
+          onClick={handleDeleteClick}
+          className="absolute right-0 top-4 z-20 mt-1 flex 
       -translate-y-full translate-x-1/2 items-end bg-transparent text-xs
       font-semibold text-muted-foreground hover:bg-transparent"
-      >
-        <XCircleIcon className="z-20 ml-1" />
-      </Button>
+        >
+          <XCircleIcon className="z-20 ml-1" />
+        </Button>
+      ) : null}
       <button
         onClick={onClick}
         className="flex w-full flex-col justify-center
