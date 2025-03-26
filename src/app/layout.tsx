@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import NextTopLoader from "nextjs-toploader";
+import { LinkedInInsightTag } from "nextjs-linkedin-insight-tag";
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
 import SessionProvider from "@/app/_components/session-provider";
@@ -67,6 +68,7 @@ export default async function RootLayout({
         </SessionProvider>
         <Toaster />
         <Footer />
+        <LinkedInInsightTag />
       </body>
     </html>
   );

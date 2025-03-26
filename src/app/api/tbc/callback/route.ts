@@ -26,7 +26,7 @@ export async function POST(request: Request) {
     await sendEmail({
       subject: "Gourmet: თქვენი გადახდა არ შესრულდა",
       to: email,
-      text: "თქვენი გადახდა ვერ შესრულდა. კითხვებისთვის დაგვეკონტაქტეთ +995 511 22 32 38",
+      text: "თქვენი გადახდა ვერ შესრულდა. კითხვებისთვის დაგვეკონტაქტეთ +995 597 555 266 ",
     });
     await db.delete(orders).where(eq(orders.payId, PaymentId));
     return Response.error();

@@ -18,8 +18,10 @@ const nameNphoneSchema = z.object({
   menuName: z.string().min(3),
   phone: z
     .string()
+    .min(9)
+    .max(15)
     .transform((val) => parseInt(val))
-    .pipe(z.number().min(9).max(13))
+    .pipe(z.number())
     .transform((val) => val.toString())
     .optional(),
 });
@@ -94,7 +96,7 @@ export function MenuNameModal({
                       <Input
                         {...field}
                         className="text-md w-full rounded-sm py-2"
-                        placeholder={data ?? "5558109908"}
+                        placeholder={data ?? "+995-"}
                         type={"text"}
                       />
                     </FormControl>

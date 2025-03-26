@@ -232,6 +232,19 @@ export async function createUserOrder({
 }
 
 export const orderRouter = createTRPCRouter({
+  getUserOrderCount: protectedProcedure.query(async ({ ctx: { session } }) => {
+    const order = await db
+      .select()
+      .from(orders)
+      .where(
+        and(
+          eq(orders.status, "completed"),
+          eq(orders.userId, session?.user.id),
+        ),
+      )
+      .orderBy(desc(orders.createdAt));
+    return order.length;
+  }),
   orderCustomCatering: publicProcedure
     .input(
       z.object({
@@ -346,6 +359,12 @@ export const orderRouter = createTRPCRouter({
           invoiceRequested: invoiceRequested,
         });
         if (!invoiceRequested && orderDetails) {
+          if (phoneNumber && session?.user.id) {
+            await db
+              .update(users)
+              .set({ phoneNumber })
+              .where(eq(users.id, session.user.id));
+          }
           await OrderMadeEmail(
             session?.user.name ??
               `${orderDetails.firstname} ${orderDetails.lastname}`,

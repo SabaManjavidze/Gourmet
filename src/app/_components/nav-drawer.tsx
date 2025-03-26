@@ -163,7 +163,7 @@ export function NavDrawer({
           </ul>
 
           <span className="mt-3 flex items-center font-semibold">
-            <h3 className="tracking-tight">+995 511 22 32 38</h3>
+            <h3 className="tracking-tight">+995 597 555 266 </h3>
             <PhoneCall className="ml-2" size={15} />
           </span>
         </div>

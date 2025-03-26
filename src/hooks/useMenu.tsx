@@ -26,6 +26,8 @@ import { TermsAndConditions } from "@/components/terms-and-conditions";
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
+import { linkedInTrack } from "nextjs-linkedin-insight-tag";
+import { env } from "@/env";
 
 type MenuContextProps = {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
@@ -40,7 +42,11 @@ type MenuContextProps = {
   changes: boolean;
   setHideZeroQt: Dispatch<SetStateAction<boolean>>;
   clearQuantities: () => void;
-  handleSaveClick: (orderId?: string) => Promise<boolean>;
+  handleSaveClick: ({}: {
+    orderId?: string;
+    menuName?: string;
+    phoneNumber?: string;
+  }) => Promise<boolean>;
   handleRemoveProduct: (productId: string) => void;
   handleOrderClick: () => boolean;
   saveLoading: boolean;
@@ -73,7 +79,7 @@ export const MenuContext = createContext<MenuContextProps>({
   changeQuantity: () => null,
   handleOrderClick: () => false,
   handleRemoveProduct: () => null,
-  handleSaveClick: async (orderId?: string) => false,
+  handleSaveClick: async ({}) => false,
   changeVariant: () => null,
   addProduct: () => null,
 });
@@ -209,13 +215,20 @@ export const MenuProvider = ({
     });
     setChanges?.(true);
   };
-  const handleSaveClick = async (orderId?: string) => {
+  const handleSaveClick = async (params: {
+    orderId?: string;
+    menuName?: string;
+    phoneNumber?: string;
+  }) => {
+    console.log({ params });
     // if orderId is passed it means we are updating an existing order
     // else we are creating a new order
-    if (!orderId && !menuNameForm.menuName) {
+    if (!params?.menuName) {
       setMenuNameOpen(true);
       return false;
     }
+    if (!params.menuName) return false;
+    const { menuName, orderId } = params;
     if (status !== "authenticated") {
       toast.error("Please log in");
       return false;
@@ -264,9 +277,9 @@ export const MenuProvider = ({
       }
       await utils.client.order.createUserOrder.mutate({
         orderId,
-        menuName: menuNameForm.menuName,
+        menuName: menuName,
         totalPrice: totalSum.toString(),
-        phoneNumber: menuNameForm.phone,
+        phoneNumber: params.phoneNumber,
         status: "draft",
         products: prods,
         invoiceRequested: false,
@@ -276,7 +289,7 @@ export const MenuProvider = ({
         await utils.order.getUserOrder.invalidate({ orderId });
       }
     } else if (session?.user?.role == "admin") {
-      if (!orderId && !adminUserId && !menuNameForm.menuName) {
+      if (!orderId && !adminUserId && !menuName) {
         setOpen(true);
         setSaveLoading(false);
         toast.error("Something went wrong.");
@@ -298,7 +311,7 @@ export const MenuProvider = ({
       await utils.client.admin.createUserOrder.mutate({
         userId: adminUserId,
         orderId,
-        menuName: menuNameForm.menuName,
+        menuName: menuName,
         totalPrice: totalSum.toString(),
         status: "draft",
         products: prods,
@@ -415,10 +428,14 @@ export const MenuProvider = ({
           closeModal={async () => {
             setMenuNameOpen(false);
           }}
-          onSubmit={async (data: MenuNameFormType) => {
-            setMenuNameOpen(false);
+          onSubmit={(data: MenuNameFormType) => {
             setMenuNameForm(data);
-            await handleSaveClick();
+            handleSaveClick({
+              menuName: data.menuName,
+              phoneNumber: data.phone,
+            });
+            linkedInTrack(env.LINKEDIN_EVENT_ID as string);
+            setMenuNameOpen(false);
           }}
         />
       ) : null}

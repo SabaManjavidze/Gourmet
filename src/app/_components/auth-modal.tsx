@@ -3,6 +3,8 @@ import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 // import type { AuthProviders } from "@/utils/types/types";
 import { signIn } from "next-auth/react";
+import { env } from "@/env";
+import { linkedInTrack } from "nextjs-linkedin-insight-tag";
 type AuthProviders = "google" | "facebook";
 export default function AuthModal({
   modalOpen,
@@ -23,7 +25,10 @@ export default function AuthModal({
     <Modal isOpen={modalOpen} title="ავტორიზაცია" closeModal={closeModal}>
       <div className="flex flex-col items-center justify-center md:p-24 md:py-16">
         <Button
-          onClick={() => logIn("google")}
+          onClick={() => {
+            logIn("google");
+            linkedInTrack(env.LINKEDIN_EVENT_ID as string);
+          }}
           isLoading={loading == "google"}
           className="flex h-16 w-72 cursor-pointer items-center justify-center rounded bg-blue-500 px-4 py-3 text-sm font-bold text-gray-100 shadow hover:bg-blue-600 hover:text-white"
         >

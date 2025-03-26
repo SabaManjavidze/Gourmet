@@ -36,7 +36,7 @@ ${products
 სრული ფასი: ₾${totalPrice} 
    ${tableHTML} 
     `,
-    { parse_mode: "Markdown" },
+    { parse_mode: "HTML" },
   );
 }
 

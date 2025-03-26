@@ -617,9 +617,9 @@ export function TermsAndConditions({
             &Oslash; საკონტაქტო ინფორმაცია - <br />
             მის: მირიან მეფის ქუჩა #70
             <br />
-            ტელ: +995 511 22 32 38
+            ტელ: +995 597 555 266
             <br />
-            info@gurme.ge
+            r.muzashvili@gurme.ge
             <br />
             Facebook https://www.facebook.com/Gourmet.ge
             <br />

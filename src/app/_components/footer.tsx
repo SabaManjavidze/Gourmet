@@ -50,11 +50,11 @@ export function Footer() {
           </span> */}
           <span className="flex">
             <PhoneCall className="mr-2" />
-            <p>+995 511 22 32 38</p>
+            <p>+995 597 555 266 </p>
           </span>
           <span className="flex">
             <Mail className="mr-2" />
-            <p>gourmet@gmail.com</p>
+            <p>r.muzashvili@gurme.ge</p>
           </span>
         </div>
 

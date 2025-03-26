@@ -16,7 +16,7 @@ export function CustomCatering({ onClick }: { onClick?: () => void }) {
         font-semibold leading-none text-accent-light hover:bg-accent/80
         active:bg-accent max-sm:py-7 max-sm:text-3xl"
         >
-          დაგვიკავშირდით
+          გაიარეთ კონსულტაცია
         </Button>
       </div>
 

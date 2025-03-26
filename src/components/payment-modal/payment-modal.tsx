@@ -29,8 +29,8 @@ export function PaymentModal({
     setLoading(true);
     const res = await createPayment({
       amount: {
-        total: 0.01,
-        // total: totalSum,
+        // total: 0.01,
+        total: totalSum,
         currency: PaymentCurrency.GEL,
         shipping: 0,
         subtotal: 0,
