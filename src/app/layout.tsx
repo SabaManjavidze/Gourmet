@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import NextTopLoader from "nextjs-toploader";
+import { GoogleTagManager } from "@next/third-parties/google";
 import { LinkedInInsightTag } from "nextjs-linkedin-insight-tag";
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
@@ -10,6 +11,7 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/server/auth";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
+import { env } from "@/env";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -66,6 +68,7 @@ export default async function RootLayout({
           <Navbar />
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </SessionProvider>
+        <GoogleTagManager gtmId={env.GOOGLE_TAG_MANAGER_ID} />
         <Toaster />
         <Footer />
         <LinkedInInsightTag />

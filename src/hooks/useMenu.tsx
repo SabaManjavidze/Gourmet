@@ -28,6 +28,7 @@ import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { linkedInTrack } from "nextjs-linkedin-insight-tag";
 import { env } from "@/env";
+import { sendGTMEvent } from "@next/third-parties/google";
 
 type MenuContextProps = {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
@@ -435,6 +436,11 @@ export const MenuProvider = ({
               phoneNumber: data.phone,
             });
             linkedInTrack(env.LINKEDIN_EVENT_ID);
+
+            sendGTMEvent({
+              event: "buttonClicked",
+              value: "order made",
+            });
             setMenuNameOpen(false);
           }}
         />

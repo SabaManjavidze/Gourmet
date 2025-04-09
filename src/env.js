@@ -11,6 +11,7 @@ export const env = createEnv({
     EMAIL_PASSWORD: z.string(),
     DATABASE_URL: z.string().url(),
     // LINKEDIN_PARTNER_ID: z.string(),
+    GOOGLE_TAG_MANAGER_ID: z.string(),
     LINKEDIN_EVENT_ID: z.string(),
     TBC_CLIENT_ID: z.string(),
     TBC_CLIENT_SECRET: z.string(),
@@ -51,6 +52,7 @@ export const env = createEnv({
   runtimeEnv: {
     LINKEDIN_EVENT_ID: process.env.LINKEDIN_EVENT_ID,
     // LINKEDIN_PARTNER_ID: process.env.LINKEDIN_PARTNER_ID,
+    GOOGLE_TAG_MANAGER_ID: process.env.GOOGLE_TAG_MANAGER_ID,
     DATABASE_URL: process.env.DATABASE_URL,
     EMAIL_PASSWORD: process.env.EMAIL_PASSWORD,
     PUBLIC_EMAIL: process.env.PUBLIC_EMAIL,

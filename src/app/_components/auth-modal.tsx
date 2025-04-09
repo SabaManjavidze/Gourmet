@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { signIn } from "next-auth/react";
 import { env } from "@/env";
 import { linkedInTrack } from "nextjs-linkedin-insight-tag";
+import { sendGTMEvent } from "@next/third-parties/google";
 type AuthProviders = "google" | "facebook";
 export default function AuthModal({
   modalOpen,
@@ -28,6 +29,10 @@ export default function AuthModal({
           onClick={() => {
             logIn("google");
             linkedInTrack(env.LINKEDIN_EVENT_ID);
+            sendGTMEvent({
+              event: "buttonClicked",
+              value: "login button clicked",
+            });
           }}
           isLoading={loading == "google"}
           className="flex h-16 w-72 cursor-pointer items-center justify-center rounded bg-blue-500 px-4 py-3 text-sm font-bold text-gray-100 shadow hover:bg-blue-600 hover:text-white"
