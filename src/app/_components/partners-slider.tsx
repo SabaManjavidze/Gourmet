@@ -109,7 +109,7 @@ const PartnersSlider = () => {
       className="relative flex h-[230px] w-full flex-col items-center 
     overflow-hidden"
     >
-      <h3 className="text-2xl font-bold">ჩვენს ფურშეტს იყენებენ</h3>
+      <h3 className="text-2xl font-semibold">ჩვენს ფურშეტს იყენებენ</h3>
       <Marquee
         pauseOnHover
         className="mt-10 flex h-full items-center border [--duration:20s]"

@@ -19,6 +19,7 @@ import {
 import { orderNowSchema } from "@/components/order-now-modal/utils";
 import { customCateringSchema } from "@/app/catering/utils";
 import {
+  ConsultationRequestTelegram,
   DraftSavedMessageTelegram,
   OrderMadeMessageTelegram,
 } from "../telegram_bot";
@@ -257,8 +258,14 @@ export const orderRouter = createTRPCRouter({
       await CustomCateringEmail({
         data,
         userName: session?.user.name ?? data?.userEmail?.split("@")[0] ?? "",
+        userEmail: session?.user.email ?? undefined,
       });
       await weWillContactYouEmail(userEmail);
+      await ConsultationRequestTelegram({
+        data,
+        userName: session?.user.name ?? data?.userEmail?.split("@")[0] ?? "",
+        userEmail: session?.user.email ?? undefined,
+      });
     }),
   removeProductFromOrder: protectedProcedure
     .input(

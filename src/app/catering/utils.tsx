@@ -26,6 +26,14 @@ export const customCateringSchema = z.object({
   type: z.enum(eventTypes),
   eventDetails: z.string(),
   userEmail: z.string().email().optional(),
+  phone: z
+    .string()
+    .min(9)
+    .max(15)
+    .transform((val) => parseInt(val))
+    .pipe(z.number())
+    .transform((val) => val.toString())
+    .optional(),
   numberOfGuests: z.string(),
   dateOfEvent: z.date(),
   priceRange: z.enum(priceTypes),

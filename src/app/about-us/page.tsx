@@ -57,13 +57,15 @@ export default function AboutUsPage() {
               სტუმრებს თბილისის მასშტაბით მასპინძლობს “გურმეს” არაერთი კაფე.
             </p>
 
-            <Button
-              className="mt-8 px-4 uppercase max-md:mt-3"
-              size={"lg"}
-              variant={"accent"}
-            >
-              შეუკვეთე
-            </Button>
+            <Link href="/catering">
+              <Button
+                className="mt-8 px-4 uppercase max-md:mt-3"
+                size={"lg"}
+                variant={"accent"}
+              >
+                შეუკვეთე
+              </Button>
+            </Link>
           </div>
           <div className="flex h-full w-full max-md:mt-5">
             <div
@@ -153,13 +155,15 @@ export default function AboutUsPage() {
             კომპანიაში წარმოებული პროდუქცია და მომსახურება არის მაღალი ხარისხის
             და ჯანმრთელობისთვის უსაფრთხო.
           </p>
-          <Button
-            className="mt-8 px-4 uppercase"
-            size={"lg"}
-            variant={"accent"}
-          >
-            შეუკვეთე
-          </Button>
+          <Link href="/catering">
+            <Button
+              className="mt-8 px-4 uppercase"
+              size={"lg"}
+              variant={"accent"}
+            >
+              შეუკვეთე
+            </Button>
+          </Link>
         </div>
         <div
           className="flex h-[500px] w-full items-center justify-center bg-date bg-contain 

@@ -27,7 +27,7 @@ export default function AuthModal({
         <Button
           onClick={() => {
             logIn("google");
-            linkedInTrack(env.LINKEDIN_EVENT_ID as string);
+            linkedInTrack(env.LINKEDIN_EVENT_ID);
           }}
           isLoading={loading == "google"}
           className="flex h-16 w-72 cursor-pointer items-center justify-center rounded bg-blue-500 px-4 py-3 text-sm font-bold text-gray-100 shadow hover:bg-blue-600 hover:text-white"

@@ -45,7 +45,7 @@ export function BottomButtons({
             return;
           }
           saveClick?.();
-          await handleSaveClick(orderId);
+          await handleSaveClick({ orderId });
         }}
         size={size}
       >

@@ -100,9 +100,7 @@ export function ProductsSection() {
             className="relative mt-12 flex w-full 
           flex-col text-center font-semibold"
           >
-            <h2 className="text-center text-4xl font-semibold">
-              შექმენი შენით
-            </h2>
+            <h2 className="text-center text-4xl font-semibold">კონსულტაცია</h2>
             <h3 className="mt-5 text-lg">
               თუ მასშტაბურ ღონისძიებას (ქორწილი, კორპორაციული წვეულება,
               კონფერენცია) გეგმავთ, გირჩევთ, დაუკავშირდეთ „გურმეს“ მენეჯერს,

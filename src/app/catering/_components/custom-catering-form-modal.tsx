@@ -248,6 +248,27 @@ export function CustomCateringFormModal({
                     )}
                   />
                 ) : null}
+
+                <FormField
+                  control={form.control}
+                  name={"phone"}
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <div className="flex items-center justify-between">
+                        <FormLabel>ტელეფონის ნომერი</FormLabel>
+                        <FormMessage />
+                      </div>
+                      <FormControl>
+                        <Input
+                          {...field}
+                          className="text-md w-full rounded-sm py-2"
+                          placeholder={"+995-"}
+                          type={"number"}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
                 <div className="flex w-full items-center justify-center">
                   <FormField
                     control={form.control}

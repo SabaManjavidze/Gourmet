@@ -434,7 +434,7 @@ export const MenuProvider = ({
               menuName: data.menuName,
               phoneNumber: data.phone,
             });
-            linkedInTrack(env.LINKEDIN_EVENT_ID as string);
+            linkedInTrack(env.LINKEDIN_EVENT_ID);
             setMenuNameOpen(false);
           }}
         />

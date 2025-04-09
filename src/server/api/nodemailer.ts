@@ -51,9 +51,11 @@ export async function weWillContactYouEmail(userEmail: string) {
 export async function CustomCateringEmail({
   data,
   userName,
+  userEmail,
 }: {
   data: customCateringFormType;
   userName: string;
+  userEmail?: string;
 }) {
   const detailsText = (
     Object.entries(data) as unknown as [key: keyof typeof data, value: string][]
@@ -71,7 +73,7 @@ export async function CustomCateringEmail({
     to: "saba.manjavidze@gmail.com",
     // to: "r.muzashvili@gurme.ge",
     subject: `${userName}ს უნდა შეუკვეთოს დიდი ფურშეტი`,
-    html: `მომხმარებლის იმეილი: ${data.userEmail}
+    html: `მომხმარებლის იმეილი: ${userEmail ?? data.userEmail}
     <br><br><br>${detailsText}`,
   });
 }

@@ -23,18 +23,18 @@ export const navRoutes = [
     title: "მთავარი",
     route: "/",
   },
+
   {
-    title: "ჩვენს შესახებ",
-    route: "/about-us",
+    title: "ფურშეტი",
+    route: "/catering",
   },
   {
     title: "მენიუ",
     route: "/menu",
   },
-
   {
-    title: "ფურშეტი",
-    route: "/catering",
+    title: "ჩვენს შესახებ",
+    route: "/about-us",
   },
   {
     title: "კონტაქტი",

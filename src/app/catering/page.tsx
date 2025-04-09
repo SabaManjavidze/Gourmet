@@ -4,6 +4,7 @@ import { SampleMenuCarousel } from "./_components/sample-menu-carousel";
 import { ProductsSection } from "./_components/products-section";
 import { CateringProvider } from "@/hooks/useCatering";
 import PartnersSlider from "../_components/partners-slider";
+import UserReviewsCarousel from "@/components/user-reviews/user-reviews-carousel";
 export default function Catering() {
   return (
     <main className="min-h-[140vh]">
@@ -32,11 +33,18 @@ export default function Catering() {
           <SampleMenuCarousel />
         </div>
         <div className="flex w-full flex-col items-center">
-          <div className="w-3/4 rounded-xl pb-20 max-xl:w-5/6">
+          <div className="w-3/4 rounded-xl pb-12 max-xl:w-5/6">
             <ProductsSection />
           </div>
           <div className="mt-0 w-full overflow-hidden">
             <PartnersSlider />
+          </div>
+
+          <h2 className="mt-24 text-2xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
+            მომხმარებლების შეფასებები
+          </h2>
+          <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
+            <UserReviewsCarousel />
           </div>
         </div>
       </CateringProvider>
