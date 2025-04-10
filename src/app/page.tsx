@@ -5,6 +5,7 @@ import Link from "next/link";
 import { NavDrawer } from "./_components/nav-drawer";
 import UserReviewsCarousel from "@/components/user-reviews/user-reviews-carousel";
 import { useMemo } from "react";
+import { FAQSection } from "@/components/faq-section";
 
 export default async function Home() {
   return (
@@ -93,6 +94,14 @@ export default async function Home() {
         </h2>
         <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
           <UserReviewsCarousel />
+        </div>
+      </section>
+      <section className="flex flex-col items-center justify-center">
+        <h2 className="text-4xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
+          ხშირად დასმული კითხვები
+        </h2>
+        <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
+          <FAQSection />
         </div>
       </section>
     </main>

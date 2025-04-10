@@ -5,6 +5,7 @@ import { ProductsSection } from "./_components/products-section";
 import { CateringProvider } from "@/hooks/useCatering";
 import PartnersSlider from "../_components/partners-slider";
 import UserReviewsCarousel from "@/components/user-reviews/user-reviews-carousel";
+import { FAQSection } from "@/components/faq-section";
 export default function Catering() {
   return (
     <main className="min-h-[140vh]">
@@ -45,6 +46,13 @@ export default function Catering() {
           </h2>
           <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
             <UserReviewsCarousel />
+          </div>
+
+          <h2 className="mt-24 text-2xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
+            ხშირად დასმული კითხვები
+          </h2>
+          <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
+            <FAQSection />
           </div>
         </div>
       </CateringProvider>
