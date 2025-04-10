@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import NextTopLoader from "nextjs-toploader";
+import { Analytics } from "@vercel/analytics/next";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { LinkedInInsightTag } from "nextjs-linkedin-insight-tag";
 import { Inter } from "next/font/google";
@@ -66,6 +67,7 @@ export default async function RootLayout({
           />
           <NextTopLoader color="orange" showSpinner={false} />
           <Navbar />
+          <Analytics />
           <TRPCReactProvider>{children}</TRPCReactProvider>
         </SessionProvider>
         <GoogleTagManager gtmId={env.GOOGLE_TAG_MANAGER_ID} />
