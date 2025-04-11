@@ -13,6 +13,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { api } from "@/trpc/react";
+import { useTranslations } from "next-intl";
 
 const nameNphoneSchema = z.object({
   menuName: z.string().min(3),
@@ -36,6 +37,7 @@ export function MenuNameModal({
   closeModal: () => void;
   onSubmit: (data: MenuNameFormType) => void;
 }) {
+  const g = useTranslations("General");
   const { data, isLoading } = api.getUserPhone.useQuery();
   const form = useForm<MenuNameFormType>({
     resolver: zodResolver(nameNphoneSchema),
@@ -105,7 +107,7 @@ export function MenuNameModal({
               />
             ) : null}
             <Button type="submit" variant={"accent"}>
-              დადასტურება
+              {g("submit")}
             </Button>
           </form>
         </Form>

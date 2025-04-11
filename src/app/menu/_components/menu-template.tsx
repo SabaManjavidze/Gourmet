@@ -7,6 +7,7 @@ import { twMerge } from "tailwind-merge";
 import { RouterOutputs } from "@/trpc/react";
 import { AddProductsSection } from "./add-products-section";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { useTranslations } from "next-intl";
 
 export function MenuTemplate({
   name,
@@ -16,9 +17,11 @@ export function MenuTemplate({
   addClick,
   className = "",
   id = "",
+  title,
   // products = [],
 }: {
   name: string;
+  title?: string;
   // products: RouterOutputs["sampleMenu"]["getMainMenu"][string];
   className?: string;
   id?: string;
@@ -29,6 +32,7 @@ export function MenuTemplate({
 }) {
   const { menu, setHideZeroQt } = useMenu();
   const [listRef] = useAutoAnimate();
+  const g = useTranslations("General");
   return (
     <div className="mt-16">
       <div className="flex w-full justify-center">
@@ -37,7 +41,7 @@ export function MenuTemplate({
         border-b border-b-accent font-lucida-bold text-5xl 
         leading-[70px] max-lg:text-4xl max-md:text-3xl max-sm:text-3xl"
         >
-          {name}
+          {title ?? name}
         </h3>
       </div>
       {header ?? <div className="mt-10"></div>}
@@ -52,23 +56,23 @@ export function MenuTemplate({
           )}
         >
           <div className="menu-table-items border py-5 text-start font-bold">
-            <p className="ml-5">პროდუქტები</p>
+            <p className="ml-5">{g("products")}</p>
           </div>
           <div
             className="menu-table-other-fields flex justify-between 
             whitespace-normal font-bold *:h-full *:w-full"
           >
             <div className="flex items-center justify-center border border-l-0">
-              <p className="max-sm:max-w-10 ">ფასი</p>
+              <p className="max-sm:max-w-10 ">{g("price")}</p>
             </div>
             <div className="flex items-center justify-center border border-l-0">
               <p className="overflow-hidden text-clip max-sm:max-w-9">
-                რაოდენობა
+                {g("quantity")}
               </p>
             </div>
             <div className="flex items-center justify-center border border-l-0">
               <p className="overflow-hidden text-clip max-sm:max-w-10">
-                სრული ფასი
+                {g("total price")}
               </p>
             </div>
           </div>

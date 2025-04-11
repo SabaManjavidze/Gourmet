@@ -9,7 +9,9 @@ import { CustomCateringFormModal } from "./custom-catering-form-modal";
 import { MenuPreviews } from "./product-section/menu-previews";
 import { MenuTable } from "./menu-table";
 import { CustomCatering } from "@/app/_components/custom-catering";
+import { useTranslations } from "next-intl";
 export function ProductsSection() {
+  const t = useTranslations("Custom Catering");
   const {
     currMenu,
     setCurrMenu,
@@ -100,13 +102,8 @@ export function ProductsSection() {
             className="relative mt-12 flex w-full 
           flex-col text-center font-semibold"
           >
-            <h2 className="text-center text-4xl font-semibold">კონსულტაცია</h2>
-            <h3 className="mt-5 text-lg">
-              თუ მასშტაბურ ღონისძიებას (ქორწილი, კორპორაციული წვეულება,
-              კონფერენცია) გეგმავთ, გირჩევთ, დაუკავშირდეთ „გურმეს“ მენეჯერს,
-              რომელიც დაგეხმარებათ ქეითერინგის მოცულობის განსაზღვრაში და სწორი
-              კერძების შერჩევაში, კონსულტაცია უფასოა.
-            </h3>
+            <h2 className="text-center text-4xl font-semibold">{t("title")}</h2>
+            <h3 className="mt-5 text-lg">{t("sub")}</h3>
             <CustomCatering onClick={() => setCustomOpen(true)} />
           </section>
         </>

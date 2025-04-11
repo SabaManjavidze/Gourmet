@@ -10,6 +10,7 @@ import NumberTicker from "@/components/magicui/number-ticker";
 import TypingAnimation from "@/components/magicui/typing-animation";
 import { AnimatedList } from "@/components/magicui/animated-list";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 
 export function MenuCard({
   id,
@@ -32,6 +33,7 @@ export function MenuCard({
 }) {
   const { data: session } = useSession();
   const utils = api.useUtils();
+  const t = useTranslations("Products");
   const [adminLoading, setAdminLoading] = useState(false);
   const { mutateAsync: deleteOrder, isPending } =
     api.order.deleteUserOrder.useMutation({
@@ -84,7 +86,7 @@ export function MenuCard({
             >
               <div className="flex w-full justify-center">
                 <p className="max-h-6 w-[55%] overflow-hidden text-ellipsis">
-                  {name}
+                  {t(name)}
                 </p>
                 <div className="flex w-[45%] items-center justify-between *:w-1/3 *:text-start">
                   <p>₾{price}</p>

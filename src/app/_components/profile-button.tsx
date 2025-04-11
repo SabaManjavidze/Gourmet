@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname } from "next/navigation";
 import { PROFILE_ROUTE } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 type UserProfileButtonPropTypes = {
   userPicture: string;
@@ -31,6 +32,7 @@ const ProfileButton = ({
       path: session?.user.role == "user" ? "/user/profile" : "/admin/profile",
     },
   ];
+  const t = useTranslations("Profile Dropdown");
   const pathname = usePathname();
   return (
     <DropdownMenu modal={false}>
@@ -60,13 +62,13 @@ const ProfileButton = ({
           </h3>
         </DropdownMenuLabel>
         <DropdownMenuGroup>
-          {profileOptions.map((item) => (
+          {profileOptions.map((item, idx) => (
             <DropdownMenuItem
               className="hover:!bg-primary/[.08]"
               key={item.path}
             >
               <Link href={item.path} className="w-full">
-                {item.title}
+                {t("title" + (idx + 1))}
               </Link>
             </DropdownMenuItem>
           ))}
@@ -75,7 +77,7 @@ const ProfileButton = ({
               onClick={() => signOut()}
               className="m-0 flex w-full justify-start p-0"
             >
-              გასვლა
+              {t("log out")}
             </button>
           </DropdownMenuItem>
         </DropdownMenuGroup>

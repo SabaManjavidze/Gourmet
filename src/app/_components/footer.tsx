@@ -1,35 +1,34 @@
 import { Mail, PhoneCall } from "lucide-react";
+import { useTranslations } from "next-intl";
 import Link from "next/link";
 
 export function Footer() {
   const routes = [
     {
-      // title: "Home",
       title: "მთავარი",
       route: "/",
     },
+
     {
-      // title: "About Us",
+      title: "ფურშეტი",
+      route: "/catering",
+    },
+    {
+      title: "მენიუ",
+      route: "/menu",
+    },
+    {
       title: "ჩვენს შესახებ",
       route: "/about-us",
     },
     {
-      // title: "Menu",
-      title: "მენიუ",
-      route: "/menu",
-    },
-
-    {
       title: "კონტაქტი",
-      // title: "Contact Us",
-      route: "/contact-us",
-    },
-    {
-      title: "ფურშეტი",
-      // title: "Catering",
-      route: "/catering",
+      route: "",
     },
   ];
+  const t = useTranslations("Footer");
+  const n = useTranslations("Nav");
+  const g = useTranslations("General");
   return (
     <footer
       id="footer"
@@ -43,7 +42,7 @@ export function Footer() {
 
       <div className="flex min-h-64 w-3/5 justify-between bg-black/25 p-8 text-white max-xl:w-3/4 max-lg:items-center max-lg:text-sm max-md:flex-col">
         <div className="flex flex-col items-start justify-between max-lg:w-full max-lg:items-center">
-          <h4 className="text-xl font-semibold">დაგვეკონტაქტეთ</h4>
+          <h4 className="text-xl font-semibold">{g("contact us")}</h4>
           {/* <span className="flex">
             <PhoneCall className="mr-2" />
             <p>032 2 22 32 38</p>
@@ -59,16 +58,18 @@ export function Footer() {
         </div>
 
         <div className="flex flex-col items-start justify-between max-lg:mt-5 max-lg:w-full max-lg:items-center max-lg:text-center">
-          <h4 className="text-xl font-semibold">ლინკები</h4>
-          {routes.map(({ route, title }, idx) => (
+          <h4 className="text-xl font-semibold">{g("links")}</h4>
+          {routes.map(({ route }, idx) => (
             <Link key={idx} href={route}>
-              {title}
+              {n("title" + (idx + 1))}
             </Link>
           ))}
         </div>
         <div className="flex flex-col items-start justify-between max-lg:w-full max-lg:items-center max-lg:text-center">
-          <h4 className="text-xl font-semibold max-lg:mt-5 ">მისამართი</h4>
-          <p className="max-w-40 max-lg:w-full">მირიან მეფის ქუჩა #70</p>
+          <h4 className="text-xl font-semibold max-lg:mt-5 ">
+            {t("address title")}
+          </h4>
+          <p className="max-w-40 max-lg:w-full">{t("address location")}</p>
 
           <div className="text-blue-gray-900 flex gap-2 sm:justify-center">
             <Link

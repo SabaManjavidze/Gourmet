@@ -6,7 +6,10 @@ import { CateringProvider } from "@/hooks/useCatering";
 import PartnersSlider from "../_components/partners-slider";
 import UserReviewsCarousel from "@/components/user-reviews/user-reviews-carousel";
 import { FAQSection } from "@/components/faq-section";
+import { useTranslations } from "next-intl";
 export default function Catering() {
+  const t = useTranslations("CateringPage");
+  const g = useTranslations("General");
   return (
     <main className="min-h-[140vh]">
       <div className="relative flex h-[500px] flex-col items-center justify-center bg-sample-menus bg-cover bg-center bg-no-repeat">
@@ -20,7 +23,7 @@ export default function Catering() {
         text-6xl text-primary-foreground max-md:text-5xl max-sm:text-3xl
         "
         >
-          აირჩიე, მოირგე, შეუკვეთე
+          {t("title")}
         </h1>
         {/* <p
           className="text-shadow-sm z-10 mt-2 text-center text-xl font-normal 
@@ -42,14 +45,14 @@ export default function Catering() {
           </div>
 
           <h2 className="mt-24 text-2xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
-            მომხმარებლების შეფასებები
+            {g("user reviews")}
           </h2>
           <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
             <UserReviewsCarousel />
           </div>
 
           <h2 className="mt-24 text-2xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
-            ხშირად დასმული კითხვები
+            {g("faq")}
           </h2>
           <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
             <FAQSection />

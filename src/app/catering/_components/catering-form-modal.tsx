@@ -19,6 +19,7 @@ import { MAX_PERSON_CATER, MIN_PERSON_CATER } from "@/lib/constants";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
 
 const drinksArr = [
   "წყალი 0.5",
@@ -52,6 +53,8 @@ export function CateringFormModal({
   closeModal: () => void;
   onSubmit: (data: cateringFormType) => void;
 }) {
+  const g = useTranslations("General");
+  const t = useTranslations("Catering Modal");
   const [formIdx, setFormIdx] = useState(0);
   const [showOver50, setShowOver50] = useState(false);
   const router = useRouter();
@@ -94,7 +97,7 @@ export function CateringFormModal({
                   className={`${formIdx !== 0 ? "hidden" : "flex"} flex-col justify-start`}
                 >
                   <h3 className="text-center text-xl font-semibold">
-                    შეარჩიეთ სასურველი პაკეტი:
+                    {t("title")}:
                   </h3>
                   <FormField
                     control={form.control}
@@ -104,7 +107,7 @@ export function CateringFormModal({
                         <div className="flex gap-x-4">
                           <div className="flex items-center">
                             <FormLabel className="text-lg max-lg:text-base">
-                              ხალხის რაოდენობა:
+                              {g("people amount")}:
                             </FormLabel>
                           </div>
                           <FormControl>
@@ -179,14 +182,10 @@ export function CateringFormModal({
                               </FormControl>
                               <FormLabel className="text-lg font-normal max-lg:text-base">
                                 <p className="font-semibold">
-                                  გასტრონომიური შედევრი
+                                  {g("გასტრონომიული შედევრი")}
                                 </p>
                                 <p className="text-base">
-                                  გამორჩეული მენიუ მოიცავს კერძებისა და
-                                  სასმელების ფართო ასორტიმენტს, თქენს კომფორტზე
-                                  კი გურმეს პროფესიონალური მომსახურე პერსონალი
-                                  იზრუნებს. აჩუქეთ თქვენს სტუმრებს უნიკალური
-                                  გასტრონომიული გამოცდილება.
+                                  {g("გასტრონომიული შედევრი_desc")}
                                 </p>
                               </FormLabel>
                             </FormItem>
@@ -198,12 +197,11 @@ export function CateringFormModal({
                                 />
                               </FormControl>
                               <FormLabel className="text-lg font-normal max-lg:text-base">
-                                <p className="font-semibold">სტანდარტული</p>
+                                <p className="font-semibold">
+                                  {g("სტანდარტული")}
+                                </p>
                                 <p className="text-base">
-                                  “გურმეს” სტანდარტული მენიუ იდეალურია
-                                  ყველანაირი ღონისძიებისთვის, მათ შორის,
-                                  კორპორაციული წვეულებებისთვის, ოჯახური
-                                  დღესასწაულების ან ვორქშოფებისთვის.
+                                  {g("სტანდარტული_desc")}
                                 </p>
                               </FormLabel>
                             </FormItem>
@@ -216,10 +214,11 @@ export function CateringFormModal({
                                   />
                                 </FormControl>
                                 <FormLabel className="text-lg font-normal max-lg:text-base">
-                                  <p className="font-semibold">ეკონომიური</p>
+                                  <p className="font-semibold">
+                                    {g("ეკონომიური")}
+                                  </p>
                                   <p className="text-base">
-                                    ეკონომიური მენიუ გათვლილია მცირე ბიუჯეტზე და
-                                    მოიცავს მსუბუქ წასახემსებელს.
+                                    {g("ეკონომიური_desc")}
                                   </p>
                                 </FormLabel>
                               </FormItem>
@@ -240,17 +239,8 @@ export function CateringFormModal({
                     py-8`}
                     >
                       <FormLabel className="text-center text-xl">
-                        <p className="underline">
-                          გსურთ “გურმეს” პერსონალის მომსახურეობა?
-                        </p>
-                        <p className="mt-2 text-sm">
-                          „გურმეს“ პერსონალის მომსახურება გულისხმობს გუნდს,
-                          რომელიც, მოიტანს კერძებსა და ინვენტარს, ლამაზად
-                          გააწყობს ფურშეტს, დაელოდება ღონისძიების დასრულებას და
-                          შემდეგ აალაგებს მაგიდებს. უარის მონიშვნის შემთხვევაში,
-                          შეკვეთას მიიღებთ შესაფუთი ყუთებით, პერსონალისა და
-                          ინვენტარის გარეშე.
-                        </p>
+                        <p className="underline">{t("assistance_title")}</p>
+                        <p className="mt-2 text-sm">{t("assistance_sub")}</p>
                       </FormLabel>
                       <FormControl>
                         <RadioGroup
@@ -263,7 +253,7 @@ export function CateringFormModal({
                               <RadioGroupItem value="კი" />
                             </FormControl>
                             <FormLabel className="text-lg font-normal">
-                              კი
+                              {g("yes")}
                             </FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-2 space-y-0">
@@ -271,7 +261,7 @@ export function CateringFormModal({
                               <RadioGroupItem value="არა" />
                             </FormControl>
                             <FormLabel className="text-lg font-normal">
-                              არა
+                              {g("no")}
                             </FormLabel>
                           </FormItem>
                         </RadioGroup>
@@ -289,7 +279,7 @@ export function CateringFormModal({
                     py-8`}
                     >
                       <FormLabel className="text-xl max-md:text-base">
-                        შეარჩიეთ ჭურჭლის ტიპი:
+                        {t("plate_title")}:
                       </FormLabel>
                       <FormControl>
                         <RadioGroup
@@ -302,7 +292,7 @@ export function CateringFormModal({
                               <RadioGroupItem value="ერთჯერადი" />
                             </FormControl>
                             <FormLabel className="text-lg font-normal max-md:text-base">
-                              ერთჯერადი
+                              {t("ერთჯერადი")}
                             </FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-2 space-y-0">
@@ -310,7 +300,7 @@ export function CateringFormModal({
                               <RadioGroupItem value="ფაიფურის" />
                             </FormControl>
                             <FormLabel className="text-lg font-normal max-md:text-base">
-                              ფაიფურის
+                              {t("ფაიფურის")}
                             </FormLabel>
                           </FormItem>
                           <FormItem className="flex items-center space-x-2 space-y-0">
@@ -318,7 +308,7 @@ export function CateringFormModal({
                               <RadioGroupItem value="ჭურჭლის გარეშე" />
                             </FormControl>
                             <FormLabel className="text-lg font-normal max-md:text-base">
-                              ჭურჭლის გარეშე
+                              {t("ჭურჭლის გარეშე")}
                             </FormLabel>
                           </FormItem>
                         </RadioGroup>
@@ -336,7 +326,7 @@ export function CateringFormModal({
                     py-8`}
                     >
                       <FormLabel className="text-xl">
-                        შეარჩიეთ სასმელები:
+                        {t("drink title")}:
                       </FormLabel>
                       <div className="flex items-center gap-x-3 max-lg:flex-col max-lg:items-start">
                         {drinksArr.map((item) => (
@@ -380,7 +370,7 @@ export function CateringFormModal({
                                     className="text-lg font-normal 
                                   max-sm:text-base"
                                   >
-                                    {item}
+                                    {t(item)}
                                   </FormLabel>
                                 </FormItem>
                               );
@@ -404,7 +394,7 @@ export function CateringFormModal({
               className="h-10 w-20 rounded-[3px] text-base max-lg:h-9 max-lg:w-16 max-lg:text-sm"
               onClick={() => setFormIdx((prev) => (prev > 0 ? prev - 1 : prev))}
             >
-              უკან
+              {g("previous")}
             </Button>
             <Button
               type={"button"}
@@ -414,7 +404,7 @@ export function CateringFormModal({
               onClick={async () => {
                 if (formIdx == formItemLength) {
                   await form.handleSubmit(onSubmitForm, (err) => {
-                    toast.error("ფორმა არ არის ვალიდური.");
+                    toast.error(g("form not valid"));
                     console.log(err);
                   })();
                   return;
@@ -431,7 +421,7 @@ export function CateringFormModal({
                 );
               }}
             >
-              {formIdx == formItemLength ? "დადასტურება" : "წინ"}
+              {formIdx == formItemLength ? g("submit") : g("next")}
             </Button>
           </div>
         </form>

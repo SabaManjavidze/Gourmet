@@ -13,6 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Marquee from "@/components/magicui/marquee";
 import { twMerge } from "tailwind-merge";
+import { useTranslations } from "next-intl";
 
 const partners = [
   {
@@ -104,12 +105,13 @@ const PartnerCard = ({
 };
 
 const PartnersSlider = () => {
+  const t = useTranslations("Partners");
   return (
     <div
       className="relative flex h-[230px] w-full flex-col items-center 
     overflow-hidden"
     >
-      <h3 className="text-2xl font-semibold">ჩვენს ფურშეტს იყენებენ</h3>
+      <h3 className="text-2xl font-semibold">{t("title")}</h3>
       <Marquee
         pauseOnHover
         className="mt-10 flex h-full items-center border [--duration:20s]"

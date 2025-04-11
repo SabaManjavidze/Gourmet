@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { useMenu } from "@/hooks/useMenu";
 import { ChevronLeft } from "lucide-react";
 import { Product, productState } from "menu";
+import { useTranslations } from "next-intl";
 import { useMemo } from "react";
 
 export function VariantAccordion({
@@ -21,13 +22,16 @@ export function VariantAccordion({
   menuSample: string;
 }) {
   const { changeVariant } = useMenu();
+  const t = useTranslations("Products");
   return (
     <Accordion type="single" collapsible className="h-full w-full">
       <AccordionItem value="item-1" className="h-full">
         <AccordionTrigger
           className={`h-full overflow-x-auto whitespace-nowrap border-x p-5 text-start`}
         >
-          <div className="flex items-center gap-x-2">{activeProduct.name}</div>
+          <div className="flex items-center gap-x-2">
+            {t(activeProduct.name)}
+          </div>
         </AccordionTrigger>
         <AccordionContent className="h-full w-full pb-0">
           <ul className="flex gap-x-3 overflow-x-auto border border-y-0 px-4 pb-4">
@@ -41,7 +45,7 @@ export function VariantAccordion({
                   menu-table-variants flex h-8 
                   rounded-xl text-foreground`}
               >
-                {product.name}
+                {t(product.name)}
               </Button>
             </li>
             {product.variants?.map((variant) => (
@@ -55,7 +59,7 @@ export function VariantAccordion({
                   menu-table-variants h-8 rounded-xl text-foreground 
                   `}
                 >
-                  {variant.name}
+                  {t(variant.name)}
                 </Button>
               </li>
             ))}

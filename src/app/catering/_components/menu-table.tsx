@@ -11,6 +11,7 @@ import { api } from "@/trpc/react";
 import { MenuVariants } from "@/lib/types";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 export function MenuTable({
   menuNameArg,
@@ -35,6 +36,7 @@ export function MenuTable({
     type: formData?.type as MenuVariants,
     personRange: Math.floor(Number(formData?.personRange) / 10) * 10,
   });
+  const t = useTranslations("Menus");
   const closeModal = () => {
     setAddProdOpen(false);
   };
@@ -69,6 +71,7 @@ export function MenuTable({
         <MenuTemplate
           // products={dbMenu[currMenu] ?? []}
           addClick={addProductsClick}
+          title={t(Object.keys(dbMenu.data)[0] ?? currMenu?.name ?? "")}
           name={Object.keys(dbMenu.data)[0] ?? currMenu?.name ?? ""}
           id="menu"
           header={

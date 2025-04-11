@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "./ui/button";
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useMemo, useState } from "react";
 import {
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
@@ -13,7 +13,14 @@ import {
 import { Capitalize } from "@/lib/utils";
 import { ChevronDown } from "lucide-react";
 import { twMerge } from "tailwind-merge";
+import setLanguage from "@/actions/set-language";
+import { getUserLocale } from "@/lib/locale";
+import { Locale } from "@/i18n/config";
 
+const langs = {
+  ge: "Georgian",
+  en: "English",
+};
 export function LanguageDropdown({
   className = "",
   iconSize,
@@ -21,9 +28,16 @@ export function LanguageDropdown({
   iconSize?: number | string;
   className?: string;
 }) {
-  const languages = ["english", "georgian"] as const;
-  const [lang, setLang] = useState<(typeof languages)[number]>("english");
+  const languages = Object.keys(langs) as unknown as (keyof typeof langs)[];
+  const [lang, setLang] = useState<Locale>("ge");
   const [open, setOpen] = useState(false);
+  async function setlanguage() {
+    const locale = await getUserLocale();
+    setLang(locale);
+  }
+  useLayoutEffect(() => {
+    setlanguage();
+  }, []);
   return (
     <DropdownMenu open={open} onOpenChange={(o) => setOpen(o)}>
       <DropdownMenuTrigger asChild className="min-w-28">
@@ -35,7 +49,7 @@ export function LanguageDropdown({
             className,
           )}
         >
-          <p>{Capitalize(lang)}</p>
+          <p>{Capitalize(langs[lang])}</p>
           <ChevronDown className={"ml-1 duration-150"} size={iconSize} />
         </Button>
       </DropdownMenuTrigger>
@@ -46,8 +60,8 @@ export function LanguageDropdown({
           value={lang}
           onValueChange={(val) => {
             if (!languages.includes(val as any)) return;
-
-            setLang(val as (typeof languages)[number]);
+            setLanguage(val as any);
+            setLang(val as Locale);
           }}
         >
           {languages.map((l) => (
@@ -56,7 +70,7 @@ export function LanguageDropdown({
               key={l}
               value={l}
             >
-              {Capitalize(l)}
+              {Capitalize(langs[l])}
             </DropdownMenuRadioItem>
           ))}
         </DropdownMenuRadioGroup>

@@ -14,9 +14,11 @@ import Image from "next/image";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { currMenuType, useCatering } from "@/hooks/useCatering";
+import { useTranslations } from "next-intl";
 
 export function SampleMenuCarousel() {
   const { currMenu, setCurrMenu } = useCatering();
+  const t = useTranslations("Menus");
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -84,7 +86,7 @@ export function SampleMenuCarousel() {
                   font-lucida-bold text-3xl font-normal text-white 
                   max-md:text-xl max-sm:text-base"
                 >
-                  {name}
+                  {t(name)}
                 </span>
               </CardContent>
             </Card>

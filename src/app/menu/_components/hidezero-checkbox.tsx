@@ -2,6 +2,7 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { useMenu } from "@/hooks/useMenu";
+import { useTranslations } from "next-intl";
 
 export function HideZeroCheckbox({
   iconSide = "right",
@@ -9,6 +10,7 @@ export function HideZeroCheckbox({
   iconSide?: "left" | "right";
 }) {
   const { setHideZeroQt } = useMenu();
+  const t = useTranslations("MenuPage");
   return (
     <div className="flex items-center space-x-2">
       {iconSide == "left" ? (
@@ -22,7 +24,7 @@ export function HideZeroCheckbox({
             htmlFor="terms"
             className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 max-md:text-sm max-xs:text-xs"
           >
-            დამალეთ პროდუქტები ნულოვანი რაოდენობით
+            {t("hide zero")}
           </label>
         </>
       ) : (
@@ -31,7 +33,7 @@ export function HideZeroCheckbox({
             htmlFor="terms"
             className="text-base font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
-            დამალეთ პროდუქტები ნულოვანი რაოდენობით
+            {t("hide zero")}
           </label>
           <Checkbox
             size="sm"

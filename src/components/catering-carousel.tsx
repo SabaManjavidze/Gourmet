@@ -16,12 +16,14 @@ import { CardBody, CardContainer } from "./3d-card";
 import { v4 as uuid, v4 } from "uuid";
 import { api } from "@/trpc/react";
 import { Loader2 } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function CateringCarousel() {
   const router = useRouter();
   const handleItemClick = (name: string) => {
     router.push(`/catering?menu=${name}`);
   };
+  const t = useTranslations("Menus");
   const {
     data: sampleMenus,
     isLoading,
@@ -81,7 +83,7 @@ export function CateringCarousel() {
                     }}
                   />
                   <span className="absolute bottom-0 z-10 w-full bg-black/25 py-4 text-center text-3xl font-normal uppercase text-white max-md:text-xl max-sm:text-base">
-                    {name}
+                    {t(name)}
                   </span>
                 </CardBody>
               </CardContainer>

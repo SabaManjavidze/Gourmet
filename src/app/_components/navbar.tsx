@@ -1,5 +1,5 @@
 "use client";
-// import { LanguageDropdown } from "@/components/language-dropdown";
+import { LanguageDropdown } from "@/components/language-dropdown";
 import { Button } from "@/components/ui/button";
 import {
   Loader2,
@@ -17,6 +17,7 @@ import { twMerge } from "tailwind-merge";
 import { useSession } from "next-auth/react";
 import AuthModal from "./auth-modal";
 import ProfileButton from "./profile-button";
+import { useTranslations } from "next-intl";
 
 export const navRoutes = [
   {
@@ -47,6 +48,7 @@ export const mobileRoutes = [
   "მენიუ",
 ] as (typeof navRoutes)[number]["title"][];
 export function Navbar() {
+  const t = useTranslations("Nav");
   const [open, setOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const pathname = usePathname();
@@ -102,7 +104,7 @@ export function Navbar() {
                   translate-y-1 rounded-3xl bg-accent"
                   ></div>
                 ) : null}
-                {title}
+                {t("title" + (idx + 1))}
               </Link>
             </li>
           ))}
@@ -116,9 +118,9 @@ export function Navbar() {
           <PhoneCall className="mr-2" size={20} />
           <h3 className="font-semibold tracking-tight">+995 597 555 266 </h3>
         </span>
-        {/* <div className="flex justify-center">
+        <div className="flex justify-center">
           <LanguageDropdown />
-        </div> */}
+        </div>
         <div className="text-blue-gray-900 flex gap-2 sm:justify-center">
           {status === "loading" ? (
             <Loader2 className="text-primary-foreground" />

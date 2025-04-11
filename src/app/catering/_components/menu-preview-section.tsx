@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 export interface MenuPreview {
   id: string;
@@ -14,6 +15,8 @@ export function MenuPreviewSection({
   data: MenuPreview;
   onOrderClick: (id: string, name: string) => void;
 }) {
+  const g = useTranslations("General");
+  const t = useTranslations("Menus");
   return (
     <div className="flex flex-col gap-y-12 max-lg:gap-y-5" id={data.title}>
       <div
@@ -38,7 +41,7 @@ export function MenuPreviewSection({
           />
         </div>
         <div className="flex w-full flex-col items-start justify-start max-md:mt-12">
-          <h3 className="text-xl font-bold">{data.title}</h3>
+          <h3 className="text-xl font-bold">{t(data.title)}</h3>
           <p className="mt-5 text-base leading-7 text-muted-foreground">
             {data.desc}
           </p>
@@ -49,7 +52,7 @@ export function MenuPreviewSection({
             size={"lg"}
             variant={"accent"}
           >
-            შეუკვეთე
+            {g("order")}
           </Button>
         </div>
       </div>
@@ -85,7 +88,7 @@ export function MenuPreviewSection({
           size={"lg"}
           variant={"accent"}
         >
-          შეუკვეთე
+          {g("order")}
         </Button>
       </div>
     </div>

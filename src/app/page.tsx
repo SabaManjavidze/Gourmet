@@ -6,8 +6,11 @@ import { NavDrawer } from "./_components/nav-drawer";
 import UserReviewsCarousel from "@/components/user-reviews/user-reviews-carousel";
 import { useMemo } from "react";
 import { FAQSection } from "@/components/faq-section";
+import { useTranslations } from "next-intl";
 
-export default async function Home() {
+export default function Home() {
+  const t = useTranslations("HomePage");
+  const g = useTranslations("General");
   return (
     <main className="*:mt-20">
       <section className="relative !mt-0 flex h-[70vh] flex-col items-center justify-center gap-y-3 bg-welcome-banner bg-cover bg-center bg-no-repeat text-center max-md:bg-[10%]">
@@ -21,19 +24,19 @@ export default async function Home() {
           className="text-shadow z-10 font-lucida-bold text-7xl italic 
         text-white max-md:text-5xl max-sm:text-4xl"
         >
-          გურმე - სივრცე გემრიელი
+          {t("title")}
         </h1>
         {/* <h2 className="text-shadow z-10 text-2xl italic text-gray-200 max-md:text-xl max-sm:w-4/5 max-sm:text-base">
           Where Culinary Excellence Meets Unparalleled Hospitality
         </h2> */}
       </section>
       <section className="flex flex-col items-center bg-cover bg-center bg-no-repeat">
-        <h2 className="text-4xl font-bold uppercase">ფურშეტები</h2>
+        <h2 className="text-4xl font-bold uppercase">{t("fourshet")}</h2>
         <p
           className="mt-4 text-lg text-muted-foreground max-sm:px-6
         max-sm:text-center"
         >
-          სასურველი ფურშეტის შესარჩევად გთხოვთ დააჭირეთ შესაბამის სურათს.
+          {t("fourshet_sub")}
         </p>
         <div
           className="flex w-full justify-center bg-rectangle bg-cover bg-center bg-no-repeat 
@@ -44,20 +47,14 @@ export default async function Home() {
       </section>
       <section className="flex flex-col items-center justify-center">
         <h2 className="text-4xl font-bold uppercase max-md:text-xl max-sm:w-4/5 ">
-          ჩვენს შესახებ
+          {g("about_us")}
           {/* about us */}
         </h2>
         <p
           className="mt-5 w-[70%] text-center text-lg leading-8 text-muted-foreground
         max-sm:text-left "
         >
-          “გურმე” არის კაფე საკონდიტრო რომელიც საქართველოს ბაზარზე 2012 წლიდან
-          ოპერირებს და მომხმარებელს სრულყოფილ სერვისს სთავაზობს. ჩვენ დაარსების
-          დღიდან უმაღლესი ხარისხის ნედლეულით დამზადებულ უგემრიელს პროდუქციას
-          ვთავაზობთ ჩვენს მომხმარებელს, ასევე ვთავაზობთ ქეითერინგის სერვის
-          რომელიც თქვენს სტუმრებს არ დაავიწყდებათ. ამ დროისთვის, კომპანია ფლობს
-          დიდ საწარმოს მირიან მეფის 70-ში, ასევე, სტუმრებს თბილისის მასშტაბით
-          მასპინძლობს “გურმეს” არაერთი კაფე.
+          {t("about_us_sub")}
           {/* Welcome to Gourmet, where culinary excellence meets unparalleled
           hospitality. Nestled in the heart of Georgia, our restaurant offers a
           feast for the senses, blending innovative flavors with timeless
@@ -70,7 +67,7 @@ export default async function Home() {
         </p>
         <Link href="/about-us">
           <Button className="mt-8 uppercase" variant={"accent"}>
-            სრულად ნახვა
+            {g("see full")}
           </Button>
         </Link>
       </section>
@@ -79,18 +76,18 @@ export default async function Home() {
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="z-10 flex h-full w-full flex-col items-center justify-center">
           <h2 className="text-shadow text-4xl font-semibold text-white max-sm:text-center max-sm:text-2xl">
-            ჩვენი საკონტაქტო და სოც-მედიები
+            {t("contact_socmedia")}
           </h2>
           <Link href="#footer" scroll={true}>
             <Button className="mt-8 text-lg uppercase" variant={"accent"}>
-              დაგვიკავშირდით
+              {g("contact us")}
             </Button>
           </Link>
         </div>
       </section>
       <section className="flex flex-col items-center justify-center">
         <h2 className="text-4xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
-          მომხმარებლების შეფასებები
+          {g("user reviews")}
         </h2>
         <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
           <UserReviewsCarousel />
@@ -98,7 +95,7 @@ export default async function Home() {
       </section>
       <section className="flex flex-col items-center justify-center">
         <h2 className="text-4xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
-          ხშირად დასმული კითხვები
+          {g("faq")}
         </h2>
         <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
           <FAQSection />

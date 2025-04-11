@@ -6,20 +6,22 @@ import { MenuCardModal } from "./_components/menu-card-modal";
 import { useSession } from "next-auth/react";
 import { OrderList } from "./_components/order-list";
 import { Status } from "@/server/api/routers/orders";
+import { useTranslations } from "next-intl";
 
 export default function ProfilePage() {
   const [open, setOpen] = useState<{ id: string; status: Status } | null>(null);
   const { data: session } = useSession();
+  const t = useTranslations("Profile Page");
   const tabs = [
     {
-      title: "შენახული მენიუები",
+      title: t("saved menus"),
       value: "My Drafts",
       content: (
         <OrderList setOpen={(id: string) => setOpen({ id, status: "draft" })} />
       ),
     },
     {
-      title: "აქტიური შეკვეთები",
+      title: t("submitted orders"),
       value: "Submitted",
       content: (
         <OrderList
@@ -29,7 +31,7 @@ export default function ProfilePage() {
       ),
     },
     {
-      title: "შეკვეთების ისტორია",
+      title: t("order history"),
       value: "Order History",
       content: (
         <OrderList

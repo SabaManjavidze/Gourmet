@@ -8,6 +8,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { DeleteIcon, XCircleIcon } from "lucide-react";
 import { VariantAccordion } from "./variant-accordion";
+import { useTranslations } from "next-intl";
 // import { VariantAccordion } from "./variant-accordion";
 
 const cls = "border border-t-0 border-l-0 w-full p-5";
@@ -20,6 +21,7 @@ export function MenuProduct({
   product: productState;
   enabled?: boolean;
 }) {
+  const t = useTranslations("Products");
   const { changeQuantity, hideZeroQt, changeVariant, handleRemoveProduct } =
     useMenu();
   const activeProduct = useMemo(() => {
@@ -59,7 +61,7 @@ export function MenuProduct({
               "overflow-x-scroll whitespace-nowrap border-l text-start",
             )}
           >
-            {product.name}
+            {t(product.name)}
           </p>
         )}
       </div>

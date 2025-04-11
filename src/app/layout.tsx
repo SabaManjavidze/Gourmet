@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import NextTopLoader from "nextjs-toploader";
+import { NextIntlClientProvider } from "next-intl";
 import { Analytics } from "@vercel/analytics/next";
 import { GoogleTagManager } from "@next/third-parties/google";
 import { LinkedInInsightTag } from "nextjs-linkedin-insight-tag";
@@ -13,6 +14,7 @@ import { authOptions } from "@/server/auth";
 import { Toaster } from "@/components/ui/sonner";
 import Script from "next/script";
 import { env } from "@/env";
+import { getLocale } from "next-intl/server";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,9 +34,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const session = await getServerSession(authOptions);
+  const locale = await getLocale();
   return (
     <html
-      lang="en"
+      lang={locale}
       // className={inter.className}
       style={{ scrollBehavior: "smooth" }}
     >
@@ -65,10 +68,12 @@ export default async function RootLayout({
       translate-x-1/2 border-[3px] border-t-0 border-accent-light bg-nav-logo bg-cover 
       bg-center bg-no-repeat max-xl:hidden"
           />
-          <NextTopLoader color="orange" showSpinner={false} />
-          <Navbar />
-          <Analytics />
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <NextIntlClientProvider>
+            <NextTopLoader color="orange" showSpinner={false} />
+            <Navbar />
+            <Analytics />
+            <TRPCReactProvider>{children}</TRPCReactProvider>
+          </NextIntlClientProvider>
         </SessionProvider>
         <GoogleTagManager gtmId={env.GOOGLE_TAG_MANAGER_ID} />
         <Toaster />

@@ -5,6 +5,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useTranslations } from "next-intl";
 
 const faq = [
   {
@@ -54,18 +55,19 @@ const faq = [
 ];
 
 export function FAQSection() {
+  const t = useTranslations("FAQ");
   return (
     <div className="flex w-full justify-center">
       <div className="grid w-4/5 grid-cols-2 gap-3">
-        {faq.map((item) => (
-          <Accordion type="single" collapsible>
+        {faq.map((item, idx) => (
+          <Accordion type="single" collapsible key={idx}>
             <AccordionItem
               value="item-1"
               className="w-full border-b-0 bg-accent-light px-5 text-base"
             >
-              <AccordionTrigger>{item.question}</AccordionTrigger>
+              <AccordionTrigger>{t("q" + (idx + 1))}</AccordionTrigger>
               <AccordionContent className="text-base">
-                {item.answer}
+                {t("ans" + (idx + 1))}
               </AccordionContent>
             </AccordionItem>
           </Accordion>

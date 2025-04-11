@@ -1,8 +1,10 @@
 import OrbitingCircles from "@/components/magicui/orbiting-circles";
 import { Button } from "@/components/ui/button";
+import { useTranslations } from "next-intl";
 import Image from "next/image";
 
 export function CustomCatering({ onClick }: { onClick?: () => void }) {
+  const t = useTranslations("Custom Catering");
   return (
     <div
       id="custom-catering"
@@ -16,7 +18,7 @@ export function CustomCatering({ onClick }: { onClick?: () => void }) {
         font-semibold leading-none text-accent-light hover:bg-accent/80
         active:bg-accent max-sm:py-7 max-sm:text-3xl"
         >
-          გაიარეთ კონსულტაცია
+          {t("btn_title")}
         </Button>
       </div>
 

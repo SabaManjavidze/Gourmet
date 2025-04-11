@@ -25,7 +25,7 @@ const config = {
       },
       screens: {
         "2lg": "1150px",
-        xs: "500px",
+        "xs": "500px",
       },
       backgroundSize: {
         "90": "90%",
@@ -36,16 +36,16 @@ const config = {
       },
       backgroundImage: {
         "dishes-banner": "url('/imgs/dishes.png')",
-        date: "url('/imgs/date.png')",
+        "date": "url('/imgs/date.png')",
         "round-dish1": "url('/imgs/round-dish1.png')",
         "round-dish2": "url('/imgs/round-dish2.png')",
         "about-us-1": "url('/imgs/about-us-1.jpg')",
         "about-us-2": "url('/imgs/about-us-2.jpg')",
         "menu-banner": "url('/imgs/menu.png')",
         "about-us-banner": "url('/imgs/about-us.jpg')",
-        rectangle: "url('/imgs/rectangle.png')",
+        "rectangle": "url('/imgs/rectangle.png')",
         "sample-menus": "url('/imgs/sample-menus.png')",
-        vignete:
+        "vignete":
           "radial-gradient(circle, rgba(0,0,0,1) 0%, rgba(0,0,0,0.3) 95%, rgba(0,212,255,0) 100%);",
         "footer-banner": "url(/imgs/footer.png)",
         "contact-us-banner": "url(/imgs/contact-us.jpg)",
@@ -53,47 +53,47 @@ const config = {
         "welcome-banner": "url(/imgs/welcome.png)",
       },
       fontFamily: {
-        georgia: ["Georgia", "sans"],
-        gugeshashvili: ["gugeshashvili", "sans"],
+        "georgia": ["Georgia", "sans"],
+        "gugeshashvili": ["gugeshashvili", "sans"],
         "lucida-bold": ["Lucida Handwriting Std", "sans"],
         "lucida-light": ["Lucida Handwriting Std Light", "sans"],
         "lucida-rg": ["Lucida Handwriting Std Rg", "sans"],
-        sans: ["Poppins", ...fontFamily.sans],
+        "sans": ["Poppins", ...fontFamily.sans],
       },
       colors: {
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        background: "hsl(var(--background))",
-        foreground: "hsl(var(--foreground))",
-        brown: "hsl(var(--brown))",
-        primary: {
+        "border": "hsl(var(--border))",
+        "input": "hsl(var(--input))",
+        "ring": "hsl(var(--ring))",
+        "background": "hsl(var(--background))",
+        "foreground": "hsl(var(--foreground))",
+        "brown": "hsl(var(--brown))",
+        "primary": {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
         },
-        secondary: {
+        "secondary": {
           DEFAULT: "hsl(var(--secondary))",
           foreground: "hsl(var(--secondary-foreground))",
         },
-        destructive: {
+        "destructive": {
           DEFAULT: "hsl(var(--destructive))",
           foreground: "hsl(var(--destructive-foreground))",
         },
-        muted: {
+        "muted": {
           DEFAULT: "hsl(var(--muted))",
           foreground: "hsl(var(--muted-foreground))",
           sm: "hsl(var(--muted-sm))",
         },
-        accent: {
+        "accent": {
           DEFAULT: "hsl(var(--accent))",
           foreground: "hsl(var(--accent-foreground))",
           light: "hsl(var(--accent-light))",
         },
-        popover: {
+        "popover": {
           DEFAULT: "hsl(var(--popover))",
           foreground: "hsl(var(--popover-foreground))",
         },
-        card: {
+        "card": {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
@@ -125,7 +125,7 @@ const config = {
             height: "0",
           },
         },
-        marquee: {
+        "marquee": {
           from: {
             transform: "translateX(0)",
           },
@@ -141,7 +141,7 @@ const config = {
             transform: "translateY(calc(-100% - var(--gap)))",
           },
         },
-        orbit: {
+        "orbit": {
           "0%": {
             transform:
               "rotate(0deg) translateY(calc(var(--radius) * 1px)) rotate(0deg)",
@@ -155,9 +155,9 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-        marquee: "marquee var(--duration) linear infinite",
+        "marquee": "marquee var(--duration) linear infinite",
         "marquee-vertical": "marquee-vertical var(--duration) linear infinite",
-        orbit: "orbit calc(var(--duration)*1s) linear infinite",
+        "orbit": "orbit calc(var(--duration)*1s) linear infinite",
       },
     },
   },

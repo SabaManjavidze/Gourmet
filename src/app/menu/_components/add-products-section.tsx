@@ -1,8 +1,10 @@
 import { Button } from "@/components/ui/button";
 import { useMenu } from "@/hooks/useMenu";
 import { PlusCircle } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export function AddProductsSection({ onClick }: { onClick: () => void }) {
+  const g = useTranslations("General");
   return (
     <div
       className="flex w-full justify-between text-center 
@@ -19,7 +21,7 @@ export function AddProductsSection({ onClick }: { onClick: () => void }) {
           onClick={onClick}
         >
           <PlusCircle className="mr-2 max-md:h-5 max-md:w-5" />
-          პროდუქტების დამატება
+          {g("add products")}
         </Button>
       </div>
       <div className="menu-table-other-fields flex justify-between font-bold *:w-full">

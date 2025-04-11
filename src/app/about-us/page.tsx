@@ -5,10 +5,13 @@ import React, { Suspense, useEffect, useState } from "react";
 import { Video } from "../_components/video";
 import PartnersSlider from "../_components/partners-slider";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 export default function AboutUsPage() {
   // const { data: session } = useSession();
 
+  const g = useTranslations("General");
+  const t = useTranslations("About Us");
   return (
     <div className="*:mt-20">
       <section
@@ -24,7 +27,7 @@ export default function AboutUsPage() {
           className="text-outline z-10 font-lucida-bold text-6xl italic 
         text-white max-md:text-5xl max-sm:text-3xl"
         >
-          ჩვენს შესახებ
+          {g("about_us")}
         </h1>
         {/* <h2 className="z-10 text-2xl text-primary-foreground max-md:text-xl max-sm:w-4/5 max-sm:text-base">
           Select, Customize, And Order Delicious Catering For Any Occasion
@@ -48,13 +51,7 @@ export default function AboutUsPage() {
             max-lg:mx-6 max-lg:text-base max-md:mx-0 max-md:mt-0 max-md:h-auto max-sm:px-12
             "
             >
-              “გურმე” არის კაფე საკონდიტრო რომელიც საქართველოს ბაზარზე 2012
-              წლიდან ოპერირებს და მომხმარებელს სრულყოფილ სერვისს სთავაზობს. ჩვენ
-              დაარსების დღიდან უმაღლესი ხარისხის ნედლეულით დამზადებულ უგემრიელს
-              პროდუქციას ვთავაზობთ ჩვენს მომხმარებელს, ასევე ვთავაზობთ
-              ქეითერინგის სერვის რომელიც თქვენს სტუმრებს არ დაავიწყდებათ. ამ
-              დროისთვის, კომპანია ფლობს დიდ საწარმოს მირიან მეფის 70-ში, ასევე,
-              სტუმრებს თბილისის მასშტაბით მასპინძლობს “გურმეს” არაერთი კაფე.
+              {t("sub")}
             </p>
 
             <Link href="/catering">
@@ -63,7 +60,7 @@ export default function AboutUsPage() {
                 size={"lg"}
                 variant={"accent"}
               >
-                შეუკვეთე
+                {g("order")}
               </Button>
             </Link>
           </div>
@@ -95,7 +92,7 @@ export default function AboutUsPage() {
             text-4xl font-bold leading-[55px] max-xl:text-3xl
             max-xl:leading-[58px] max-lg:h-full max-md:h-auto max-md:text-center max-md:text-2xl"
               >
-                სივრცე გემრიელი
+                {g("slogan_tasty")}
               </p>
             </div>
             <div className="max-sm:mt-5">
@@ -112,7 +109,7 @@ export default function AboutUsPage() {
             leading-[55px] max-xl:text-3xl max-xl:leading-[58px] max-md:text-center
             max-md:text-2xl"
               >
-                სივრცე გემრიელი
+                {g("slogan_tasty")}
               </p>
               <div
                 className="h-full w-full bg-round-dish2 bg-contain bg-bottom 
@@ -135,25 +132,14 @@ export default function AboutUsPage() {
             className="text-3xl font-bold max-xl:text-2xl max-lg:text-xl
           max-md:text-center"
           >
-            ISO სერთიფიცირებული
+            {t("certificate")}
           </h2>
           <p
             className="mt-6 h-72 overflow-y-scroll text-left text-lg
           leading-10 text-muted-foreground max-xl:text-lg max-lg:text-base
           max-md:text-center"
           >
-            აუდიტის შედეგად, „გურმემ“ ISO 22000:2018 საერთაშორისო სერტიფიკატი
-            აიღო. სერტიფიკატის გაცემამდე, პოლონური აუდიტორული კომპანია Grand
-            Cert რამდენიმე თვის განმავლობაში ატარებდა შემოწმებას. სერტიფიკატის
-            მიღებამდე კომპანიაში შემოწმდა ყველა დეტალი - შენობა-ნაგებობა,
-            დანადგარები, ტექნოლოგიური პროცესები და ა.შ. „გურმეს“ გუნდმა
-            გაითვალისწინა ყველა ის პირობა, რომელსაც ISO სერტიფიკატის მქონე
-            კომპანია უნდა აკმაყოფილებდეს. სპეციალურად შეირჩა პროდუქციის ყველა
-            მომწოდებელი, კონტროლდებოდა პროდუქტების ხარისხი და სერთიფიკატები. ISO
-            22000:2018 სერტიფიკატი კონკრეტულად კვებით-სამრეწველო მიმართულებას
-            ეხება. აღნიშნული სერტიფიკატი მომხმარებლისთვის გარანტიაა, რომ
-            კომპანიაში წარმოებული პროდუქცია და მომსახურება არის მაღალი ხარისხის
-            და ჯანმრთელობისთვის უსაფრთხო.
+            {t("certificate_sub")}
           </p>
           <Link href="/catering">
             <Button
@@ -161,7 +147,7 @@ export default function AboutUsPage() {
               size={"lg"}
               variant={"accent"}
             >
-              შეუკვეთე
+              {g("order")}
             </Button>
           </Link>
         </div>
@@ -183,7 +169,7 @@ export default function AboutUsPage() {
             className="text-shadow text-center text-4xl font-normal tracking-wide
           text-white underline underline-offset-2 max-xl:text-2xl max-lg:text-xl"
           >
-            აირჩიეთ მენიუ
+            {t("choose menu")}
           </h2>
 
           {/* <p
@@ -203,7 +189,7 @@ export default function AboutUsPage() {
               className="mt-8 border border-white text-lg uppercase"
               variant={"accent"}
             >
-              შეუკვეთე
+              {g("order")}
             </Button>
           </Link>
         </div>

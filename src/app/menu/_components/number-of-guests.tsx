@@ -9,6 +9,7 @@ import { MAX_PERSON_CATER, MIN_PERSON_CATER } from "@/lib/constants";
 import { api } from "@/trpc/react";
 import { XCircleIcon } from "lucide-react";
 import { productState } from "menu";
+import { useTranslations } from "next-intl";
 import { useRouter, usePathname, useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 
@@ -20,6 +21,7 @@ export function NumberOfGuests({
   const { personCount, setPersonCount, menu, dbMenu, setMenu } = useMenu();
   const { currMenu, formData, setFormData, setCustomOpen } = useCatering();
   const searchParams = useSearchParams();
+  const t = useTranslations("MenuPage");
   const [over50, setOver50] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
@@ -112,7 +114,7 @@ export function NumberOfGuests({
         className="w-4/5 text-xl font-semibold text-gray-500 
               max-xl:text-lg max-md:text-base max-sm:text-xs"
       >
-        გთხოვთ, შეიყვანოთ სტუმრების რაოდენობა და მიიღეთ იდეალური მენიუ თქვენთვის
+        {t("person range")}
       </h3>
       <Input
         type="number"

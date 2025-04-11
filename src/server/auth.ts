@@ -67,7 +67,7 @@ export const authOptions: NextAuthOptions = {
       };
     },
   },
-  adapter: DrizzleAdapter(db, createTable) as Adapter,
+  adapter: DrizzleAdapter(db, createTable as any) as Adapter,
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID?.toString() as string,

@@ -13,9 +13,12 @@ import { useEffect, useState } from "react";
 import { api } from "@/trpc/react";
 import { BottomButtons } from "../catering/_components/bottom-buttons";
 import { NumberOfGuests } from "./_components/number-of-guests";
+import { useTranslations } from "next-intl";
 
 export default function MenuPage() {
   const { data, isLoading, error } = api.sampleMenu.getMainMenu.useQuery();
+  const t = useTranslations("MenuPage");
+  const c = useTranslations("Categories");
 
   if (error) throw error;
   if (isLoading || !data)
@@ -31,13 +34,13 @@ export default function MenuPage() {
       bg-no-repeat py-48 max-lg:bg-none max-sm:pb-5 max-sm:pt-16"
       >
         <h1 className="text-shadow-sm z-10 font-lucida-bold text-8xl max-md:text-center max-md:text-6xl">
-          მთავარი მენიუ
+          {t("title")}
         </h1>
         <p
           className="z-10 mt-7 text-center text-xl font-normal 
         text-blue-950/80 max-md:text-base"
         >
-          გაეცანით მენიუს და შეარჩიეთ თქვენთვის სასურველი კერძები
+          {t("sub")}
         </p>
       </div>
       <div className="flex justify-center pb-20 ">
@@ -48,6 +51,7 @@ export default function MenuPage() {
                 key={uuid()}
                 // addable={false}
                 // products={data[item] ?? []}
+                title={c(item)}
                 name={item}
                 header={
                   idx == 0 ? (
@@ -62,7 +66,7 @@ export default function MenuPage() {
                   ) : undefined
                 }
                 footer={
-                  idx == menuKeys.length - 1 && (
+                  idx == Object.keys(data).length - 1 && (
                     <div className="mt-8">
                       <SumSection />
                     </div>

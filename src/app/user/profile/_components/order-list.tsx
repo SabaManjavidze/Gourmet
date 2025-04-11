@@ -7,6 +7,7 @@ import { Loader2 } from "lucide-react";
 import { CustomPagination } from "@/components/custom-pagination";
 import { useEffect, useState } from "react";
 import { Status } from "@/server/api/routers/orders";
+import { useTranslations } from "next-intl";
 
 const checkStatus = (status: string) => {
   if (status === "draft") return "draft";
@@ -22,6 +23,7 @@ export function OrderList({
   setOpen: (id: string) => void;
 }) {
   const searchParams = useSearchParams();
+  const g = useTranslations("General");
   const [listRef] = useAutoAnimate();
   const router = useRouter();
   const pathname = usePathname();
@@ -70,7 +72,9 @@ export function OrderList({
           )
         ) : (
           <div>
-            <h2 className="ml-4 text-muted-foreground">ნაპოვნია 0 შედეგი</h2>
+            <h2 className="ml-4 text-muted-foreground">
+              {g("found 0 results")}
+            </h2>
           </div>
         )}
       </ul>

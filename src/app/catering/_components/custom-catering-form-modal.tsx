@@ -32,6 +32,7 @@ import {
   priceObj,
 } from "../utils";
 import { api } from "@/trpc/react";
+import { useTranslations } from "next-intl";
 
 export function CustomCateringFormModal({
   open,
@@ -42,6 +43,8 @@ export function CustomCateringFormModal({
   closeModal: () => void;
   // onSubmit: (data: { personRange: number; menuType: MenuVariants }) => void;
 }) {
+  const g = useTranslations("General");
+  const t = useTranslations("Custom Catering");
   const { status, data: session } = useSession();
   const { mutateAsync: orderCustomCatering, isPending } =
     api.order.orderCustomCatering.useMutation();
@@ -90,7 +93,7 @@ export function CustomCateringFormModal({
               <div className="flex w-full flex-col justify-center gap-y-7">
                 <div className="flex flex-col items-center justify-center">
                   <FormLabel className="text-lg font-bold">
-                    ფურშეტის დეტალები
+                    {t("details title")}
                   </FormLabel>
                 </div>
                 <FormField
@@ -104,9 +107,7 @@ export function CustomCateringFormModal({
                       <FormControl>
                         <Textarea
                           className="text-md w-full rounded-sm placeholder:text-sm"
-                          placeholder={
-                            "ფურშეტის დეტალები, დამატებითი ინფორმაცია"
-                          }
+                          placeholder={t("details placeholder")}
                           {...field}
                           defaultValue={""}
                         />
@@ -120,7 +121,7 @@ export function CustomCateringFormModal({
                   render={({ field }) => (
                     <FormItem className="flex flex-col items-center space-y-8 py-8">
                       <FormLabel className="text-lg font-bold">
-                        ფურშეტის ღირებულება:
+                        {t("buffet pricerange")}
                       </FormLabel>
                       <FormControl>
                         <RadioGroup
@@ -141,7 +142,7 @@ export function CustomCateringFormModal({
                                   <Tooltip delayDuration={300}>
                                     <TooltipTrigger asChild>
                                       <p className="text-base">
-                                        {priceObj[item].title}
+                                        {g(priceObj[item].title)}
                                       </p>
                                     </TooltipTrigger>
                                     <TooltipContent className="max-w-60">
@@ -159,44 +160,13 @@ export function CustomCateringFormModal({
                   )}
                 />
 
-                {/* <div className="flex flex-col items-center justify-center">
-                  <FormLabel className="text-lg font-bold"></FormLabel>
-                </div>
-                <div className="flex w-full justify-center">
-                  <ul className="grid w-full grid-cols-2 gap-y-2 max-md:gap-x-2">
-                    {eventTypes.map((item) => (
-                      <li key={item} className="flex items-center gap-x-3">
-                        <Checkbox
-                          id={item}
-                          className="rounded-[3px]"
-                          checked={selectedType && selectedType == item}
-                          onCheckedChange={(checked) => {
-                            if (checked && selectedType !== item) {
-                              setSelecteType(item);
-                            } else if (!checked && selectedType == item) {
-                              setSelecteType(undefined);
-                            }
-                          }}
-                        />
-                        <label
-                          htmlFor={item}
-                          className="text-base leading-none peer-disabled:cursor-not-allowed 
-                          peer-disabled:opacity-70 max-md:leading-5"
-                        >
-                          {item}
-                        </label>
-                      </li>
-                    ))}
-                  </ul>
-                </div> */}
-
                 <FormField
                   control={form.control}
                   name={"type"}
                   render={({ field }) => (
                     <FormItem className="flex flex-col items-center space-y-8 py-8">
                       <FormLabel className="text-lg font-bold">
-                        ფურშეტის ტიპი:
+                        {t("buffet type")}
                       </FormLabel>
                       <FormControl>
                         <RadioGroup
@@ -204,7 +174,7 @@ export function CustomCateringFormModal({
                           defaultValue={field.value}
                           className="flex items-center max-md:flex-col max-md:items-start"
                         >
-                          {eventTypes.map((item) => (
+                          {eventTypes.map((item, idx) => (
                             <FormItem
                               key={item}
                               className="flex items-center space-x-3 space-y-0"
@@ -213,7 +183,7 @@ export function CustomCateringFormModal({
                                 <RadioGroupItem value={item} />
                               </FormControl>
                               <FormLabel className="text-base font-normal">
-                                {item}
+                                {t("btype" + (idx + 1))}
                               </FormLabel>
                             </FormItem>
                           ))}
@@ -255,7 +225,7 @@ export function CustomCateringFormModal({
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <div className="flex items-center justify-between">
-                        <FormLabel>ტელეფონის ნომერი</FormLabel>
+                        <FormLabel>{g("phone")}</FormLabel>
                         <FormMessage />
                       </div>
                       <FormControl>
@@ -280,7 +250,7 @@ export function CustomCateringFormModal({
                             className="w-full text-base font-bold 
               max-xl:text-lg max-md:text-base max-sm:text-sm"
                           >
-                            ხალხის რაოდენობა
+                            {g("people amount")}
                           </h3>
                           <FormMessage />
                         </div>
@@ -301,11 +271,12 @@ export function CustomCateringFormModal({
                     className="w-full text-base font-bold 
               max-xl:text-lg max-md:text-base max-sm:text-sm"
                   >
-                    ფურშეტის დღე
+                    {g("buffet date")}
                   </h3>
                   <div className="">
                     <DatePickerForm
                       className="h-8 w-40 rounded-[3px] border-accent"
+                      placeholder={g("choose date")}
                       name={"dateOfEvent"}
                       control={form.control}
                     />
@@ -323,7 +294,7 @@ export function CustomCateringFormModal({
               isLoading={isPending}
               disabled={isPending}
             >
-              დადასტურება
+              {g("submit")}
             </Button>
           </div>
         </form>

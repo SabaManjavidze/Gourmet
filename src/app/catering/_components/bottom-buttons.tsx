@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { useMenu } from "@/hooks/useMenu";
 import { api } from "@/trpc/react";
 import { useSession } from "next-auth/react";
+import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { toast } from "sonner";
 
@@ -20,6 +21,7 @@ export function BottomButtons({
   orderText?: string;
   size?: "sm" | "lg" | "xl";
 }) {
+  const g = useTranslations("General");
   const {
     handleSaveClick,
     handleOrderClick,
@@ -49,7 +51,7 @@ export function BottomButtons({
         }}
         size={size}
       >
-        {saveText ?? "შენახვა"}
+        {saveText ?? g("save")}
       </Button>
       <Button
         variant={"accent"}
@@ -69,7 +71,7 @@ export function BottomButtons({
         className="border-accent max-md:w-40 max-md:py-0 max-md:text-base 
           max-xs:w-32 max-xs:text-xs"
       >
-        {orderText ?? "შეუკვეთე"}
+        {orderText ?? g("order")}
       </Button>
     </div>
   );

@@ -27,7 +27,7 @@ export default function NumberTicker({
     damping: 30,
     velocity: 0,
   });
-  const isInView = useInView(ref, { once: true, margin: "0px" });
+  const isInView = useInView(ref as any, { once: true, margin: "0px" });
 
   useEffect(() => {
     isInView &&
