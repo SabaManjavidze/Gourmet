@@ -7,9 +7,22 @@ import PartnersSlider from "../_components/partners-slider";
 import UserReviewsCarousel from "@/components/user-reviews/user-reviews-carousel";
 import { FAQSection } from "@/components/faq-section";
 import { useTranslations } from "next-intl";
+import { useSearchParams } from "next/navigation";
+import setLanguage from "@/actions/set-language";
+import { locales } from "@/i18n/config";
 export default function Catering() {
   const t = useTranslations("CateringPage");
   const g = useTranslations("General");
+  const searchParams = useSearchParams();
+  // async function setl() {
+  // }
+  useEffect(() => {
+    const lang = searchParams.get("lang");
+    if (lang == "ge" || lang == "en") {
+      setLanguage(lang);
+    }
+  }, []);
+
   return (
     <main className="min-h-[140vh]">
       <div className="relative flex h-[500px] flex-col items-center justify-center bg-sample-menus bg-cover bg-center bg-no-repeat">

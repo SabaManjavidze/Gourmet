@@ -24,7 +24,7 @@ const inter = Inter({
 
 export const metadata = {
   title: "Gourmet",
-  description: "Fourshet",
+  description: "Catering",
   icons: [{ rel: "icon", url: "/favicon.ico" }],
 };
 
