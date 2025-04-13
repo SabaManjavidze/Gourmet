@@ -33,6 +33,11 @@
     "found 0 results": "Found 0 Results.",
     "add products": "Add Products"
   },
+  "DiscountModal": {
+    "title": "Discount",
+    "auth": "Login with Google",
+    "discount txt": "<important>5%</important> discount on the first order, <important>10%</important> on the third."
+  },
   "Profile Dropdown": {
     "title1": "Profile",
     "log out": "Log out"

@@ -4,6 +4,6 @@ import { cookies } from "next/headers";
 
 export async function getUserLocale() {
   const cookie_val = cookies().get("language")?.value;
-  return (cookie_val as Locale) ?? "ge";
+  return (cookie_val as Locale) ?? "en";
 }
 export type getUserLocal = Promise<Locale>;

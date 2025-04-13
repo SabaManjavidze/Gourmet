@@ -10,17 +10,32 @@ import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import setLanguage from "@/actions/set-language";
 import { locales } from "@/i18n/config";
+import DiscountModal from "../_components/discount-modal";
+import { useSession } from "next-auth/react";
 export default function Catering() {
   const t = useTranslations("CateringPage");
   const g = useTranslations("General");
   const searchParams = useSearchParams();
-  // async function setl() {
-  // }
+  const [discountOpen, setDiscountOpen] = useState(false);
+  const session = useSession();
+
+  const discountSeen = useMemo(() => {
+    const t = localStorage.getItem("discount");
+    if (t) {
+      return t == "true";
+    }
+    return false;
+  }, [discountOpen]);
+
   useEffect(() => {
     const lang = searchParams.get("lang");
     if (lang == "ge" || lang == "en") {
       setLanguage(lang);
     }
+
+    setTimeout(() => {
+      setDiscountOpen(true);
+    }, 3000);
   }, []);
 
   return (
@@ -45,6 +60,12 @@ export default function Catering() {
           Select, Customize, and Order Delicious Catering for Any Occasion
         </p> */}
       </div>
+      {session?.status !== "authenticated" && !discountSeen ? (
+        <DiscountModal
+          modalOpen={discountOpen}
+          closeModal={() => setDiscountOpen(false)}
+        />
+      ) : null}
       <CateringProvider>
         <div className="mt-16 flex w-full justify-center">
           <SampleMenuCarousel />
@@ -57,12 +78,12 @@ export default function Catering() {
             <PartnersSlider />
           </div>
 
-          <h2 className="mt-24 text-2xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
+          {/* <h2 className="mt-24 text-2xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
             {g("user reviews")}
           </h2>
           <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
             <UserReviewsCarousel />
-          </div>
+          </div> */}
 
           <h2 className="mt-24 text-2xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
             {g("faq")}

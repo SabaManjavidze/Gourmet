@@ -85,14 +85,14 @@ export default function Home() {
           </Link>
         </div>
       </section>
-      <section className="flex flex-col items-center justify-center">
+      {/* <section className="flex flex-col items-center justify-center">
         <h2 className="text-4xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
           {g("user reviews")}
         </h2>
         <div className="mt-12 flex w-full flex-col items-center justify-center max-md:px-2">
           <UserReviewsCarousel />
         </div>
-      </section>
+      </section> */}
       <section className="flex flex-col items-center justify-center">
         <h2 className="text-4xl font-semibold uppercase max-sm:text-center max-sm:text-3xl">
           {g("faq")}

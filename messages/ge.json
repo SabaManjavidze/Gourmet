@@ -37,6 +37,11 @@
     "title1": "პროფილი",
     "log out": "გასვლა"
   },
+  "DiscountModal": {
+    "title": "ფასდაკლება",
+    "auth": "შესვლა Google-ით",
+    "discount txt": "<important>5%</important>ფასდაკლება პირველ შეკვეთაზე, <important>10%</important> მესამეზე."
+  },
   "TNC Page": {
     "title": "წესები და პირობები"
   },
