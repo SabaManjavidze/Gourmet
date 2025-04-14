@@ -35,8 +35,8 @@
   },
   "DiscountModal": {
     "title": "Discount",
-    "auth": "Login with Google",
-    "discount txt": "<important>5%</important> discount on the first order, <important>10%</important> on the third."
+    "auth": "Get The Discount.",
+    "discount txt": "<nowrap><important>5%</important> Discount On The First Order, </nowrap> <nowrap><important>10%</important> On The Third.</nowrap>"
   },
   "Profile Dropdown": {
     "title1": "Profile",
