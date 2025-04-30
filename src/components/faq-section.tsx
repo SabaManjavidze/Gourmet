@@ -58,7 +58,7 @@ export function FAQSection() {
   const t = useTranslations("FAQ");
   return (
     <div className="flex w-full justify-center">
-      <div className="grid w-4/5 grid-cols-2 gap-3">
+      <div className="grid w-4/5 grid-cols-2 gap-3 max-sm:grid-cols-1 max-sm:gap-x-0">
         {faq.map((item, idx) => (
           <Accordion type="single" collapsible key={idx}>
             <AccordionItem

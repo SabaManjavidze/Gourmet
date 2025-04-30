@@ -11,6 +11,10 @@ type messageType = {
   text?: string;
   html?: string;
 };
+const ADMIN_EMAIL =
+  env.NODE_ENV == "development"
+    ? "saba.manjavidze@gmail.com"
+    : "r.muzashvili@gurme.ge";
 export async function sendEmail({ subject, text, html, to }: messageType) {
   const transporter = nodemailer.createTransport({
     host: "smtp.gmail.com",
@@ -70,8 +74,7 @@ export async function CustomCateringEmail({
     })
     .join("<br>");
   await sendEmail({
-    to: "saba.manjavidze@gmail.com",
-    // to: "r.muzashvili@gurme.ge",
+    to: ADMIN_EMAIL,
     subject: `${userName}ს უნდა შეუკვეთოს დიდი ფურშეტი`,
     html: `მომხმარებლის იმეილი: ${userEmail ?? data.userEmail}
     <br><br><br>${detailsText}`,
@@ -112,8 +115,7 @@ ${products
 </table>
   `;
   await sendEmail({
-    to: "saba.manjavidze@gmail.com",
-    // to: "r.muzashvili@gurme.ge",
+    to: ADMIN_EMAIL,
     subject: `${fullname} შეინახა მენიუ`,
     html: `
     <html>
@@ -198,8 +200,7 @@ ${products
 </table>
   `;
   await sendEmail({
-    to: "saba.manjavidze@gmail.com",
-    // to: "r.muzashvili@gurme.ge",
+    to: ADMIN_EMAIL,
     subject: `${fullname} შეკვეთა გააკეთა`,
     html: `
     <html>
