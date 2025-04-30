@@ -12,6 +12,7 @@ import {
 import { api } from "@/trpc/react";
 import { Loader2 } from "lucide-react";
 import { Product, ProductWithVariants } from "menu";
+import { useTranslations } from "next-intl";
 
 const cls =
   "fixed bottom-8 right-1/2 flex w-1/2 translate-x-1/2 justify-between bg-transparent";
@@ -40,6 +41,7 @@ export function AddProductModal({
     isLoading: catsLoading,
     error: catsError,
   } = api.getCategories.useQuery();
+  const t = useTranslations("AddProductsModal");
   const [filter, setFilter] = useState<string | undefined>();
   const handleFilterClick = (name: string) => {
     if (filter == name) {
@@ -92,11 +94,12 @@ export function AddProductModal({
   };
   return (
     <Modal
+      title={"hahahaha"}
       isOpen={open}
       closeModal={closeModal}
-      className="h-[80vh] w-[70%] max-sm:w-[95%]"
+      className="flex h-[500px] w-[70%] flex-col max-sm:w-[95%]"
     >
-      <div className="relative overflow-y-auto">
+      <div className="relative flex h-full flex-col items-center justify-start overflow-y-auto">
         {selected.length > 0 ? (
           <div
             className="*:spacing fixed bottom-5 right-1/2 flex w-[50vh] 

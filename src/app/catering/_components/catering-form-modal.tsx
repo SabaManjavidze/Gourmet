@@ -396,6 +396,9 @@ export function CateringFormModal({
             >
               {g("previous")}
             </Button>
+            <div className="flex items-center justify-center text-lg">
+              {formIdx}/{formItemLength}
+            </div>
             <Button
               type={"button"}
               variant={"accent"}
@@ -409,12 +412,25 @@ export function CateringFormModal({
                   })();
                   return;
                 }
-                if (formIdx == 0) {
-                  const validation = await form.trigger("personRange");
-                  if (!validation) {
-                    toast.error("ადამიანების რაოდენობა უნდა იყოს 10-ზე მეტი.");
-                    return;
-                  }
+                const mp: (keyof cateringFormType)[][] = [
+                  ["personRange", "type"],
+                  ["assistance"],
+                  ["plates"],
+                  ["drinks"],
+                ];
+                const arr = mp[formIdx];
+                if (!arr)
+                  throw new Error(
+                    "form page index and array variable are mismatched.",
+                  );
+                let isValid = true;
+                for (const item of arr) {
+                  const validation = await form.trigger(item);
+                  if (!validation) isValid = false;
+                }
+                if (!isValid) {
+                  toast.error("ფორმა არ არის ვალიდური.");
+                  return;
                 }
                 setFormIdx((prev) =>
                   prev <= formItemLength ? prev + 1 : prev,

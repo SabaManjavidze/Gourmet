@@ -2,11 +2,13 @@
 
 import { useMenu } from "@/hooks/useMenu";
 import { api } from "@/trpc/react";
+import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
 export function SumSection() {
   const { totalSum } = useMenu();
   const { isLoading, data, error } = api.order.getUserOrderCount.useQuery();
+  const session = useSession();
   const t = useTranslations("Sum Section");
   return (
     <div
@@ -15,7 +17,7 @@ export function SumSection() {
     max-xs:text-xs"
     >
       <h3>{t("sum")}</h3>
-      {Number(data) > 0 ? (
+      {session.status == "unauthenticated" || Number(data) > 0 ? (
         <h3>₾{totalSum}</h3>
       ) : (
         <h3>

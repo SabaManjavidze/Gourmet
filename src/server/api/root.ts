@@ -38,8 +38,17 @@ export const appRouter = createTRPCRouter({
     const cats = await db
       .select()
       .from(categories)
-      .where(ne(categories.name, "def"));
-    return cats;
+      .where(ne(categories.name, "default"));
+    let id = "";
+    const new_arr = cats.filter((item) => {
+      if (item.name !== "ინვენტარი") {
+        return true;
+      } else {
+        id = item.id;
+      }
+    });
+    // if (!inverntory) throw new Error("no inventory");
+    return [{ name: "ინვენტარი", id }, ...new_arr];
   }),
 });
 

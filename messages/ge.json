@@ -37,10 +37,13 @@
     "title1": "პროფილი",
     "log out": "გასვლა"
   },
+  "AddProductsModal": {
+    "title": "დაამატეთ სასურველი კერძები და ინვენტარი"
+  },
   "DiscountModal": {
     "title": "ფასდაკლება",
     "auth": "მიიღეთ ფასდაკლება",
-    "discount txt": "<important>5%</important>ფასდაკლება პირველ შეკვეთაზე, <important>10%</important> მესამეზე."
+    "discount txt": "<nowrap><important>5%</important>ფასდაკლება პირველ შეკვეთაზე,</nowrap> <nowrap><important>10%</important> მესამეზე.</nowrap>"
   },
   "TNC Page": {
     "title": "წესები და პირობები"
@@ -87,8 +90,8 @@
     "drink title": "შეარჩიეთ სასმელი"
   },
   "Custom Catering": {
-    "btn_title": "გაიარეთ კონსულტაცია",
-    "title": "კონსულტაცია",
+    "btn_title": "დაგვიკავშირდით",
+    "title": "გაიარეთ კონსულტაცია",
     "details title": "ფურშეტის დეტალები",
     "details placeholder": "ფურშეტის დეტალები, დამატებითი ინფორმაცია",
     "buffet pricerange": "ფურშეტის ღირებულება",
