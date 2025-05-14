@@ -75,7 +75,10 @@ export default function Home() {
       <section className="relative flex h-80 bg-contact-us-banner bg-cover bg-center bg-no-repeat py-12">
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="z-10 flex h-full w-full flex-col items-center justify-center">
-          <h2 className="text-shadow text-4xl font-semibold text-white max-sm:text-center max-sm:text-2xl">
+          <h2
+            className="text-shadow text-4xl font-semibold text-white max-md:px-3 max-sm:text-center
+          max-sm:text-2xl"
+          >
             {t("contact_socmedia")}
           </h2>
           <Link href="#footer" scroll={true}>

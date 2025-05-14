@@ -7,6 +7,7 @@ import {
   FormMessage,
   FormControl,
 } from "@/components/ui/form";
+import { useTranslations } from "next-intl";
 
 type NameInputsProps = {
   control: any;
@@ -14,12 +15,13 @@ type NameInputsProps = {
   version?: string;
 };
 export function NameInputs({ control, title, version = "" }: NameInputsProps) {
+  const t = useTranslations("Order Modal");
   return (
     <div className="flex w-full flex-col">
-      <h3 className="text-sm font-semibold">{title}</h3>
+      <h3 className="text-sm font-semibold">{t(title)}</h3>
       <div
-        className="flex justify-between gap-x-4 max-sm:w-full max-sm:flex-col
-      max-sm:items-center max-sm:justify-center"
+        className="flex justify-between gap-x-4 max-md:flex-col max-sm:w-full
+      max-sm:flex-col max-sm:items-center max-sm:justify-center"
       >
         <FormField
           control={control}
@@ -33,7 +35,7 @@ export function NameInputs({ control, title, version = "" }: NameInputsProps) {
                 <Input
                   {...field}
                   className="text-md w-full rounded-sm py-2"
-                  placeholder={"სახელი"}
+                  placeholder={t("სახელი")}
                   // defaultValue={defaultFirst}
                 />
               </FormControl>
@@ -53,7 +55,7 @@ export function NameInputs({ control, title, version = "" }: NameInputsProps) {
                 <Input
                   {...field}
                   className="text-md w-full rounded-sm py-2"
-                  placeholder={"გვარი"}
+                  placeholder={t("გვარი")}
                   // defaultValue={defaultLast}
                 />
               </FormControl>

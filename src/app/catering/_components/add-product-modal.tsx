@@ -42,6 +42,7 @@ export function AddProductModal({
     error: catsError,
   } = api.getCategories.useQuery();
   const t = useTranslations("AddProductsModal");
+  const c = useTranslations("Categories");
   const [filter, setFilter] = useState<string | undefined>();
   const handleFilterClick = (name: string) => {
     if (filter == name) {
@@ -94,7 +95,7 @@ export function AddProductModal({
   };
   return (
     <Modal
-      title={"hahahaha"}
+      title={t("title")}
       isOpen={open}
       closeModal={closeModal}
       className="flex h-[500px] w-[70%] flex-col max-sm:w-[95%]"
@@ -150,7 +151,7 @@ export function AddProductModal({
               setQuery(e.target.value);
               // debouncedSearch(e.target.value);
             }}
-            placeholder="Search Products..."
+            placeholder={t("placeholder")}
             className="w-full rounded-[5px] border-black/20 py-3 text-xl max-xl:text-base"
           />
           <div className="mt-4 flex max-w-[92%] justify-around gap-x-2 overflow-x-auto">
@@ -169,7 +170,7 @@ export function AddProductModal({
                 } 
               h-8 rounded-xl px-3 hover:bg-accent/10 max-xl:text-sm`}
               >
-                {category.name}
+                {c(category.name)}
               </Button>
             ))}
           </div>

@@ -24,8 +24,8 @@ export const InputSchema = {
     { title: "კომპანიის სახელი", name: "companyName" },
     { title: "Dot Number", type: "number", name: "dotNumber" },
     {
-      title: "იმეილი (BOL და PDF ფაილებისთვის)",
-      placeholder: "email address",
+      title: "Company Email",
+      placeholder: "Company Email",
       name: "companyEmail",
       // type: "email",
     },

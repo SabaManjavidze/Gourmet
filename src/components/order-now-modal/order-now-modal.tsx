@@ -35,9 +35,10 @@ import { Textarea } from "../ui/textarea";
 import { OrderMadeEmail } from "@/server/api/nodemailer";
 import { useSession } from "next-auth/react";
 import { PaymentModal } from "../payment-modal/payment-modal";
+import { useTranslations } from "next-intl";
 
 const titleClass =
-  "text-lg whitespace-nowrap font-bold text-accent-foreground max-sm:text-base";
+  "text-lg whitespace-nowrap font-bold text-accent-foreground max-sm:text-base max-sm:whitespace-normal";
 export function OrderNowModal({
   open,
   closeModal,
@@ -70,6 +71,8 @@ export function OrderNowModal({
       extraInfo: "",
     },
   });
+  const t = useTranslations("Order Modal");
+  const g = useTranslations("General");
   const saveToDB = async (data: OrderFormType, payId?: string) => {
     if (
       !data ||
@@ -114,8 +117,8 @@ export function OrderNowModal({
     <Modal
       isOpen={open}
       closeModal={closeModal}
-      className={`h-[80vh] w-[70%] ${orderPending || detailsPending ? "overflow-hidden" : "overflow-y-auto"}
-         max-sm:w-[95%]`}
+      className={`flex h-[80vh] w-[70%] flex-col items-center ${orderPending || detailsPending ? "overflow-hidden" : "overflow-y-auto"}
+         max-md:w-[95%]`}
     >
       {data ? (
         <PaymentModal
@@ -139,15 +142,17 @@ export function OrderNowModal({
           max-sm:px-0 "
         >
           <div
-            className="flex w-full items-center justify-between gap-x-12 max-xl:flex-col
-          max-xl:justify-center max-xl:gap-x-0 max-xl:gap-y-12"
+            className="*:max-md:max-w-4/5 flex w-full items-center justify-between gap-x-12
+          max-xl:flex-col max-xl:justify-center max-xl:gap-x-0 max-xl:gap-y-12"
           >
             <div
               className="flex h-full w-full flex-col items-center justify-center gap-y-24
             max-xl:gap-y-12"
             >
               <div className="flex w-full flex-col items-center justify-center gap-y-7">
-                <h3 className={titleClass}>მთავარი საკონტაქტო ინფორმაცია</h3>
+                <h3 className={titleClass}>
+                  {t("მთავარი საკონტაქტო ინფორმაცია")}
+                </h3>
                 {/* <h3 className={titleClass}>Primary Contact Information</h3> */}
                 {InputSchema["Primary Contact Information"].map((item) => {
                   if (!item?.name) {
@@ -167,14 +172,14 @@ export function OrderNowModal({
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <div className="flex items-center justify-between">
-                            <FormLabel>{item.title}</FormLabel>
+                            <FormLabel>{t(item.title)}</FormLabel>
                             <FormMessage />
                           </div>
                           <FormControl>
                             <Input
                               {...field}
                               className="text-md w-full rounded-sm py-2"
-                              placeholder={item.title.toLowerCase()}
+                              placeholder={t(item.title)}
                               type={item.type ?? "text"}
                             />
                           </FormControl>
@@ -185,7 +190,7 @@ export function OrderNowModal({
                 })}
               </div>
               <div className="flex w-full flex-col gap-y-7">
-                <h3 className={titleClass}>მიწოდების ინფორმაცია</h3>
+                <h3 className={titleClass}>{t("მიწოდების ინფორმაცია")}</h3>
                 {InputSchema["Delivery Information"].map((item) => {
                   if (!item?.name) {
                     return (
@@ -204,20 +209,20 @@ export function OrderNowModal({
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <div className="flex items-center justify-between">
-                            <FormLabel>{item.title}</FormLabel>
+                            <FormLabel>{t(item.title)}</FormLabel>
                             <FormMessage />
                           </div>
                           <FormControl>
                             {item.name == "extraInfo" ? (
                               <Textarea
                                 className="text-md w-full rounded-sm py-2"
-                                placeholder={item.title.toLowerCase()}
+                                placeholder={t(item.title)}
                                 {...field}
                               />
                             ) : (
                               <Input
                                 className="text-md w-full rounded-sm py-2"
-                                placeholder={item.title.toLowerCase()}
+                                placeholder={t(item.title)}
                                 type={item?.type ?? "text"}
                                 {...field}
                               />
@@ -236,7 +241,7 @@ export function OrderNowModal({
             >
               <div className="flex w-full flex-col items-center justify-center gap-y-7">
                 <h3 className={titleClass}>
-                  მეორე საკონტაქტო ინფორმაცია (სურვილისამებრ)
+                  {t("მეორე საკონტაქტო ინფორმაცია (სურვილისამებრ)")}
                 </h3>
                 {InputSchema["Secondary Contact Information (Optional)"].map(
                   (item) => {
@@ -258,14 +263,14 @@ export function OrderNowModal({
                         render={({ field }) => (
                           <FormItem className="w-full">
                             <div className="flex items-center justify-between">
-                              <FormLabel>{item.title}</FormLabel>
+                              <FormLabel>{t(item.title)}</FormLabel>
                               <FormMessage />
                             </div>
                             <FormControl>
                               <Input
                                 {...field}
                                 className="text-md w-full rounded-sm py-2"
-                                placeholder={item.title.toLowerCase()}
+                                placeholder={t(item.title)}
                                 type={item.type ?? "text"}
                               />
                             </FormControl>
@@ -278,7 +283,7 @@ export function OrderNowModal({
               </div>
               <div className="flex w-full flex-col items-center justify-center gap-y-7">
                 <h3 className={titleClass}>
-                  კომპანიის ინფორმაცია (სურვილისამებრ)
+                  {t("კომპანიის ინფორმაცია (სურვილისამებრ)")}
                 </h3>
                 {InputSchema["Company Information (Optional)"].map((item) => {
                   return (
@@ -289,16 +294,14 @@ export function OrderNowModal({
                       render={({ field }) => (
                         <FormItem className="w-full">
                           <div className="flex items-center justify-between">
-                            <FormLabel>{item.title}</FormLabel>
+                            <FormLabel>{t(item.title)}</FormLabel>
                             <FormMessage />
                           </div>
                           <FormControl>
                             <Input
                               {...field}
                               className="text-md rounded-sm py-2"
-                              placeholder={
-                                item?.placeholder ?? item.title.toLowerCase()
-                              }
+                              placeholder={t(item?.placeholder ?? item.title)}
                               type={item?.type ?? "text"}
                             />
                           </FormControl>
@@ -311,7 +314,7 @@ export function OrderNowModal({
             </div>
           </div>
           <div className="mt-10 flex flex-col items-center justify-center gap-y-1">
-            <h2 className="text-lg font-bold">მთლიანი ფასი</h2>
+            <h2 className="text-lg font-bold">{g("total price")}</h2>
             <div className="flex items-center gap-x-4">
               <h3 className="text-lg font-bold text-muted-foreground">
                 ₾{totalSum}
@@ -347,7 +350,7 @@ export function OrderNowModal({
               size={"lg"}
               className="text-base"
             >
-              გადახდაზე გადასვლა
+              {t("გადახდაზე გადასვლა")}
             </Button>
           </div>
         </form>
@@ -362,11 +365,16 @@ export function DateInputs({
   control: any;
   title: string;
 }) {
+  const t = useTranslations("Order Modal");
   return (
     <div className="flex flex-col justify-center">
-      <h3 className="text-sm font-semibold">{title}</h3>
+      <h3 className="text-sm font-semibold">{t(title)}</h3>
       <div className="flex items-end justify-between gap-x-4">
-        <DatePickerForm name={"date"} control={control} />
+        <DatePickerForm
+          placeholder={t("აირჩიე თარიღი")}
+          name={"date"}
+          control={control}
+        />
         <TimePickerForm name={"time"} control={control} />
       </div>
     </div>

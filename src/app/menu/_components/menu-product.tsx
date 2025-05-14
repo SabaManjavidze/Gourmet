@@ -88,7 +88,7 @@ export function MenuProduct({
           value={product.quantity.toString()}
           className={twMerge(
             cls,
-            "flex h-full justify-center text-center focus-within:z-10",
+            "flex h-full justify-center text-center focus-within:z-10 max-sm:text-xxs max-sm:font-semibold",
           )}
         />
         <p className={twMerge(cls, "flex items-center justify-center")}>

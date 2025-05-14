@@ -285,7 +285,7 @@ export function CateringFormModal({
                         <RadioGroup
                           onValueChange={field.onChange}
                           defaultValue={field.value}
-                          className="flex items-center"
+                          className="flex items-center max-sm:flex-col max-sm:items-start"
                         >
                           <FormItem className="flex items-center space-x-2 space-y-0">
                             <FormControl>

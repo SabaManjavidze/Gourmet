@@ -31,10 +31,12 @@
     "agree": "Agree",
     "form not valid": "Form is not valid.",
     "found 0 results": "Found 0 Results.",
-    "add products": "Add Products"
+    "add products": "Add Products",
+    "Sign In": "Sign In"
   },
   "AddProductsModal": {
-    "title": "Add desired dishes and inventory."
+    "title": "Add desired dishes and inventory.",
+    "placeholder": "search products..."
   },
   "DiscountModal": {
     "title": "Discount",
@@ -96,6 +98,24 @@
     "btype4": "Festival",
     "btype5": "Other"
   },
+  "Order Modal": {
+    "მთავარი საკონტაქტო ინფორმაცია": "Primary Contact Information",
+    "მიწოდების ინფორმაცია": "Delivery Information",
+    "მეორე საკონტაქტო ინფორმაცია (სურვილისამებრ)": "Secondary Contact Information (Optional)",
+    "კომპანიის ინფორმაცია (სურვილისამებრ)": "Company Information (Optional)",
+    "სახელი": "Firstname",
+    "გვარი": "Lastname",
+    "ტელეფონის ნომერი": "Phone Number",
+    "იმეილი": "Email",
+    "მისამართი": "Address",
+    "მიწოდების დრო": "Delivery Time",
+    "აირჩიე თარიღი": "Choose Date",
+    "გადახდაზე გადასვლა": "Move to Payment",
+    "დამატებითი ინფორმაცია": "Additional Information",
+    "კომპანიის სახელი": "Company Name",
+    "Dot Number": "Dot Number",
+    "Company Email": "Email (for BOL and PDF files)"
+  },
   "Profile Page": {
     "saved menus": "Saved Menus",
     "submitted orders": "Submitted Orders",
@@ -117,7 +137,9 @@
     "title2": "Buffet",
     "title3": "Menu",
     "title4": "About Us",
-    "title5": "Contact"
+    "title5": "Contact",
+    "პროფილი": "Profile",
+    "ჩვენს შესახებ": "About Us"
   },
   "FAQ": {
     "q1": "What is the minimum order?",

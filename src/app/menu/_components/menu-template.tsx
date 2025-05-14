@@ -38,14 +38,18 @@ export function MenuTemplate({
       <div className="flex w-full justify-center">
         <h3
           className="menu-title-gradient w-min max-w-full whitespace-nowrap 
-        border-b border-b-accent font-lucida-bold text-5xl 
-        leading-[70px] max-lg:text-4xl max-md:text-3xl max-sm:text-3xl"
+        border-b border-b-accent font-lucida-bold text-5xl leading-[70px]
+        max-lg:text-4xl max-md:whitespace-normal max-md:text-3xl max-sm:text-3xl"
         >
           {title ?? name}
         </h3>
       </div>
       {header ?? <div className="mt-10"></div>}
-      <ul ref={listRef} id={id} className="flex w-full flex-col pt-8">
+      <ul
+        ref={listRef}
+        id={id}
+        className="flex w-full flex-col pt-8 max-md:pt-2"
+      >
         <li
           key="234234"
           className={twMerge(

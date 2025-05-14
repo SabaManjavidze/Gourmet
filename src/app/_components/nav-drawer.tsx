@@ -20,6 +20,7 @@ import { signOut, useSession } from "next-auth/react";
 import { PROFILE_ROUTE } from "@/lib/utils";
 import {
   ExternalLink,
+  LanguagesIcon,
   Link2,
   Link2Icon,
   Link2OffIcon,
@@ -28,6 +29,8 @@ import {
   PhoneCall,
 } from "lucide-react";
 import AuthModal from "./auth-modal";
+import { useTranslations } from "next-intl";
+import { LanguageDropdown } from "@/components/language-dropdown";
 // import { LanguageDropdown } from "@/components/language-dropdown";
 
 export function NavDrawer({
@@ -36,6 +39,8 @@ export function NavDrawer({
   triggerButton?: React.ReactNode;
 }) {
   const { data: session, status } = useSession();
+  const t = useTranslations("Nav");
+  const g = useTranslations("General");
   const routes = [
     {
       route: session?.user.role == "user" ? "/user/profile" : "/admin/profile",
@@ -72,7 +77,7 @@ export function NavDrawer({
           ) : (
             <div>
               <Button variant={"accent"} onClick={() => setAuth(true)}>
-                <p className="mr-3">ავტორიზაცია</p>
+                <p className="mr-3">{g("Sign In")}</p>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   x="0px"
@@ -155,13 +160,18 @@ export function NavDrawer({
                   {route == pathname ? (
                     <div className="right-left absolute bottom-0 h-1 w-3/5 translate-y-1 rounded-xl bg-accent"></div>
                   ) : null}
-                  {title}
+                  {t(title)}
                   <ExternalLink className="mb-1" size={15} />
                 </Link>
               </li>
             ))}
           </ul>
 
+          <div className="mt-3 flex items-center justify-start">
+            <div className="flex w-20">
+              <LanguageDropdown className="justify-center rounded-xl border-2 p-1 text-base font-semibold" />
+            </div>
+          </div>
           <span className="mt-3 flex items-center font-semibold">
             <h3 className="tracking-tight">+995 597 555 266 </h3>
             <PhoneCall className="ml-2" size={15} />

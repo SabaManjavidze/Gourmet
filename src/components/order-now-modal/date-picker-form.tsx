@@ -17,6 +17,7 @@ import {
   FormMessage,
   FormField,
 } from "@/components/ui/form";
+import { useTranslations } from "next-intl";
 type DatePickerFormProps = {
   control: any;
   className?: string;
@@ -25,7 +26,7 @@ type DatePickerFormProps = {
 };
 export function DatePickerForm({
   name,
-  placeholder = "აირჩიე თარიღი",
+  placeholder,
   control,
   className,
 }: DatePickerFormProps) {
