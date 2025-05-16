@@ -103,7 +103,7 @@ export function ProductsSection() {
           flex-col text-center font-semibold"
           >
             <h2 className="text-center text-4xl font-semibold">{t("title")}</h2>
-            <h3 className="mt-5 text-lg">{t("sub")}</h3>
+            <h3 className="mt-5 text-base">{t("sub")}</h3>
             <CustomCatering onClick={() => setCustomOpen(true)} />
           </section>
         </>

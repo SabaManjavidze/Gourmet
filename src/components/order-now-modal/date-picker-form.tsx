@@ -37,7 +37,7 @@ export function DatePickerForm({
       render={({ field }) => (
         <FormItem className="flex w-full flex-col">
           <FormMessage />
-          <Popover>
+          <Popover modal>
             <PopoverTrigger asChild className="border-border">
               <FormControl>
                 <Button

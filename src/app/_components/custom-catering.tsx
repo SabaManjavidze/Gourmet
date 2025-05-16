@@ -33,7 +33,7 @@ export function CustomCatering({ onClick }: { onClick?: () => void }) {
     base: 50,
     sm: 70,
     md: 100,
-    lg: 140,
+    lg: 100,
   };
 
   const innerRadius = (radiusMap as any)[breakpoint];

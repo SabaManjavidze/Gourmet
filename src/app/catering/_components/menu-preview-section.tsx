@@ -26,7 +26,7 @@ export function MenuPreviewSection({
       >
         <div
           className="relative h-[300px] max-w-[900px] max-lg:hidden max-md:block 
-          max-md:w-full max-sm:h-[220px] max-sm:w-[330px] lg:min-w-[450px]"
+          max-md:w-full max-sm:h-[220px] max-sm:w-[300px] lg:min-w-[450px]"
         >
           <div
             className="absolute right-10 top-[53%] z-0 h-[115%] w-[95%] -translate-y-1/2 
