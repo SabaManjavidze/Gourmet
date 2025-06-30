@@ -85,7 +85,7 @@ export function CustomCateringFormModal({
         >
           <div className="flex w-full items-center justify-center gap-x-12">
             <div className="flex h-full w-full flex-col items-center justify-center gap-y-24">
-              <div className="flex w-full flex-col justify-center gap-y-7">
+              <div className="flex w-full flex-col justify-center gap-y-0">
                 <div className="flex flex-col items-center justify-center">
                   <FormLabel className="text-lg font-bold">
                     {t("details title")}
@@ -188,93 +188,99 @@ export function CustomCateringFormModal({
                     </FormItem>
                   )}
                 />
+                <div className="flex flex-col gap-y-7">
+                  {status !== "authenticated" ? (
+                    <FormField
+                      control={form.control}
+                      name={"userEmail"}
+                      render={({ field }) => (
+                        <FormItem className="w-full">
+                          <div
+                            className="flex flex-col items-center justify-between
+                        gap-y-2"
+                          >
+                            <FormLabel className="w-full font-bold">
+                              {g("email")}
+                            </FormLabel>
+                            <FormMessage />
+                            <FormControl>
+                              <Input
+                                {...field}
+                                className="text-md w-full rounded-sm py-2"
+                                placeholder={"იმეილი"}
+                                type={"email"}
+                              />
+                            </FormControl>
+                          </div>
+                        </FormItem>
+                      )}
+                    />
+                  ) : null}
 
-                {status !== "authenticated" ? (
                   <FormField
                     control={form.control}
-                    name={"userEmail"}
+                    name={"phone"}
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <div className="flex items-center justify-between">
-                          <FormLabel className="w-full text-base font-bold">
-                            თქვენი იმეილი
+                          <FormLabel className="font-bold">
+                            {g("phone")}
                           </FormLabel>
-                          <FormMessage />
-                          <FormControl>
-                            <Input
-                              {...field}
-                              className="text-md w-full rounded-sm py-2"
-                              placeholder={"იმეილი"}
-                              type={"email"}
-                            />
-                          </FormControl>
-                        </div>
-                      </FormItem>
-                    )}
-                  />
-                ) : null}
-
-                <FormField
-                  control={form.control}
-                  name={"phone"}
-                  render={({ field }) => (
-                    <FormItem className="w-full">
-                      <div className="flex items-center justify-between">
-                        <FormLabel>{g("phone")}</FormLabel>
-                        <FormMessage />
-                      </div>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          className="text-md w-full rounded-sm py-2"
-                          placeholder={"+995-"}
-                          type={"number"}
-                        />
-                      </FormControl>
-                    </FormItem>
-                  )}
-                />
-                <div className="flex w-full items-center justify-center">
-                  <FormField
-                    control={form.control}
-                    name={"numberOfGuests"}
-                    render={({ field }) => (
-                      <FormItem className="flex w-full justify-between">
-                        <div className="flex items-center justify-between">
-                          <h3
-                            className="w-full text-base font-bold 
-              max-xl:text-lg max-md:text-base max-sm:text-sm"
-                          >
-                            {g("people amount")}
-                          </h3>
                           <FormMessage />
                         </div>
                         <FormControl>
                           <Input
                             {...field}
-                            type="number"
-                            // datatype="number"
-                            className="ml-4 h-8 w-16 rounded-[3px] border-accent text-base"
+                            className="text-md w-full rounded-sm py-2"
+                            placeholder={"+995-"}
+                            type={"number"}
                           />
                         </FormControl>
                       </FormItem>
                     )}
                   />
-                </div>
-                <div className="flex w-full items-center justify-between">
-                  <h3
-                    className="w-full text-base font-bold 
-              max-xl:text-lg max-md:text-base max-sm:text-sm"
-                  >
-                    {g("buffet date")}
-                  </h3>
-                  <div className="">
-                    <DatePickerForm
-                      className="h-8 w-40 rounded-[3px] border-accent"
-                      placeholder={g("choose date")}
-                      name={"dateOfEvent"}
+                  <div className="flex w-full items-center justify-center">
+                    <FormField
                       control={form.control}
+                      name={"numberOfGuests"}
+                      render={({ field }) => (
+                        <FormItem className="flex w-full justify-between">
+                          <div className="flex items-center justify-between">
+                            <h3
+                              className="w-full text-base font-bold 
+              max-xl:text-lg max-md:text-base max-sm:text-sm"
+                            >
+                              {g("people amount")}
+                            </h3>
+                            <FormMessage />
+                          </div>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              type="number"
+                              // datatype="number"
+                              className="ml-4 h-8 w-16 rounded-[3px] border-accent text-base"
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
                     />
+                  </div>
+                  <div className="flex w-full items-center justify-between">
+                    <h3
+                      className="w-full text-base font-bold 
+              max-xl:text-lg max-md:text-base max-sm:text-sm"
+                    >
+                      {g("buffet date")}
+                    </h3>
+                    <div className="">
+                      <DatePickerForm
+                        className="h-8 w-40 rounded-[3px] border-accent"
+                        placeholder={g("choose date")}
+                        name={"dateOfEvent"}
+                        control={form.control}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

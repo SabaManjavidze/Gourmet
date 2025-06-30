@@ -32,7 +32,7 @@ export default function DiscountModal({
   };
 
   const currStatus = useMemo(() => {
-    const t = localStorage.getItem("discount");
+    const t = localStorage?.getItem("discount");
     if (t) {
       return t == "true";
     }
