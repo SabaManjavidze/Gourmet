@@ -35,7 +35,7 @@ export const useDiscount = () => {
   useEffect(() => {
     if (isLoading) return;
     const val = Number(data);
-    if (session.status !== "authenticated" || error || (val > 0 && val != 3)) {
+    if (session.status !== "authenticated" || (val > 0 && val != 3) || error) {
       setDiscountedPrice(totalSum);
       setDiscountType("none");
       return;
