@@ -17,17 +17,12 @@ export default function Catering() {
   const g = useTranslations("General");
   const searchParams = useSearchParams();
   const [discountOpen, setDiscountOpen] = useState(false);
+  const [discountSeen, setDiscountSeen] = useState(false);
   const session = useSession();
 
-  const discountSeen = useMemo(() => {
-    const t = localStorage.getItem("discount");
-    if (t) {
-      return t == "true";
-    }
-    return false;
-  }, [discountOpen]);
-
   useEffect(() => {
+    const t = localStorage.getItem("discount");
+    setDiscountSeen(t == "true");
     const lang = searchParams.get("lang");
     if (lang == "ge" || lang == "en") {
       setLanguage(lang);
@@ -41,11 +36,11 @@ export default function Catering() {
   return (
     <main className="min-h-[140vh]">
       <div className="relative flex h-[500px] flex-col items-center justify-center bg-sample-menus bg-cover bg-center bg-no-repeat">
-        {/* <div
+        <div
           className="absolute right-1/2 top-1/2 h-[200px] w-[1000px] -translate-y-1/2 
         translate-x-1/2 rounded-2xl bg-black/25 blur-2xl 
         max-lg:w-[600px] max-md:w-[400px] max-xs:w-[300px]"
-        ></div> */}
+        ></div>
         <h1
           className="text-outline z-10 text-center font-lucida-bold 
         text-6xl text-primary-foreground max-md:text-5xl max-sm:text-3xl
@@ -53,12 +48,12 @@ export default function Catering() {
         >
           {t("title")}
         </h1>
-        {/* <p
-          className="text-shadow-sm z-10 mt-2 text-center text-xl font-normal 
-        text-gray-50 max-sm:text-base max-xs:px-12"
+        <p
+          className="text-shadow-sm z-10 mt-2 max-w-[640px] text-center text-xl 
+        font-normal text-gray-50 max-sm:text-base max-xs:px-12"
         >
-          Select, Customize, and Order Delicious Catering for Any Occasion
-        </p> */}
+          {t("subtext")}
+        </p>
       </div>
       {session?.status !== "authenticated" && !discountSeen ? (
         <DiscountModal
@@ -67,9 +62,9 @@ export default function Catering() {
         />
       ) : null}
       <CateringProvider>
-        <div className="mt-16 flex w-full justify-center">
+        {/* <div className="mt-16 flex w-full justify-center">
           <SampleMenuCarousel />
-        </div>
+        </div> */}
         <div className="flex w-full flex-col items-center">
           <div className="w-3/4 rounded-xl pb-12 max-xl:w-5/6">
             <ProductsSection />

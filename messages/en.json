@@ -52,7 +52,8 @@
   },
   "Sum Section": {
     "sum": "Total Sum",
-    "discount": "Discount on your first order"
+    "discount": "Discount on your first order",
+    "discount 3rd": "Discount on your third order"
   },
   "Footer": {
     "btn_title": "Get a consultation",
@@ -158,7 +159,8 @@
     "ans7": "Yes, it is possible to rent necessary inventory."
   },
   "CateringPage": {
-    "title": "Choose, Customize, Order"
+    "title": "Choose, Customize, Order",
+    "subtext": "Choose your preferred type of buffet, select the desired number of guests, and receive a menu tailored to you."
   },
   "HomePage": {
     "title": "Gourmet - Delicious Space",

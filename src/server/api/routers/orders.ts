@@ -258,13 +258,13 @@ export const orderRouter = createTRPCRouter({
       await CustomCateringEmail({
         data,
         userName: session?.user.name ?? data?.userEmail?.split("@")[0] ?? "",
-        userEmail: session?.user.email ?? undefined,
+        userEmail,
       });
       await weWillContactYouEmail(userEmail);
       await ConsultationRequestTelegram({
         data,
         userName: session?.user.name ?? data?.userEmail?.split("@")[0] ?? "",
-        userEmail: session?.user.email ?? undefined,
+        userEmail,
       });
     }),
   removeProductFromOrder: protectedProcedure

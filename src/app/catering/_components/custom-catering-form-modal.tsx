@@ -55,17 +55,12 @@ export function CustomCateringFormModal({
     resolver: zodResolver(customCateringSchema),
     defaultValues: {
       numberOfGuests: "",
+      phone: "",
     },
   });
 
   const onSubmitForm = async (data: customCateringFormType) => {
-    if (
-      !data ||
-      status !== "authenticated" ||
-      !session.user.email ||
-      !session.user.name
-    )
-      return;
+    if (!data) return;
     await orderCustomCatering({
       data,
     });

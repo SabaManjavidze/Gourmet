@@ -97,15 +97,17 @@ export function ProductsSection() {
       !formData ||
       !currMenu ? (
         <>
-          <MenuPreviews orderClick={orderClick} />
           <section
             className="relative mt-12 flex w-full 
-          flex-col text-center font-semibold"
+          flex-col items-center justify-center text-center font-semibold"
           >
-            <h2 className="text-center text-4xl font-semibold">{t("title")}</h2>
-            <h3 className="mt-5 text-base">{t("sub")}</h3>
+            <h2 className="text-center text-5xl font-semibold">{t("title")}</h2>
+            <h3 className="mt-5 max-w-[840px] text-center text-base">
+              {t("sub")}
+            </h3>
             <CustomCatering onClick={() => setCustomOpen(true)} />
           </section>
+          <MenuPreviews orderClick={orderClick} />
         </>
       ) : (
         <MenuTable menuNameArg={menuNameArg} menuTypeArg={menuTypeArg} />

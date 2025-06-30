@@ -13,10 +13,7 @@ export function MenuPreviews({
     api.sampleMenu.getMenus.useQuery();
   const t = useTranslations("Menus");
   return (
-    <div
-      className="mt-16 flex w-full flex-col items-center gap-y-32 
-        max-lg:gap-y-24 max-md:gap-y-20"
-    >
+    <div className="mt-10 flex w-full flex-col items-center gap-y-16 max-lg:gap-y-24 max-md:gap-y-20">
       {sampleMenus?.map((item, idx) => (
         <div className="w-full" key={idx}>
           <MenuPreviewSection

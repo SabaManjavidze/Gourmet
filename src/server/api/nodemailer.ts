@@ -29,7 +29,7 @@ export async function sendEmail({ subject, text, html, to }: messageType) {
     debug: false, // include SMTP traffic in the logs
   });
   const message: messageType = {
-    from: process.env.NODE_ENV == "production" ? "Gourmet" : "Gourmet Dev",
+    from: env.NODE_ENV == "production" ? "Gourmet" : "Gourmet Dev",
     to,
   };
   if (text) {

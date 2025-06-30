@@ -1,5 +1,6 @@
 "use client";
 
+import { useDiscount } from "@/hooks/useDiscount";
 import { useMenu } from "@/hooks/useMenu";
 import { api } from "@/trpc/react";
 import { useSession } from "next-auth/react";
@@ -7,9 +8,9 @@ import { useTranslations } from "next-intl";
 
 export function SumSection() {
   const { totalSum } = useMenu();
-  const { isLoading, data, error } = api.order.getUserOrderCount.useQuery();
-  const session = useSession();
+  const { discountType, discountedPrice } = useDiscount();
   const t = useTranslations("Sum Section");
+
   return (
     <div
       className="flex justify-between bg-[#FED775] px-10 py-2 
@@ -17,13 +18,17 @@ export function SumSection() {
     max-xs:text-xs"
     >
       <h3>{t("sum")}</h3>
-      {session.status == "unauthenticated" || Number(data) > 0 ? (
-        <h3>₾{totalSum}</h3>
-      ) : (
+      {
         <h3>
-          ₾{totalSum}(5% {t("discount")} {0.95 * totalSum})
+          ₾{totalSum}
+          {discountType == "first order"
+            ? `5% ${t("discount")}`
+            : discountType == "third order"
+              ? `10% ${t("discount 3rd")}`
+              : ""}
+          {discountType != "none" && discountedPrice}
         </h3>
-      )}
+      }
     </div>
   );
 }

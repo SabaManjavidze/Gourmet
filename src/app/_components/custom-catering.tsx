@@ -32,8 +32,8 @@ export function CustomCatering({ onClick }: { onClick?: () => void }) {
   const radiusMap = {
     base: 50,
     sm: 70,
-    md: 100,
-    lg: 100,
+    md: 80,
+    lg: 80,
   };
 
   const innerRadius = (radiusMap as any)[breakpoint];
@@ -42,8 +42,8 @@ export function CustomCatering({ onClick }: { onClick?: () => void }) {
   return (
     <div
       id="custom-catering"
-      className="relative flex h-[400px] w-full flex-col items-center justify-center overflow-hidden rounded-lg
-      bg-background sm:h-[500px] md:h-[600px] lg:h-[700px]"
+      className="relative flex h-[450px] w-full flex-col items-center 
+      justify-center overflow-hidden rounded-lg bg-background max-sm:h-[250px]"
     >
       <div className="z-20">
         <Button
