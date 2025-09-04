@@ -30,7 +30,7 @@ export default function Home() {
           Where Culinary Excellence Meets Unparalleled Hospitality
         </h2> */}
       </section>
-      <section className="flex flex-col items-center bg-cover bg-center bg-no-repeat">
+      {/* <section className="flex flex-col items-center bg-cover bg-center bg-no-repeat">
         <h2 className="text-4xl font-bold uppercase">{t("fourshet")}</h2>
         <p
           className="mt-4 text-lg text-muted-foreground max-sm:px-6
@@ -44,7 +44,7 @@ export default function Home() {
         >
           <CateringCarousel />
         </div>
-      </section>
+      </section> */}
       <section className="flex flex-col items-center justify-center">
         <h2 className="text-4xl font-bold uppercase max-md:text-xl max-sm:w-4/5 ">
           {g("about_us")}

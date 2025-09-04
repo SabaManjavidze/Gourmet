@@ -6,6 +6,7 @@ import { signIn } from "next-auth/react";
 import { env } from "@/env";
 import { linkedInTrack } from "nextjs-linkedin-insight-tag";
 import { sendGTMEvent } from "@next/third-parties/google";
+import { useTranslations } from "next-intl";
 type AuthProviders = "google" | "facebook";
 export default function AuthModal({
   modalOpen,
@@ -16,6 +17,7 @@ export default function AuthModal({
   //   setShowModal: Dispatch<SetStateAction<boolean>>;
   closeModal: () => void;
 }) {
+  const t = useTranslations("AuthModal");
   const [loading, setLoading] = useState<AuthProviders | "none">("none");
   const logIn = async (provider: AuthProviders) => {
     setLoading(provider);
@@ -23,7 +25,7 @@ export default function AuthModal({
     setLoading("none");
   };
   return (
-    <Modal isOpen={modalOpen} title="ავტორიზაცია" closeModal={closeModal}>
+    <Modal isOpen={modalOpen} title={t("title")} closeModal={closeModal}>
       <div className="flex flex-col items-center justify-center md:p-24 md:py-16">
         <Button
           onClick={() => {
@@ -46,7 +48,7 @@ export default function AuthModal({
           </svg>
           <span className="mr-1 block h-6 w-1 border-l border-white"></span>
           <span className="w-[90%] pl-3 font-sans text-lg">
-            შესვლა Google-ით
+            {t("btn_google_title")}
           </span>
         </Button>
 

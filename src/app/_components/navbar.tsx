@@ -25,14 +25,14 @@ export const navRoutes = [
     route: "/",
   },
 
-  {
-    title: "ფურშეტი",
-    route: "/catering",
-  },
-  {
-    title: "მენიუ",
-    route: "/menu",
-  },
+  // {
+  //   title: "ფურშეტი",
+  //   route: "/catering",
+  // },
+  // {
+  //   title: "მენიუ",
+  //   route: "/menu",
+  // },
   {
     title: "ჩვენს შესახებ",
     route: "/about-us",
@@ -44,8 +44,8 @@ export const navRoutes = [
 ] as const;
 export const mobileRoutes = [
   "მთავარი",
-  "ფურშეტი",
-  "მენიუ",
+  // "ფურშეტი",
+  // "მენიუ",
 ] as (typeof navRoutes)[number]["title"][];
 export function Navbar() {
   const t = useTranslations("Nav");

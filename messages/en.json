@@ -39,6 +39,10 @@
     "title": "Add desired dishes and inventory.",
     "placeholder": "search products..."
   },
+  "AuthModal": {
+    "btn_google_title": "Sign In with Google",
+    "title": "Sign In"
+  },
   "DiscountModal": {
     "title": "Discount",
     "auth": "Get The Discount.",
@@ -136,10 +140,8 @@
   },
   "Nav": {
     "title1": "Home",
-    "title2": "Buffet",
-    "title3": "Menu",
-    "title4": "About Us",
-    "title5": "Contact",
+    "title2": "About us",
+    "title3": "Contact Us",
     "პროფილი": "Profile",
     "ჩვენს შესახებ": "About Us"
   },
