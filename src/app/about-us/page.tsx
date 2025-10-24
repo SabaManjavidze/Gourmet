@@ -54,7 +54,7 @@ export default function AboutUsPage() {
               {t("sub")}
             </p>
 
-            <Link href="/catering">
+            {/* <Link href="/catering">
               <Button
                 className="mt-8 px-4 uppercase max-md:mt-3"
                 size={"lg"}
@@ -62,7 +62,7 @@ export default function AboutUsPage() {
               >
                 {g("order")}
               </Button>
-            </Link>
+            </Link> */}
           </div>
           <div className="flex h-full w-full max-md:mt-5">
             <div
@@ -141,7 +141,7 @@ export default function AboutUsPage() {
           >
             {t("certificate_sub")}
           </p>
-          <Link href="/catering">
+          {/* <Link href="/catering">
             <Button
               className="mt-8 px-4 uppercase"
               size={"lg"}
@@ -149,7 +149,7 @@ export default function AboutUsPage() {
             >
               {g("order")}
             </Button>
-          </Link>
+          </Link> */}
         </div>
         <div
           className="flex h-[500px] w-full items-center justify-center bg-date bg-contain 
@@ -184,14 +184,14 @@ export default function AboutUsPage() {
             condimentum velit, sit amet feugiat lectus. Classaptent taciti
             sociosqu
           </p> */}
-          <Link href="/catering">
+          {/* <Link href="/catering">
             <Button
               className="mt-8 border border-white text-lg uppercase"
               variant={"accent"}
             >
               {g("order")}
             </Button>
-          </Link>
+          </Link> */}
         </div>
       </section>
       <PartnersSlider />
