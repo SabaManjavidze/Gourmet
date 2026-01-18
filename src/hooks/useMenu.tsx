@@ -119,7 +119,7 @@ export const MenuProvider = ({
   const [menuNameOpen, setMenuNameOpen] = useState(false);
   const [menuNameForm, setMenuNameForm] = useState<MenuNameFormType>({
     menuName: "",
-    phone: undefined,
+    phone: "",
   });
   const [menu, setMenu] = useState<MenuState>({});
   const [removeProduct, setRemoveProduct] = useState<string[]>([]);
