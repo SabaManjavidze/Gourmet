@@ -4,27 +4,9 @@ import Link from "next/link";
 
 export function Footer() {
   const routes = [
-    {
-      title: "მთავარი",
-      route: "/",
-    },
-
-    {
-      title: "ფურშეტი",
-      route: "/catering",
-    },
-    {
-      title: "მენიუ",
-      route: "/menu",
-    },
-    {
-      title: "ჩვენს შესახებ",
-      route: "/about-us",
-    },
-    {
-      title: "კონტაქტი",
-      route: "",
-    },
+    { title: "მთავარი", route: "/" },
+    { title: "ჩვენს შესახებ", route: "/about-us" },
+    { title: "ფურშეტი", route: "/catering" },
   ];
   const t = useTranslations("Footer");
   const n = useTranslations("Nav");

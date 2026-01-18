@@ -11,8 +11,3 @@ export const ADMIN_EMAIL =
   process.env.NODE_ENV == "development"
     ? "sabamanjavidze@gmail.com"
     : "r.muzashvili@gurme.ge";
-export const TBC_BASE_URL = "https://api.tbcbank.ge";
-export const TBC_RETURN_URL =
-  process.env.NODE_ENV == "production"
-    ? "https://gurme.ge/tbc/callback"
-    : "http://localhost:3000/tbc/callback";

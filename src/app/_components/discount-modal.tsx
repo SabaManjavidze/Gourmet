@@ -10,8 +10,6 @@ import { Modal } from "@/components/ui/modal";
 import { Button } from "@/components/ui/button";
 // import type { AuthProviders } from "@/utils/types/types";
 import { signIn } from "next-auth/react";
-import { env } from "@/env";
-import { linkedInTrack } from "nextjs-linkedin-insight-tag";
 import { sendGTMEvent } from "@next/third-parties/google";
 import { useTranslations } from "next-intl";
 type AuthProviders = "google" | "facebook";
@@ -70,7 +68,6 @@ export default function DiscountModal({
           <Button
             onClick={() => {
               logIn("google");
-              linkedInTrack(env.LINKEDIN_EVENT_ID);
               sendGTMEvent({
                 event: "buttonClicked",
                 value: "login button clicked",

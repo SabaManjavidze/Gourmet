@@ -26,8 +26,6 @@ import { TermsAndConditions } from "@/components/terms-and-conditions/terms-and-
 import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
-import { linkedInTrack } from "nextjs-linkedin-insight-tag";
-import { env } from "@/env";
 import { sendGTMEvent } from "@next/third-parties/google";
 
 type MenuContextProps = {
@@ -435,8 +433,6 @@ export const MenuProvider = ({
               menuName: data.menuName,
               phoneNumber: data.phone,
             });
-            linkedInTrack(env.LINKEDIN_EVENT_ID);
-
             sendGTMEvent({
               event: "buttonClicked",
               value: "order made",

@@ -194,7 +194,6 @@ export const orders = createTable(
     userInvoice: boolean("user_invoice").notNull().default(false),
     adminInvoice: boolean("admin_invoice").notNull().default(false),
     status: statusEnum("status").notNull(),
-    payId: text("payId"),
     createdAt: timestamp("created_at").notNull().defaultNow(),
     userId: idtype("userId").references(() => users.id, {
       onDelete: "cascade",

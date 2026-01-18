@@ -163,7 +163,6 @@ export async function createUserOrder({
   totalPrice,
   invoiceConfirmed,
   userId,
-  payId,
 }: {
   orderId?: string;
   products: { id: string; quantity: number; variant_name?: string }[];
@@ -173,7 +172,6 @@ export async function createUserOrder({
   userId?: string;
   invoiceRequested: boolean;
   invoiceConfirmed?: boolean;
-  payId?: string;
 }) {
   let order;
   if (!orderId) {
@@ -182,7 +180,6 @@ export async function createUserOrder({
       userId: userId,
       name: menuName,
       status,
-      payId,
       totalPrice,
       userInvoice: invoiceRequested ?? false,
       adminInvoice: invoiceConfirmed ?? false,
@@ -197,7 +194,6 @@ export async function createUserOrder({
         totalPrice,
         userInvoice: invoiceRequested ?? false,
         adminInvoice: invoiceConfirmed ?? false,
-        payId,
       })
       .where(eq(orders.id, orderId))
       .returning();
@@ -322,7 +318,6 @@ export const orderRouter = createTRPCRouter({
     .input(
       z.object({
         menuName: z.string(),
-        payId: z.string().optional(),
         totalPrice: z.string(),
         orderId: z.string().uuid().optional(),
         invoiceRequested: z.boolean(),
@@ -349,7 +344,6 @@ export const orderRouter = createTRPCRouter({
           orderId,
           status,
           orderDetails,
-          payId,
           invoiceRequested,
           phoneNumber,
         },
@@ -360,7 +354,6 @@ export const orderRouter = createTRPCRouter({
           products,
           menuName,
           totalPrice,
-          payId,
           status,
           userId: session?.user.id,
           invoiceRequested: invoiceRequested,

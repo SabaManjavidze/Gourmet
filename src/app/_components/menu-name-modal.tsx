@@ -19,12 +19,11 @@ const nameNphoneSchema = z.object({
   menuName: z.string().min(3),
   phone: z
     .string()
-    .min(9)
+    .min(9, "ტელეფონის ნომერი სავალდებულოა")
     .max(15)
     .transform((val) => parseInt(val))
     .pipe(z.number())
-    .transform((val) => val.toString())
-    .optional(),
+    .transform((val) => val.toString()),
 });
 export type MenuNameFormType = z.infer<typeof nameNphoneSchema>;
 
@@ -91,7 +90,7 @@ export function MenuNameModal({
                 render={({ field }) => (
                   <FormItem className="w-full">
                     <div className="flex items-center justify-between">
-                      <FormLabel>ტელეფონის ნომერი (სურვილისამებრ)</FormLabel>
+                      <FormLabel>ტელეფონის ნომერი</FormLabel>
                       <FormMessage />
                     </div>
                     <FormControl>

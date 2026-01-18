@@ -34,7 +34,6 @@ import { toast } from "sonner";
 import { Textarea } from "../ui/textarea";
 import { OrderMadeEmail } from "@/server/api/nodemailer";
 import { useSession } from "next-auth/react";
-import { PaymentModal } from "../payment-modal/payment-modal";
 import { useTranslations } from "next-intl";
 
 const titleClass =
@@ -49,8 +48,6 @@ export function OrderNowModal({
   const { currMenu } = useCatering();
   const { status } = useSession();
   const { menu, totalSum } = useMenu();
-  const [data, setData] = useState<OrderFormType>();
-  const [paymentOpen, setPaymentOpen] = useState(false);
   const { isPending: detailsPending, mutateAsync: createOrderDetails } =
     api.orderDetails.createOrderDetails.useMutation();
   const { isPending: orderPending, mutateAsync: createOrder } =
@@ -73,13 +70,11 @@ export function OrderNowModal({
   });
   const t = useTranslations("Order Modal");
   const g = useTranslations("General");
-  const saveToDB = async (data: OrderFormType, payId?: string) => {
+  const onSubmit = async (data: OrderFormType) => {
     if (
       !data ||
       !currMenu ||
       menu[currMenu.name] == undefined
-      // || !session?.user?.name ||
-      // !session.user.email
     ) {
       console.log({ currMenu, data, m: menu?.[currMenu?.name ?? ""] });
       return;
@@ -88,30 +83,18 @@ export function OrderNowModal({
       invoiceRequested: data.invoiceRequested ?? false,
       menuName: currMenu.name,
       products: menu[currMenu.name] as productState[],
-      status: data.invoiceRequested ? "submitted" : "loading",
+      status: "submitted",
       totalPrice: totalSum.toString(),
       orderDetails: data,
-      payId,
     });
-    // if (status == "authenticated") {
     await createOrderDetails({
       ...data,
       orderId: order.id,
     });
-    // }
-  };
-  const onSubmit = async (data: OrderFormType) => {
-    if (data.invoiceRequested) {
-      await saveToDB(data);
-      toast.success("შეკვეთა მიღებულია. ჩვენი გუნდი დაგეკონთაქტებათ მალე.", {
-        duration: 2500,
-      });
-      closeModal();
-    } else {
-      setData(data);
-      setPaymentOpen(true);
-      // toast.success("შეკვეთა მიღებულია!");
-    }
+    toast.success("შეკვეთა მიღებულია. ჩვენი გუნდი დაგეკონთაქტებათ მალე.", {
+      duration: 2500,
+    });
+    closeModal();
   };
   return (
     <Modal
@@ -120,13 +103,6 @@ export function OrderNowModal({
       className={`flex h-[80vh] w-[70%] flex-col items-center ${orderPending || detailsPending ? "overflow-hidden" : "overflow-y-auto"}
          max-md:w-[95%]`}
     >
-      {data ? (
-        <PaymentModal
-          closeModal={() => setPaymentOpen(false)}
-          open={paymentOpen}
-          saveToDB={(payId: string) => saveToDB(data, payId)}
-        />
-      ) : null}
       <div
         className={`absolute inset-0 z-10 items-center justify-center bg-gray-300/50
       ${orderPending || detailsPending ? "flex" : "hidden"}`}

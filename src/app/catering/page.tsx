@@ -1,37 +1,24 @@
 "use client";
-import { useEffect, useMemo, useState } from "react";
-import { SampleMenuCarousel } from "./_components/sample-menu-carousel";
+import { useEffect } from "react";
 import { ProductsSection } from "./_components/products-section";
 import { CateringProvider } from "@/hooks/useCatering";
 import PartnersSlider from "../_components/partners-slider";
-import UserReviewsCarousel from "@/components/user-reviews/user-reviews-carousel";
 import { FAQSection } from "@/components/faq-section";
 import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import setLanguage from "@/actions/set-language";
-import { locales } from "@/i18n/config";
-import DiscountModal from "../_components/discount-modal";
-import { useSession } from "next-auth/react";
+
 export default function Catering() {
   const t = useTranslations("CateringPage");
   const g = useTranslations("General");
   const searchParams = useSearchParams();
-  const [discountOpen, setDiscountOpen] = useState(false);
-  const [discountSeen, setDiscountSeen] = useState(false);
-  const session = useSession();
 
   useEffect(() => {
-    const t = localStorage.getItem("discount");
-    setDiscountSeen(t == "true");
     const lang = searchParams.get("lang");
     if (lang == "ge" || lang == "en") {
       setLanguage(lang);
     }
-
-    setTimeout(() => {
-      setDiscountOpen(true);
-    }, 3000);
-  }, []);
+  }, [searchParams]);
 
   return (
     <main className="min-h-[140vh]">
@@ -55,12 +42,6 @@ export default function Catering() {
           {t("subtext")}
         </p>
       </div>
-      {session?.status !== "authenticated" && !discountSeen ? (
-        <DiscountModal
-          modalOpen={discountOpen}
-          closeModal={() => setDiscountOpen(false)}
-        />
-      ) : null}
       <CateringProvider>
         {/* <div className="mt-16 flex w-full justify-center">
           <SampleMenuCarousel />

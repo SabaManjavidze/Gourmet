@@ -3,7 +3,6 @@ import NextTopLoader from "nextjs-toploader";
 import { NextIntlClientProvider } from "next-intl";
 import { Analytics } from "@vercel/analytics/next";
 import { GoogleTagManager } from "@next/third-parties/google";
-import { LinkedInInsightTag } from "nextjs-linkedin-insight-tag";
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "@/trpc/react";
 import SessionProvider from "@/app/_components/session-provider";
@@ -75,10 +74,11 @@ export default async function RootLayout({
             <TRPCReactProvider>{children}</TRPCReactProvider>
           </NextIntlClientProvider>
         </SessionProvider>
-        <GoogleTagManager gtmId={env.GOOGLE_TAG_MANAGER_ID} />
+        {env.GOOGLE_TAG_MANAGER_ID && (
+          <GoogleTagManager gtmId={env.GOOGLE_TAG_MANAGER_ID} />
+        )}
         <Toaster />
         <Footer />
-        <LinkedInInsightTag />
       </body>
     </html>
   );
