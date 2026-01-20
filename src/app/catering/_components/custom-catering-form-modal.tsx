@@ -33,6 +33,7 @@ import {
 } from "../utils";
 import { api } from "@/trpc/react";
 import { useTranslations } from "next-intl";
+import { trackConsultationRequest, trackLead } from "@/lib/meta-pixel";
 
 export function CustomCateringFormModal({
   open,
@@ -64,6 +65,9 @@ export function CustomCateringFormModal({
     await orderCustomCatering({
       data,
     });
+    // Track Meta Pixel conversion events
+    trackLead({ content_name: "Consultation Request" });
+    trackConsultationRequest();
     toast.success("შეკვეთა მიღებულია. ჩვენი გუნდი მალე დაგექონტაქტებათ.");
     closeModal();
     // onSubmit({ menuType: data.type, personRange: Number(data.personRange) });

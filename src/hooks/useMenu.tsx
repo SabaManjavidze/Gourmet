@@ -27,6 +27,7 @@ import { db } from "@/server/db";
 import { users } from "@/server/db/schema";
 import { eq } from "drizzle-orm";
 import { sendGTMEvent } from "@next/third-parties/google";
+import { trackMenuSave, trackLead } from "@/lib/meta-pixel";
 
 type MenuContextProps = {
   dbMenu: Record<string, (ProductWithVariants & { quantity?: number })[]>;
@@ -427,12 +428,17 @@ export const MenuProvider = ({
           closeModal={async () => {
             setMenuNameOpen(false);
           }}
-          onSubmit={(data: MenuNameFormType) => {
+          onSubmit={async (data: MenuNameFormType) => {
             setMenuNameForm(data);
-            handleSaveClick({
+            const success = await handleSaveClick({
               menuName: data.menuName,
               phoneNumber: data.phone,
             });
+            if (success) {
+              // Track Meta Pixel conversion events
+              trackLead({ content_name: "Menu Save" });
+              trackMenuSave(data.menuName);
+            }
             sendGTMEvent({
               event: "buttonClicked",
               value: "order made",
