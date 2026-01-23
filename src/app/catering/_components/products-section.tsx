@@ -107,7 +107,7 @@ export function ProductsSection() {
             </h3>
             <CustomCatering onClick={() => setCustomOpen(true)} />
           </section>
-          <MenuPreviews onConsultClick={() => setCustomOpen(true)} />
+          <MenuPreviews orderClick={orderClick} />
         </>
       ) : (
         <MenuTable menuNameArg={menuNameArg} menuTypeArg={menuTypeArg} />
