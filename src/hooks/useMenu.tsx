@@ -23,9 +23,6 @@ import { MIN_PERSON_CATER } from "@/lib/constants";
 import { toast } from "sonner";
 import { OrderNowModal } from "@/components/order-now-modal/order-now-modal";
 import { TermsAndConditions } from "@/components/terms-and-conditions/terms-and-conditions";
-import { db } from "@/server/db";
-import { users } from "@/server/db/schema";
-import { eq } from "drizzle-orm";
 import { sendGTMEvent } from "@next/third-parties/google";
 import { trackMenuSave, trackLead } from "@/lib/meta-pixel";
 
@@ -269,58 +266,72 @@ export const MenuProvider = ({
       return false;
     }
     if (session?.user?.role == "user") {
-      if (orderId && removeProduct.length > 0) {
-        await utils.client.order.removeProductFromOrder.mutate({
+      try {
+        if (orderId && removeProduct.length > 0) {
+          await utils.client.order.removeProductFromOrder.mutate({
+            orderId,
+            productIds: removeProduct,
+          });
+        }
+        await utils.client.order.createUserOrder.mutate({
           orderId,
-          productIds: removeProduct,
+          menuName: menuName,
+          totalPrice: totalSum.toString(),
+          phoneNumber: params.phoneNumber,
+          status: "draft",
+          products: prods,
+          invoiceRequested: false,
         });
-      }
-      await utils.client.order.createUserOrder.mutate({
-        orderId,
-        menuName: menuName,
-        totalPrice: totalSum.toString(),
-        phoneNumber: params.phoneNumber,
-        status: "draft",
-        products: prods,
-        invoiceRequested: false,
-      });
-      await utils.order.getUserOrders.refetch();
-      if (orderId) {
-        await utils.order.getUserOrder.invalidate({ orderId });
+        await utils.order.getUserOrders.refetch();
+        if (orderId) {
+          await utils.order.getUserOrder.invalidate({ orderId });
+        }
+      } catch (error) {
+        console.error("Error saving order:", error);
+        setSaveLoading(false);
+        toast.error("შეკვეთის შენახვა ვერ მოხერხდა. გთხოვთ სცადოთ თავიდან.");
+        return false;
       }
     } else if (session?.user?.role == "admin") {
       if (!orderId && !adminUserId && !menuName) {
         setOpen(true);
         setSaveLoading(false);
-        toast.error("Something went wrong.");
+        toast.error("გთხოვთ აირჩიოთ მომხმარებელი და მენიუს სახელი.");
         return false;
       }
       if (!adminUserId) {
         setSaveLoading(false);
-        toast.error("Something went wrong.");
+        toast.error("გთხოვთ აირჩიოთ მომხმარებელი.");
         return false;
       }
 
-      if (orderId && removeProduct.length > 0) {
-        await utils.client.admin.removeProductFromUserOrder.mutate({
-          orderId,
+      try {
+        if (orderId && removeProduct.length > 0) {
+          await utils.client.admin.removeProductFromUserOrder.mutate({
+            orderId,
+            userId: adminUserId,
+            productIds: removeProduct,
+          });
+        }
+        await utils.client.admin.createUserOrder.mutate({
           userId: adminUserId,
-          productIds: removeProduct,
+          orderId,
+          menuName: menuName,
+          totalPrice: totalSum.toString(),
+          status: "draft",
+          products: prods,
+          adminInvoice: false,
+          userInvoice: false,
         });
-      }
-      await utils.client.admin.createUserOrder.mutate({
-        userId: adminUserId,
-        orderId,
-        menuName: menuName,
-        totalPrice: totalSum.toString(),
-        status: "draft",
-        products: prods,
-        adminInvoice: false,
-        userInvoice: false,
-      });
-      await utils.admin.getUserOrders.invalidate();
-      if (orderId) {
-        await utils.admin.getUserOrder.invalidate({ userId, orderId });
+        await utils.admin.getUserOrders.invalidate();
+        if (orderId) {
+          await utils.admin.getUserOrder.invalidate({ userId, orderId });
+        }
+      } catch (error) {
+        console.error("Error saving admin order:", error);
+        setSaveLoading(false);
+        toast.error("შეკვეთის შენახვა ვერ მოხერხდა. გთხოვთ სცადოთ თავიდან.");
+        return false;
       }
     }
     setChanges?.(false);

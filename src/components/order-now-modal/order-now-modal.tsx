@@ -32,7 +32,6 @@ import { useCatering } from "@/hooks/useCatering";
 import { productState } from "menu";
 import { toast } from "sonner";
 import { Textarea } from "../ui/textarea";
-import { OrderMadeEmail } from "@/server/api/nodemailer";
 import { useSession } from "next-auth/react";
 import { useTranslations } from "next-intl";
 
