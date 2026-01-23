@@ -21,11 +21,7 @@ export function SumSection() {
       {
         <h3>
           ₾{totalSum}
-          {discountType == "first order"
-            ? `5% ${t("discount")}`
-            : discountType == "third order"
-              ? `10% ${t("discount 3rd")}`
-              : ""}
+          {discountType == "third order" ? ` 10% ${t("discount 3rd")}` : ""}
           {discountType != "none" && discountedPrice}
         </h3>
       }

@@ -35,7 +35,7 @@ export const useDiscount = () => {
   useEffect(() => {
     if (isLoading) return;
     const val = Number(data);
-    if (session.status !== "authenticated" || (val > 0 && val != 3) || error) {
+    if (session.status !== "authenticated" || val != 3 || error) {
       setDiscountedPrice(totalSum);
       setDiscountType("none");
       return;
@@ -43,9 +43,6 @@ export const useDiscount = () => {
     if (val == 3) {
       setDiscountedPrice(totalSum * 0.9);
       setDiscountType("third order");
-    } else if (val == 0) {
-      setDiscountedPrice(totalSum * 0.95);
-      setDiscountType("first order");
     }
   }, [isLoading]);
 
