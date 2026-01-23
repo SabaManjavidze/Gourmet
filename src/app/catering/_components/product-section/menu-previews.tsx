@@ -5,9 +5,9 @@ import { MenuPreviewSection } from "../menu-preview-section";
 import { useTranslations } from "next-intl";
 
 export function MenuPreviews({
-  orderClick,
+  onConsultClick,
 }: {
-  orderClick: (menuId: string) => void;
+  onConsultClick: () => void;
 }) {
   const { data: sampleMenus, isLoading: menusLoading } =
     api.sampleMenu.getMenus.useQuery();
@@ -24,7 +24,7 @@ export function MenuPreviews({
               title: item.name,
               imgSide: (idx + 1) % 2 == 0 ? "right" : "left",
             }}
-            onOrderClick={orderClick}
+            onConsultClick={onConsultClick}
           />
         </div>
       ))}

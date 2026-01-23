@@ -10,13 +10,13 @@ export interface MenuPreview {
 }
 export function MenuPreviewSection({
   data,
-  onOrderClick,
+  onConsultClick,
 }: {
   data: MenuPreview;
-  onOrderClick: (id: string, name: string) => void;
+  onConsultClick: () => void;
 }) {
-  const g = useTranslations("General");
   const t = useTranslations("Menus");
+  const c = useTranslations("Custom Catering");
   return (
     <div className="flex flex-col gap-y-12 max-lg:gap-y-5" id={data.title}>
       <div
@@ -46,13 +46,11 @@ export function MenuPreviewSection({
             {data.desc}
           </p>
           <Button
-            // disabled={data.title != "ყავის შესვენება"}
-            onClick={() => onOrderClick(data.id, data.title)}
-            className="mt-8 px-4 uppercase max-lg:hidden max-md:mt-3"
-            size={"lg"}
-            variant={"accent"}
+            onClick={onConsultClick}
+            className="mt-8 rounded-2xl bg-accent/70 px-8 py-6 text-2xl font-semibold text-accent-light
+            hover:bg-accent/80 active:bg-accent max-lg:hidden max-md:mt-3"
           >
-            {g("order")}
+            {c("btn_title")}
           </Button>
         </div>
       </div>
@@ -82,13 +80,11 @@ export function MenuPreviewSection({
       </ul>
       <div>
         <Button
-          onClick={() => onOrderClick(data.id, data.title)}
-          // disabled={data.title != "ყავის შესვენება"}
-          className="mt-8 px-4 uppercase max-lg:mt-0 max-md:mt-3 lg:hidden"
-          size={"lg"}
-          variant={"accent"}
+          onClick={onConsultClick}
+          className="mt-8 rounded-2xl bg-accent/70 px-8 py-6 text-2xl font-semibold text-accent-light
+          hover:bg-accent/80 active:bg-accent max-lg:mt-0 max-md:mt-3 lg:hidden"
         >
-          {g("order")}
+          {c("btn_title")}
         </Button>
       </div>
     </div>
