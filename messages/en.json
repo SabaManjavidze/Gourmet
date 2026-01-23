@@ -33,7 +33,8 @@
     "form not valid": "Form is not valid.",
     "found 0 results": "Found 0 Results.",
     "add products": "Add Products",
-    "Sign In": "Sign In"
+    "Sign In": "Sign In",
+    "catering": "Catering"
   },
   "AddProductsModal": {
     "title": "Add desired dishes and inventory.",
@@ -171,7 +172,8 @@
     "fourshet": "Buffet",
     "fourshet_sub": "To select your desired buffet, please click the appropriate image.",
     "about_us_sub": "“Gourmet” is a café and confectionery that has been operating on the Georgian market since 2012, offering customers a full service experience. Since our establishment, we have provided delicious products made from the highest quality ingredients and also offer catering services that your guests won’t forget. Currently, the company owns a large facility on 70 Mirian Mepe Street and hosts guests in various “Gourmet” cafes across Tbilisi.",
-    "contact_socmedia": "Our contacts and social media"
+    "contact_socmedia": "Our contacts and social media",
+    "catering_sub": "Professional catering services for your events. From corporate parties to family celebrations, we've got you covered."
   },
   "MenuPage": {
     "title": "Main Menu",

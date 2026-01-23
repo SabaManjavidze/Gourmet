@@ -12,6 +12,9 @@ export function MenuPreviews({
   const { data: sampleMenus, isLoading: menusLoading } =
     api.sampleMenu.getMenus.useQuery();
   const t = useTranslations("Menus");
+  const corporateMenu = sampleMenus?.find(
+    (m) => m.name === "კორპორაციული ღონისძიება",
+  );
   return (
     <div className="mt-10 flex w-full flex-col items-center gap-y-16 max-lg:gap-y-24 max-md:gap-y-20">
       {sampleMenus?.map((item, idx) => (
@@ -24,7 +27,11 @@ export function MenuPreviews({
               title: item.name,
               imgSide: (idx + 1) % 2 == 0 ? "right" : "left",
             }}
-            onOrderClick={orderClick}
+            onOrderClick={
+              item.name === "წვეულება" && corporateMenu
+                ? () => orderClick(corporateMenu.id)
+                : orderClick
+            }
           />
         </div>
       ))}

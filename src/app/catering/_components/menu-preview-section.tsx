@@ -46,7 +46,6 @@ export function MenuPreviewSection({
             {data.desc}
           </p>
           <Button
-            // disabled={data.title != "ყავის შესვენება"}
             onClick={() => onOrderClick(data.id, data.title)}
             className="mt-8 px-4 uppercase max-lg:hidden max-md:mt-3"
             size={"lg"}

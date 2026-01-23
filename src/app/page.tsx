@@ -72,6 +72,23 @@ export default function Home() {
         </Link>
       </section>
 
+      <section className="flex flex-col items-center justify-center">
+        <h2 className="text-4xl font-bold uppercase max-md:text-xl max-sm:w-4/5">
+          {g("catering")}
+        </h2>
+        <p
+          className="mt-5 w-[70%] text-center text-lg leading-8 text-muted-foreground
+        max-sm:text-left"
+        >
+          {t("catering_sub")}
+        </p>
+        <Link href="/catering">
+          <Button className="mt-8 uppercase" variant={"accent"}>
+            {g("see full")}
+          </Button>
+        </Link>
+      </section>
+
       <section className="relative flex h-80 bg-contact-us-banner bg-cover bg-center bg-no-repeat py-12">
         <div className="absolute inset-0 bg-black opacity-20"></div>
         <div className="z-10 flex h-full w-full flex-col items-center justify-center">
